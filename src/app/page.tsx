@@ -1,113 +1,241 @@
-import Image from 'next/image'
+"use client";
+import { useState } from "react";
+import { FileUploader } from "react-drag-drop-files";
+import { PlayAudio } from "./components/PlayAudio";
 
 export default function Home() {
+  const [file, setFile] = useState<any>(null);
+  const fileTypes = ["MP3", "WAV", "AAC"];
+  const handleChange = (file: any) => {
+    setFile(URL.createObjectURL(file[0]));
+  };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <>
+      <div className="flex flex-row w-full max-md:flex-col">
+        {/* Input div */}
+        <div className="flex-1 p-4">
+          <div className="flex items-center text-2xl">Input</div>
+          {file && <PlayAudio audio={file} />}
+          {/* Choose Audio */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono mb-3">
+              Audio
+            </div>
+            <FileUploader
+              multiple={true}
+              handleChange={handleChange}
+              name="file"
+              types={fileTypes}
             />
-          </a>
+            <span className="text-gray-500">Audio file</span>
+          </div>
+          {/* Choose Model */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">model</div>
+            <select className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid">
+              <option>large</option>
+              <option>large-v2</option>
+            </select>
+            <span className="text-gray-500">Choose a whisper model</span>
+          </div>
+          {/* Choose Transcription */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              transcription
+            </div>
+            <select className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid">
+              <option>plain text</option>
+              <option>srt</option>
+              <option>vtt</option>
+            </select>
+            <span className="text-gray-500">
+              Choose format for transcription
+            </span>
+          </div>
+          {/* Choose Translate */}
+          <div className="mt-4">
+            <div className="flex items-center">
+              <input className="w-5 h-5 mr-2" type="checkbox"></input>
+              <span className="w-fit p-2 bg-gray-200 text-sm font-mono">
+                translate
+              </span>
+            </div>
+            <div className="text-gray-500 py-2">
+              Translate the text to English when set to True
+            </div>
+          </div>
+          {/* Choose Language */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              language
+            </div>
+            <select className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid">
+              <option>Hindi</option>
+              <option>English</option>
+            </select>
+            <span className="text-gray-500">
+              language spoken in the audio, specify None to perform language
+              detection
+            </span>
+          </div>
+          {/* Choose Temperature */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              temperature
+            </div>
+            <input
+              type="number"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              temperature to use for sampling
+            </span>
+          </div>
+          {/* Choose Patience */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              patience
+            </div>
+            <input
+              type="number"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              optional patience value to use in beam decoding, as in
+              https://arxiv.org/abs/2204.05424, the default (1.0) is equivalent
+              to conventional beam search
+            </span>
+          </div>
+          {/* Choose suppress_tokens */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              suppress_tokens
+            </div>
+            <input
+              type="text"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              comma-separated list of token ids to suppress during sampling; -1
+              will suppress most special characters except common punctuations
+            </span>
+          </div>
+          {/* Choose initial_prompt */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              initial_prompt
+            </div>
+            <input
+              type="text"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              optional text to provide as a prompt for the first window.
+            </span>
+          </div>
+          {/* Choose condition_on_previous_text */}
+          <div className="mt-4">
+            <div className="flex items-center">
+              <input className="w-5 h-5 mr-2" type="checkbox"></input>
+              <span className="w-fit p-2 bg-gray-200 text-sm font-mono">
+                condition_on_previous_text
+              </span>
+            </div>
+            <div className="text-gray-500 py-2">
+              if True, provide the previous output of the model as a prompt for
+              the next window; disabling may make the text inconsistent across
+              windows, but the model becomes less prone to getting stuck in a
+              failure loop
+            </div>
+          </div>
+          {/* Choose temperature_increment_on_fallback */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              temperature_increment_on_fallback
+            </div>
+            <input
+              type="number"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              temperature to increase when falling back when the decoding fails
+              to meet either of the thresholds below
+            </span>
+          </div>
+          {/* Choose compression_ratio_threshold */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              compression_ratio_threshold
+            </div>
+            <input
+              type="number"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              if the gzip compression ratio is higher than this value, treat the
+              decoding as failed
+            </span>
+          </div>
+          {/* Choose logprob_threshold */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              logprob_threshold
+            </div>
+            <input
+              type="number"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              if the average log probability is lower than this value, treat the
+              decoding as failed
+            </span>
+          </div>
+          {/* Choose no_speech_threshold */}
+          <div className="mt-4">
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              no_speech_threshold
+            </div>
+            <input
+              type="number"
+              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
+            ></input>
+            <span className="text-gray-500">
+              if the probability of the {"<|nospeech|>"} token is higher than
+              this value AND the decoding has failed due to `logprob_threshold`,
+              consider the segment as silence
+            </span>
+          </div>
+          {/* Submit Div */}
+          <div className="mt-4">
+            <button className="bg-black text-white p-3">Submit</button>
+            <button className="border-[1px] border-solid border-black p-3 ml-3">
+              Reset
+            </button>
+          </div>
+        </div>
+        {/* Output div */}
+        <div className="flex-1 p-4">
+          <div className="flex items-center text-2xl">Output</div>
+          <div className="pt-4">
+            Transcription
+            <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
+              Transcription
+            </div>
+          </div>
+          <div className="pt-4">
+            Detected Language
+            <div className="pt-2 w-[80%] bg-gray-200 text-sm p-1 font-mono">
+              english
+            </div>
+          </div>
+          <div className="pt-4">
+            Logs
+            <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
+              loading...
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </>
+  );
 }
