@@ -4,49 +4,35 @@ import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
 import crossImage from "./assets/cross.svg";
 import Image from "next/image";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 
 export default function Home() {
-  console.log(crossImage);
-  const [file, setFile] = useState<any>(null);
-  const [questions, setQuestions] = useState<any>([
-    {
-      key: "Counsellor",
-      question: "What is the language?",
-      answer: "",
-    },
-    {
-      key: "Manager",
-      question: "Pace of speaking?",
-      answer: "",
-    },
-  ]);
   const fileTypes = ["MP3", "WAV", "AAC"];
-  const handleChange = (file: any) => {
-    setFile(URL.createObjectURL(file[0]));
-  };
-  const handleCreateQuestion = () => {
-    setQuestions((createdQuestions: any) => {
-      return [
-        ...createdQuestions,
+  const [file, setFile] = useState<any>(null);
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      audioFile: null,
+      questions: [
         {
           key: "Counsellor",
           question: "What is the language?",
-          answer: "English",
         },
-      ];
-    });
+        {
+          key: "Manager",
+          question: "Pace of speaking?",
+        },
+      ],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "questions",
+  });
+
+  const handleChange = (file: any) => {
+    setFile(URL.createObjectURL(file[0]));
   };
-  const handleDeleteQuestion = (idx: number) => {
-    // setQuestions((questions: any) =>
-    //   questions.filter((data: any, i: number) => i !== idx)
-    // );
-  };
-  const handleDefaultAnswer = (answer: string, idx: number) => {
-    let existingQuestions = questions;
-    existingQuestions[idx].question = answer;
-    // console.log(questions, existingQuestions);
-    setQuestions(existingQuestions);
-  };
+
   return (
     <>
       <div className="flex flex-row w-full max-md:flex-col">
@@ -72,46 +58,62 @@ export default function Home() {
             <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
               questions
             </div>
-            {questions &&
-              questions.map((question: any, idx: number) => {
-                return (
-                  <div
-                    className="grid grid-cols-10 py-4 border-b-[1px] border-gray-300"
-                    key={idx}
-                  >
-                    <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
-                      <select className="w-full text-sm p-2 px-1 border-[1px] ml-2 border-black">
-                        <option>{question.key}</option>
-                      </select>
-                    </div>
-                    <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center">
-                      <input
-                        className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
-                        placeholder="xyz"
-                        type="text"
-                        value={question.question}
-                        onChange={(e) => {
-                          handleDefaultAnswer(e.target.value, idx);
-                        }}
-                      ></input>
-                    </div>
-                    <div className="w-full h-full flex items-center justify-center cursor-pointer">
-                      <Image
-                        src={crossImage}
-                        width={25}
-                        height={25}
-                        alt="Remove item"
-                        onClick={() => {
-                          handleDeleteQuestion(idx);
-                        }}
-                      />
-                    </div>
+            {fields.map((item: any, index: number) => {
+              return (
+                <div
+                  className="grid grid-cols-10 py-4 border-b-[1px] border-gray-300"
+                  key={item.id}
+                >
+                  <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
+                    <select className="w-full text-sm p-2 px-1 border-[1px] ml-2 border-black">
+                      <option>{item.key}</option>
+                    </select>
                   </div>
-                );
-              })}
+                  <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center">
+                    <Controller
+                      name={`questions.${index}.question`}
+                      control={control}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "This field cannot be empty",
+                        },
+                      }}
+                      render={({ field: { onChange, ...field } }) => (
+                        <input
+                          {...field}
+                          placeholder="Question"
+                          className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
+                          type="text"
+                          value={item.question}
+                          onChange={(e) => {}}
+                        ></input>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full h-full flex items-center justify-center cursor-pointer">
+                    <Image
+                      src={crossImage}
+                      width={25}
+                      height={25}
+                      alt="Remove item"
+                      onClick={() => {
+                        console.log(index);
+                        remove(index);
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
             <div
               className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
-              onClick={handleCreateQuestion}
+              onClick={() =>
+                append({
+                  key: "Counsellor",
+                  question: "What is the language?",
+                })
+              }
             >
               + Add Question
             </div>
