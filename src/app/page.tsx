@@ -5,9 +5,45 @@ import { PlayAudio } from "./components/PlayAudio";
 
 export default function Home() {
   const [file, setFile] = useState<any>(null);
+  const [questions, setQuestions] = useState<any>([
+    {
+      key: "Counsellor",
+      question: "What is the language?",
+      answer: "",
+    },
+    {
+      key: "Manager",
+      question: "Pace of speaking?",
+      answer: "",
+    },
+  ]);
+  const [createdQuestions, setCreatedQuestions] = useState<any>([]);
   const fileTypes = ["MP3", "WAV", "AAC"];
   const handleChange = (file: any) => {
     setFile(URL.createObjectURL(file[0]));
+  };
+  const handleCreateQuestion = () => {
+    setCreatedQuestions((createdQuestions: any) => {
+      return [
+        ...createdQuestions,
+        {
+          key: "Counsellor",
+          question: "What is the language?",
+          answer: "English",
+        },
+      ];
+    });
+  };
+  const handleDeleteQuestion = (idx: number) => {
+    setCreatedQuestions((questions: any) =>
+      questions.filter((data: any, i: number) => i !== idx)
+    );
+  };
+  const handleDefaultAnswer = (answer: string, idx: number) => {
+    let existingQuestions = questions;
+    existingQuestions[idx].question = answer;
+    // console.log(questions, existingQuestions);
+    setQuestions(existingQuestions);
   };
   return (
     <>
@@ -29,181 +65,85 @@ export default function Home() {
             />
             <span className="text-gray-500">Audio file</span>
           </div>
-          {/* Choose Model */}
+          {/* Choose Questions Form */}
           <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">model</div>
+            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+              questions
+            </div>
+            {questions &&
+              questions.map((question: any, idx: number) => {
+                return (
+                  <div
+                    className="grid grid-cols-9 py-4 border-b-[1px] border-gray-300"
+                    key={idx}
+                  >
+                    <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
+                      <select className="w-full border-[1px] ml-2 border-black">
+                        <option>{question.key}</option>
+                      </select>
+                    </div>
+                    <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center">
+                      <input
+                        className="text-black border-[1px] px-2 border-gray-400 w-full outline-none"
+                        placeholder="xyz"
+                        type="text"
+                        value={question.question}
+                        onChange={(e) => {
+                          handleDefaultAnswer(e.target.value, idx);
+                        }}
+                      ></input>
+                    </div>
+                  </div>
+                );
+              })}
+            {createdQuestions &&
+              createdQuestions.map((question: any, idx: number) => {
+                return (
+                  <div
+                    className="grid grid-cols-10 py-4 border-b-[1px] border-gray-300"
+                    key={idx}
+                  >
+                    <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
+                      <select className="w-full border-[1px] ml-2 border-black">
+                        <option>{question.key}</option>
+                      </select>
+                    </div>
+                    <input
+                      className="bg-gray-200 col-start-3 col-end-7 ml-4 flex items-center text-black border-[1px] px-2 border-gray-400 w-full outline-none"
+                      placeholder={question.question}
+                      type="text"
+                    ></input>
+                    <div className="ml-4 col-start-7 col-end-10 pl-3 flex items-center justify-center">
+                      <input
+                        className="text-black border-[1px] px-2 border-gray-400 w-full outline-none"
+                        placeholder="xyz"
+                        type="text"
+                      ></input>
+                    </div>
+                    <div
+                      className="col-start-10 flex items-center justify-center cursor-pointer font-extrabold text-xl"
+                      onClick={() => {
+                        handleDeleteQuestion(idx);
+                      }}
+                    >
+                      <span className="w-5 h-5 flex items-center justify-center rounded-full bg-red-200 pb-[0.2rem]">
+                        -
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            <div
+              className="p-2 mt-2 mb-3 bg-gray-200 w-fit cursor-pointer text-sm"
+              onClick={handleCreateQuestion}
+            >
+              + Add Question
+            </div>
             <select className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid">
               <option>large</option>
               <option>large-v2</option>
             </select>
             <span className="text-gray-500">Choose a whisper model</span>
-          </div>
-          {/* Choose Transcription */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              transcription
-            </div>
-            <select className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid">
-              <option>plain text</option>
-              <option>srt</option>
-              <option>vtt</option>
-            </select>
-            <span className="text-gray-500">
-              Choose format for transcription
-            </span>
-          </div>
-          {/* Choose Translate */}
-          <div className="mt-4">
-            <div className="flex items-center">
-              <input className="w-5 h-5 mr-2" type="checkbox"></input>
-              <span className="w-fit p-2 bg-gray-200 text-sm font-mono">
-                translate
-              </span>
-            </div>
-            <div className="text-gray-500 py-2">
-              Translate the text to English when set to True
-            </div>
-          </div>
-          {/* Choose Language */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              language
-            </div>
-            <select className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid">
-              <option>Hindi</option>
-              <option>English</option>
-            </select>
-            <span className="text-gray-500">
-              language spoken in the audio, specify None to perform language
-              detection
-            </span>
-          </div>
-          {/* Choose Temperature */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              temperature
-            </div>
-            <input
-              type="number"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              temperature to use for sampling
-            </span>
-          </div>
-          {/* Choose Patience */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              patience
-            </div>
-            <input
-              type="number"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              optional patience value to use in beam decoding, as in
-              https://arxiv.org/abs/2204.05424, the default (1.0) is equivalent
-              to conventional beam search
-            </span>
-          </div>
-          {/* Choose suppress_tokens */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              suppress_tokens
-            </div>
-            <input
-              type="text"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              comma-separated list of token ids to suppress during sampling; -1
-              will suppress most special characters except common punctuations
-            </span>
-          </div>
-          {/* Choose initial_prompt */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              initial_prompt
-            </div>
-            <input
-              type="text"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              optional text to provide as a prompt for the first window.
-            </span>
-          </div>
-          {/* Choose condition_on_previous_text */}
-          <div className="mt-4">
-            <div className="flex items-center">
-              <input className="w-5 h-5 mr-2" type="checkbox"></input>
-              <span className="w-fit p-2 bg-gray-200 text-sm font-mono">
-                condition_on_previous_text
-              </span>
-            </div>
-            <div className="text-gray-500 py-2">
-              if True, provide the previous output of the model as a prompt for
-              the next window; disabling may make the text inconsistent across
-              windows, but the model becomes less prone to getting stuck in a
-              failure loop
-            </div>
-          </div>
-          {/* Choose temperature_increment_on_fallback */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              temperature_increment_on_fallback
-            </div>
-            <input
-              type="number"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              temperature to increase when falling back when the decoding fails
-              to meet either of the thresholds below
-            </span>
-          </div>
-          {/* Choose compression_ratio_threshold */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              compression_ratio_threshold
-            </div>
-            <input
-              type="number"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              if the gzip compression ratio is higher than this value, treat the
-              decoding as failed
-            </span>
-          </div>
-          {/* Choose logprob_threshold */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              logprob_threshold
-            </div>
-            <input
-              type="number"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              if the average log probability is lower than this value, treat the
-              decoding as failed
-            </span>
-          </div>
-          {/* Choose no_speech_threshold */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              no_speech_threshold
-            </div>
-            <input
-              type="number"
-              className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid"
-            ></input>
-            <span className="text-gray-500">
-              if the probability of the {"<|nospeech|>"} token is higher than
-              this value AND the decoding has failed due to `logprob_threshold`,
-              consider the segment as silence
-            </span>
           </div>
           {/* Submit Div */}
           <div className="mt-4">
