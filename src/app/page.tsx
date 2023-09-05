@@ -2,8 +2,11 @@
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
+import crossImage from "./assets/cross.svg";
+import Image from "next/image";
 
 export default function Home() {
+  console.log(crossImage);
   const [file, setFile] = useState<any>(null);
   const [questions, setQuestions] = useState<any>([
     {
@@ -17,13 +20,12 @@ export default function Home() {
       answer: "",
     },
   ]);
-  const [createdQuestions, setCreatedQuestions] = useState<any>([]);
   const fileTypes = ["MP3", "WAV", "AAC"];
   const handleChange = (file: any) => {
     setFile(URL.createObjectURL(file[0]));
   };
   const handleCreateQuestion = () => {
-    setCreatedQuestions((createdQuestions: any) => {
+    setQuestions((createdQuestions: any) => {
       return [
         ...createdQuestions,
         {
@@ -35,9 +37,9 @@ export default function Home() {
     });
   };
   const handleDeleteQuestion = (idx: number) => {
-    setCreatedQuestions((questions: any) =>
-      questions.filter((data: any, i: number) => i !== idx)
-    );
+    // setQuestions((questions: any) =>
+    //   questions.filter((data: any, i: number) => i !== idx)
+    // );
   };
   const handleDefaultAnswer = (answer: string, idx: number) => {
     let existingQuestions = questions;
@@ -74,17 +76,17 @@ export default function Home() {
               questions.map((question: any, idx: number) => {
                 return (
                   <div
-                    className="grid grid-cols-9 py-4 border-b-[1px] border-gray-300"
+                    className="grid grid-cols-10 py-4 border-b-[1px] border-gray-300"
                     key={idx}
                   >
                     <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
-                      <select className="w-full border-[1px] ml-2 border-black">
+                      <select className="w-full text-sm p-2 px-1 border-[1px] ml-2 border-black">
                         <option>{question.key}</option>
                       </select>
                     </div>
                     <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center">
                       <input
-                        className="text-black border-[1px] px-2 border-gray-400 w-full outline-none"
+                        className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
                         placeholder="xyz"
                         type="text"
                         value={question.question}
@@ -93,57 +95,26 @@ export default function Home() {
                         }}
                       ></input>
                     </div>
-                  </div>
-                );
-              })}
-            {createdQuestions &&
-              createdQuestions.map((question: any, idx: number) => {
-                return (
-                  <div
-                    className="grid grid-cols-10 py-4 border-b-[1px] border-gray-300"
-                    key={idx}
-                  >
-                    <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
-                      <select className="w-full border-[1px] ml-2 border-black">
-                        <option>{question.key}</option>
-                      </select>
-                    </div>
-                    <input
-                      className="bg-gray-200 col-start-3 col-end-7 ml-4 flex items-center text-black border-[1px] px-2 border-gray-400 w-full outline-none"
-                      placeholder={question.question}
-                      type="text"
-                    ></input>
-                    <div className="ml-4 col-start-7 col-end-10 pl-3 flex items-center justify-center">
-                      <input
-                        className="text-black border-[1px] px-2 border-gray-400 w-full outline-none"
-                        placeholder="xyz"
-                        type="text"
-                      ></input>
-                    </div>
-                    <div
-                      className="col-start-10 flex items-center justify-center cursor-pointer font-extrabold text-xl"
-                      onClick={() => {
-                        handleDeleteQuestion(idx);
-                      }}
-                    >
-                      <span className="w-5 h-5 flex items-center justify-center rounded-full bg-red-200 pb-[0.2rem]">
-                        -
-                      </span>
+                    <div className="w-full h-full flex items-center justify-center cursor-pointer">
+                      <Image
+                        src={crossImage}
+                        width={25}
+                        height={25}
+                        alt="Remove item"
+                        onClick={() => {
+                          handleDeleteQuestion(idx);
+                        }}
+                      />
                     </div>
                   </div>
                 );
               })}
             <div
-              className="p-2 mt-2 mb-3 bg-gray-200 w-fit cursor-pointer text-sm"
+              className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
               onClick={handleCreateQuestion}
             >
               + Add Question
             </div>
-            <select className="mt-2 w-full p-3 border-stone-500 border-[1px] border-solid">
-              <option>large</option>
-              <option>large-v2</option>
-            </select>
-            <span className="text-gray-500">Choose a whisper model</span>
           </div>
           {/* Submit Div */}
           <div className="mt-4">
