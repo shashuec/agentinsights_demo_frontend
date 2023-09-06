@@ -14,7 +14,9 @@ import {
 
 export default function Home() {
   const fileTypes = ["MP3", "WAV", "AAC"];
-  const [file, setFile] = useState<any>(null);
+  const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
+  const [audioFile, setAudioFile] = useState<any>(null);
+  const [audioFileError, setAudioFileError] = useState<boolean>(false);
   const [output, setOutput] = useState<any>(null);
   const {
     control,
@@ -23,7 +25,6 @@ export default function Home() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      audioFile: "",
       questions: [
         {
           category: "Counsellor",
@@ -41,22 +42,26 @@ export default function Home() {
     name: "questions",
   });
 
-  const handleChange = (file: any) => {
-    setFile(URL.createObjectURL(file[0]));
+  const handleChange = (audioFile: any) => {
+    setAudioFileError(false);
+    setAudioFile(audioFile);
+    setAudioFileUrl(URL.createObjectURL(audioFile[0]));
   };
 
   const onSubmit: SubmitHandler<any> = async (values) => {
-    console.log("submit");
-    if (values && file) {
-      const inputResponse = await axios.post(
-        "https://jsonplaceholder.typicode.com/posts",
-        {
-          audio: file,
-          questions: values.questions,
-        }
-      );
-      setOutput(inputResponse.data);
+    console.log("submit", values);
+    if (!audioFile) {
+      setAudioFileError(true);
+      return;
     }
+    const inputResponse = await axios.post(
+      "https://jsonplaceholder.typicode.com/posts",
+      {
+        audio: audioFile,
+        questions: values.questions,
+      }
+    );
+    setOutput(inputResponse.data);
   };
 
   return (
@@ -65,7 +70,7 @@ export default function Home() {
         {/* Input div */}
         <div className="flex-1 p-4">
           <div className="flex items-center text-2xl">Input</div>
-          {file && <PlayAudio audio={file} />}
+          {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
           {/* Choose Audio */}
           <div className="mt-4">
             <div className="w-fit p-2 bg-gray-200 text-sm font-mono mb-3">
@@ -74,10 +79,16 @@ export default function Home() {
             <FileUploader
               multiple={true}
               handleChange={handleChange}
-              name="file"
+              name="audioFileUrl"
               types={fileTypes}
             />
-            <span className="text-gray-500">Audio file</span>
+            {audioFileError ? (
+              <div className="text-sm pt-1 text-red-500">
+                Please upload an audio file!
+              </div>
+            ) : (
+              <span className="text-gray-500">Audio file</span>
+            )}
           </div>
           {/* Choose Questions Form */}
           <div className="mt-4">
