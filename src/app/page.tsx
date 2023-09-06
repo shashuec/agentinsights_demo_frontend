@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
 import crossImage from "./assets/cross.svg";
@@ -16,7 +16,12 @@ export default function Home() {
   const fileTypes = ["MP3", "WAV", "AAC"];
   const [file, setFile] = useState<any>(null);
   const [output, setOutput] = useState<any>(null);
-  const { control, setValue, handleSubmit } = useForm({
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       audioFile: "",
       questions: [
@@ -41,6 +46,7 @@ export default function Home() {
   };
 
   const onSubmit: SubmitHandler<any> = async (values) => {
+    console.log("submit");
     if (values && file) {
       const inputResponse = await axios.post(
         "https://jsonplaceholder.typicode.com/posts",
@@ -81,11 +87,11 @@ export default function Home() {
             {fields.map((item: any, index: number) => {
               return (
                 <div
-                  className="grid grid-cols-10 py-4 border-b-[1px] border-gray-300"
+                  className="grid grid-cols-10 py-3 border-b-[1px] border-gray-300"
                   key={item.id}
                 >
-                  <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
-                    <select className="w-full text-sm p-2 px-1 border-[1px] ml-2 border-black">
+                  <div className="col-start-1 col-end-3 w-full flex items-start justify-center">
+                    <select className="w-full text-sm p-2 mt-[0.2rem] px-1 border-[1px] ml-2 border-black">
                       <option>{item.category}</option>
                     </select>
                   </div>
@@ -100,16 +106,27 @@ export default function Home() {
                         },
                       }}
                       render={({ field }) => (
-                        <input
-                          {...field}
-                          placeholder="Question"
-                          className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
-                          type="text"
-                        ></input>
+                        <div className="flex flex-col w-full">
+                          <input
+                            {...field}
+                            placeholder="Question"
+                            className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
+                            type="text"
+                          ></input>
+                          {errors?.questions?.at?.(index)?.question
+                            ?.message && (
+                            <div className="text-sm pt-1 text-red-500">
+                              {
+                                errors?.questions?.at?.(index)?.question
+                                  ?.message
+                              }
+                            </div>
+                          )}
+                        </div>
                       )}
                     />
                   </div>
-                  <div className="w-full h-full flex items-center justify-center cursor-pointer">
+                  <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
                     <Image
                       src={crossImage}
                       width={25}
