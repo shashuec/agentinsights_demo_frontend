@@ -106,14 +106,12 @@ export default function Home() {
                       name={`questions.${index}.category`}
                       control={control}
                       render={({ field }) => (
-                        // <div className="flex flex-col w-full">
                         <select
                           {...field}
                           className="w-full text-sm p-2 mt-[0.2rem] px-1 border-[1px] ml-2 border-black"
                         >
                           <option value={item.category}>{item.category}</option>
                         </select>
-                        // </div>
                       )}
                     />
                   </div>
