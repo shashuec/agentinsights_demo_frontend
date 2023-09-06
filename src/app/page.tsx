@@ -4,21 +4,28 @@ import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
 import crossImage from "./assets/cross.svg";
 import Image from "next/image";
-import { useForm, Controller, useFieldArray } from "react-hook-form";
+import axios from "axios";
+import {
+  useForm,
+  Controller,
+  useFieldArray,
+  SubmitHandler,
+} from "react-hook-form";
 
 export default function Home() {
   const fileTypes = ["MP3", "WAV", "AAC"];
   const [file, setFile] = useState<any>(null);
-  const { control, handleSubmit } = useForm({
+  const [output, setOutput] = useState<any>(null);
+  const { control, setValue, handleSubmit } = useForm({
     defaultValues: {
-      audioFile: null,
+      audioFile: "",
       questions: [
         {
-          key: "Counsellor",
+          category: "Counsellor",
           question: "What is the language?",
         },
         {
-          key: "Manager",
+          category: "Manager",
           question: "Pace of speaking?",
         },
       ],
@@ -31,6 +38,19 @@ export default function Home() {
 
   const handleChange = (file: any) => {
     setFile(URL.createObjectURL(file[0]));
+  };
+
+  const onSubmit: SubmitHandler<any> = async (values) => {
+    if (values && file) {
+      const inputResponse = await axios.post(
+        "https://jsonplaceholder.typicode.com/posts",
+        {
+          audio: file,
+          questions: values.questions,
+        }
+      );
+      setOutput(inputResponse.data);
+    }
   };
 
   return (
@@ -66,7 +86,7 @@ export default function Home() {
                 >
                   <div className="col-start-1 col-end-3 w-full flex items-center justify-center">
                     <select className="w-full text-sm p-2 px-1 border-[1px] ml-2 border-black">
-                      <option>{item.key}</option>
+                      <option>{item.category}</option>
                     </select>
                   </div>
                   <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center">
@@ -79,14 +99,12 @@ export default function Home() {
                           message: "This field cannot be empty",
                         },
                       }}
-                      render={({ field: { onChange, ...field } }) => (
+                      render={({ field }) => (
                         <input
                           {...field}
                           placeholder="Question"
                           className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
                           type="text"
-                          value={item.question}
-                          onChange={(e) => {}}
                         ></input>
                       )}
                     />
@@ -110,7 +128,7 @@ export default function Home() {
               className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
               onClick={() =>
                 append({
-                  key: "Counsellor",
+                  category: "Counsellor",
                   question: "What is the language?",
                 })
               }
@@ -120,7 +138,12 @@ export default function Home() {
           </div>
           {/* Submit Div */}
           <div className="mt-4">
-            <button className="bg-black text-white p-3">Submit</button>
+            <button
+              className="bg-black text-white p-3"
+              onClick={handleSubmit(onSubmit)}
+            >
+              Submit
+            </button>
             <button className="border-[1px] border-solid border-black p-3 ml-3">
               Reset
             </button>
@@ -129,24 +152,28 @@ export default function Home() {
         {/* Output div */}
         <div className="flex-1 p-4">
           <div className="flex items-center text-2xl">Output</div>
-          <div className="pt-4">
-            Transcription
-            <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
-              Transcription
-            </div>
-          </div>
-          <div className="pt-4">
-            Detected Language
-            <div className="pt-2 w-[80%] bg-gray-200 text-sm p-1 font-mono">
-              english
-            </div>
-          </div>
-          <div className="pt-4">
-            Logs
-            <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
-              loading...
-            </div>
-          </div>
+          {output && (
+            <>
+              <div className="pt-4">
+                Transcription
+                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
+                  Transcription
+                </div>
+              </div>
+              <div className="pt-4">
+                Detected Language
+                <div className="pt-2 w-[80%] bg-gray-200 text-sm p-1 font-mono">
+                  english
+                </div>
+              </div>
+              <div className="pt-4">
+                Logs
+                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
+                  loading...
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
