@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
 import crossImage from "./assets/cross.svg";
@@ -11,31 +11,37 @@ import {
   useFieldArray,
   SubmitHandler,
 } from "react-hook-form";
+import { PLACEHOLDER_RESPONSES } from "./constants/constants";
 
 export default function Home() {
   const fileTypes = ["MP3", "WAV", "AAC"];
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
+  const [loadingResponses, setLoadingResponses] = useState<boolean>(false);
+  const [logs, setLogs] = useState<string>("");
+  const loadingResponsesInterval = useRef<any>(null);
   const [output, setOutput] = useState<any>(null);
+  const getAllQuestions = async () => {
+    try {
+      const response = await axios.get(
+        "https://agentinsights-v1-5yfk5r5eya-el.a.run.app/get_questions"
+      );
+      console.log(response);
+      return {
+        questions: response.data.questions,
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const {
     control,
     setValue,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      questions: [
-        {
-          category: "Counsellor",
-          question: "What is the language?",
-        },
-        {
-          category: "Manager",
-          question: "Pace of speaking?",
-        },
-      ],
-    },
+    defaultValues: getAllQuestions,
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -49,19 +55,52 @@ export default function Home() {
   };
 
   const onSubmit: SubmitHandler<any> = async (values) => {
-    console.log("submit", values);
     if (!audioFile) {
       setAudioFileError(true);
       return;
     }
-    const inputResponse = await axios.post(
-      "https://jsonplaceholder.typicode.com/posts",
-      {
-        audio: audioFile,
-        questions: values.questions,
+
+    initiateLoadResponses();
+
+    try {
+      let bodyFormData = new FormData();
+      bodyFormData.append("file", audioFile);
+      bodyFormData.append("direction", "OUTBOUND");
+
+      const response = await axios({
+        method: "post",
+        url: "https://agentinsights-v1-5yfk5r5eya-el.a.run.app/split_audio_file_based",
+        data: bodyFormData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+        },
+      });
+      console.log(response);
+      clearInterval(loadingResponsesInterval.current);
+      setLoadingResponses(false);
+      setOutput(response.data);
+    } catch (err) {
+      console.log(err);
+      clearInterval(loadingResponsesInterval.current);
+      setLoadingResponses(false);
+      setOutput(err);
+    }
+  };
+
+  const initiateLoadResponses = async () => {
+    setLogs(`${PLACEHOLDER_RESPONSES[0]}\n`);
+    setLoadingResponses(true);
+    let i = 1;
+    loadingResponsesInterval.current = setInterval(() => {
+      setLogs(
+        (loadingResponses) => `${loadingResponses}${PLACEHOLDER_RESPONSES[i]}\n`
+      );
+      if (i == 9) {
+        clearInterval(loadingResponsesInterval.current);
       }
-    );
-    setOutput(inputResponse.data);
+      i++;
+    }, 10000);
   };
 
   return (
@@ -117,7 +156,7 @@ export default function Home() {
                   </div>
                   <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center">
                     <Controller
-                      name={`questions.${index}.question`}
+                      name={`questions.${index}.question_template`}
                       control={control}
                       rules={{
                         required: {
@@ -132,13 +171,14 @@ export default function Home() {
                             placeholder="Question"
                             className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
                             type="text"
+                            disabled
                           ></input>
-                          {errors?.questions?.at?.(index)?.question
-                            ?.message && (
+                          {(errors?.questions as any)?.at?.(index)
+                            ?.question_template?.message && (
                             <div className="text-sm pt-1 text-red-500">
                               {
-                                errors?.questions?.at?.(index)?.question
-                                  ?.message
+                                (errors?.questions as any)?.at?.(index)
+                                  ?.question_template?.message
                               }
                             </div>
                           )}
@@ -187,10 +227,10 @@ export default function Home() {
           </div>
         </div>
         {/* Output div */}
-        <div className="flex-1 p-4">
-          <div className="flex items-center text-2xl">Output</div>
-          {output && (
-            <>
+        {output && (
+          <>
+            <div className="flex-1 p-4">
+              <div className="flex items-center text-2xl">Output</div>
               <div className="pt-4">
                 Transcription
                 <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
@@ -203,15 +243,31 @@ export default function Home() {
                   english
                 </div>
               </div>
+              {logs && (
+                <div className="pt-4">
+                  Logs
+                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
+                    {logs}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+        {/* Output div */}
+        {loadingResponses && (
+          <>
+            <div className="flex-1 p-4">
+              <div className="flex items-center text-2xl">Output</div>
               <div className="pt-4">
                 Logs
-                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
-                  loading...
+                <div className="pt-2 font-semibold whitespace-pre-line leading-5 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-xs p-1 font-mono">
+                  {logs}
                 </div>
               </div>
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
