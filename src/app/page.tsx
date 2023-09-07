@@ -22,6 +22,7 @@ export default function Home() {
   const [logs, setLogs] = useState<string>("");
   const loadingResponsesInterval = useRef<any>(null);
   const [output, setOutput] = useState<any>(null);
+
   const getAllQuestions = async () => {
     try {
       const response = await axios.get(
