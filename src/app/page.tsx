@@ -65,7 +65,7 @@ export default function Home() {
 
     try {
       let bodyFormData = new FormData();
-      bodyFormData.append("file", audioFile);
+      bodyFormData.append("file", audioFile[0]);
       bodyFormData.append("direction", "OUTBOUND");
 
       const response = await axios({
@@ -77,10 +77,15 @@ export default function Home() {
           "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
         },
       });
-      console.log(response);
       clearInterval(loadingResponsesInterval.current);
       setLoadingResponses(false);
-      setOutput(response.data);
+      let outputContent: any = {};
+      outputContent.processed_data = response.data.processed_data;
+      outputContent.transcript = "";
+      response.data.source_transcript.forEach((transcript: any) => {
+        outputContent.transcript += `${transcript.data}\n`;
+      });
+      setOutput(outputContent);
     } catch (err) {
       console.log(err);
       clearInterval(loadingResponsesInterval.current);
@@ -234,20 +239,14 @@ export default function Home() {
               <div className="flex items-center text-2xl">Output</div>
               <div className="pt-4">
                 Transcription
-                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
-                  Transcription
-                </div>
-              </div>
-              <div className="pt-4">
-                Detected Language
-                <div className="pt-2 w-[80%] bg-gray-200 text-sm p-1 font-mono">
-                  english
+                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line">
+                  {output.transcript}
                 </div>
               </div>
               {logs && (
                 <div className="pt-4">
                   Logs
-                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono">
+                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line">
                     {logs}
                   </div>
                 </div>
