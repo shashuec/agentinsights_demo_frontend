@@ -22,6 +22,19 @@ export default function Home() {
   const [logs, setLogs] = useState<string>("");
   const loadingResponsesInterval = useRef<any>(null);
   const [output, setOutput] = useState<any>(null);
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    if (window.innerWidth < 768) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const getAllQuestions = async () => {
     try {
@@ -108,6 +121,10 @@ export default function Home() {
       i++;
     }, 10000);
   };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [output, logs]);
 
   return (
     <>
@@ -245,15 +262,16 @@ export default function Home() {
               <div className="flex items-center text-2xl">Output</div>
               <div className="pt-4">
                 Transcription
-                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line">
+                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
                   {output.transcript}
                 </div>
               </div>
               {logs && (
                 <div className="pt-4">
                   Logs
-                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line">
+                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
                     {logs}
+                    <div ref={messagesEndRef} />
                   </div>
                 </div>
               )}
@@ -267,8 +285,9 @@ export default function Home() {
               <div className="flex items-center text-2xl">Output</div>
               <div className="pt-4">
                 Logs
-                <div className="pt-2 font-semibold whitespace-pre-line leading-5 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-xs p-1 font-mono">
+                <div className="pt-2 font-semibold whitespace-pre-line leading-5 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-xs p-1 font-mono max-md:w-full">
                   {logs}
+                  <div ref={messagesEndRef} />
                 </div>
               </div>
             </div>
