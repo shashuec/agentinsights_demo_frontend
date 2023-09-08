@@ -143,24 +143,24 @@ export default function Home() {
             {fields.map((item: any, index: number) => {
               return (
                 <div
-                  className="grid grid-cols-10 py-3 border-b-[1px] border-gray-300"
+                  className="grid grid-cols-9 py-3 border-b-[1px] border-gray-300 max-md:flex max-md:flex-col"
                   key={item.id}
                 >
-                  <div className="col-start-1 col-end-3 w-full flex items-start justify-center">
+                  <div className="col-start-1 col-end-3 w-full flex items-start justify-center max-md: mb-2 max-md:px-1">
                     <Controller
                       name={`questions.${index}.category`}
                       control={control}
                       render={({ field }) => (
                         <select
                           {...field}
-                          className="w-full text-sm p-2 mt-[0.2rem] px-1 border-[1px] ml-2 border-black"
+                          className="w-full text-sm p-2 mt-[0.2rem] px-1 border-[1px] ml-2 border-black max-md:font-semibold max-md:ml-0"
                         >
                           <option value={item.category}>{item.category}</option>
                         </select>
                       )}
                     />
                   </div>
-                  <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center">
+                  <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center max-md:px-1">
                     <Controller
                       name={`questions.${index}.question_template`}
                       control={control}
@@ -172,13 +172,19 @@ export default function Home() {
                       }}
                       render={({ field }) => (
                         <div className="flex flex-col w-full">
-                          <input
+                          <div
+                            placeholder="Question"
+                            className="text-black p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                          >
+                            {field.value}
+                          </div>
+                          {/* <input
                             {...field}
                             placeholder="Question"
                             className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
                             type="text"
                             disabled
-                          ></input>
+                          ></input> */}
                           {(errors?.questions as any)?.at?.(index)
                             ?.question_template?.message && (
                             <div className="text-sm pt-1 text-red-500">
@@ -192,7 +198,7 @@ export default function Home() {
                       )}
                     />
                   </div>
-                  <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
+                  {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
                     <Image
                       src={crossImage}
                       width={25}
@@ -203,11 +209,11 @@ export default function Home() {
                         remove(index);
                       }}
                     />
-                  </div>
+                  </div> */}
                 </div>
               );
             })}
-            <div
+            {/* <div
               className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
               onClick={() =>
                 append({
@@ -217,10 +223,10 @@ export default function Home() {
               }
             >
               + Add Question
-            </div>
+            </div> */}
           </div>
           {/* Submit Div */}
-          <div className="mt-4">
+          <div className="mt-4 max-md:w-full max-md:flex max-md:justify-center">
             <button
               className="bg-black text-white p-3"
               onClick={handleSubmit(onSubmit)}
