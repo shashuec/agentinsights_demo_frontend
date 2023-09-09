@@ -18,7 +18,6 @@ export default function Home() {
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
-  const [loadingResponses, setLoadingResponses] = useState<boolean>(false);
   const [logs, setLogs] = useState<string>("");
   const loadingResponsesInterval = useRef<any>(null);
   const [output, setOutput] = useState<any>(null);
@@ -91,7 +90,6 @@ export default function Home() {
         },
       });
       clearInterval(loadingResponsesInterval.current);
-      setLoadingResponses(false);
       let outputContent: any = {};
       outputContent.processed_data = response.data.processed_data;
       outputContent.transcript = "";
@@ -102,14 +100,13 @@ export default function Home() {
     } catch (err) {
       console.log(err);
       clearInterval(loadingResponsesInterval.current);
-      setLoadingResponses(false);
       setOutput(err);
     }
   };
 
   const initiateLoadResponses = async () => {
+    setOutput("");
     setLogs(`${PLACEHOLDER_RESPONSES[0]}\n`);
-    setLoadingResponses(true);
     let i = 1;
     loadingResponsesInterval.current = setInterval(() => {
       setLogs(
@@ -256,16 +253,18 @@ export default function Home() {
           </div>
         </div>
         {/* Output div */}
-        {output && (
+        {(output || logs) && (
           <>
             <div className="flex-1 p-4">
               <div className="flex items-center text-2xl">Output</div>
-              <div className="pt-4">
-                Transcription
-                <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
-                  {output.transcript}
+              {output && (
+                <div className="pt-4">
+                  Transcription
+                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
+                    {output.transcript}
+                  </div>
                 </div>
-              </div>
+              )}
               {logs && (
                 <div className="pt-4">
                   Logs
@@ -275,21 +274,6 @@ export default function Home() {
                   </div>
                 </div>
               )}
-            </div>
-          </>
-        )}
-        {/* Output div */}
-        {loadingResponses && (
-          <>
-            <div className="flex-1 p-4">
-              <div className="flex items-center text-2xl">Output</div>
-              <div className="pt-4">
-                Logs
-                <div className="pt-2 font-semibold whitespace-pre-line leading-5 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-xs p-1 font-mono max-md:w-full">
-                  {logs}
-                  <div ref={messagesEndRef} />
-                </div>
-              </div>
             </div>
           </>
         )}
