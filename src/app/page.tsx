@@ -20,7 +20,7 @@ export default function Home() {
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
   const [logs, setLogs] = useState<string>("");
   const loadingResponsesInterval = useRef<any>(null);
-  const [output, setOutput] = useState<any>(null);
+  const [output, setOutput] = useState<any>([]);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -90,13 +90,18 @@ export default function Home() {
         },
       });
       clearInterval(loadingResponsesInterval.current);
-      let outputContent: any = {};
-      outputContent.processed_data = response.data.processed_data;
-      outputContent.transcript = "";
-      response.data.source_transcript.forEach((transcript: any) => {
-        outputContent.transcript += `${transcript.data}\n`;
-      });
+      let outputContent: any = [];
+      let outputLen = response.data.source_transcript.length;
+      for(let i=0;i<outputLen;i++){
+        let chunk = {
+          transcript: response.data.source_transcript[i].data,
+          answers: response.data.processed_data[`chunk${i+1}`]
+        };
+        outputContent.push(chunk);
+      }
+      setLogs("")
       setOutput(outputContent);
+      console.log(outputContent)
     } catch (err) {
       console.log(err);
       clearInterval(loadingResponsesInterval.current);
@@ -105,7 +110,7 @@ export default function Home() {
   };
 
   const initiateLoadResponses = async () => {
-    setOutput("");
+    setOutput([]);
     setLogs(`${PLACEHOLDER_RESPONSES[0]}\n`);
     let i = 1;
     loadingResponsesInterval.current = setInterval(() => {
@@ -253,19 +258,33 @@ export default function Home() {
           </div>
         </div>
         {/* Output div */}
-        {(output || logs) && (
+        {output && output.length ? 
+        <>
+        <div className="flex-1 p-4" >
+          <div className="flex items-center text-2xl">Output</div>
+          {output.map((chunk:any, idx:number) =>
+                <div className="pt-4" key={idx}>
+                  Transcription
+                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
+                    {chunk.transcript}
+                  </div>
+                    {
+                      chunk.answers && chunk.answers.map((answer:any)=>(
+                        <div className="p-1 pt-4 mt-2 bg-gray-200 w-[80%] max-md:w-full" key={answer.question}>
+                          <div><span className="font-bold">Question: </span>{answer.question}</div>
+                          <div><span className="font-bold">Answer:</span>{answer.answer}</div>
+                          <div><span className="font-bold">Reason:</span>{answer.reason}</div>
+                        </div>)
+                      )
+                    }
+                </div>
+          )}
+          </div>
+        </> : <></>}
+        {logs && (
           <>
             <div className="flex-1 p-4">
               <div className="flex items-center text-2xl">Output</div>
-              {output && (
-                <div className="pt-4">
-                  Transcription
-                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
-                    {output.transcript}
-                  </div>
-                </div>
-              )}
-              {logs && (
                 <div className="pt-4">
                   Logs
                   <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
@@ -273,7 +292,6 @@ export default function Home() {
                     <div ref={messagesEndRef} />
                   </div>
                 </div>
-              )}
             </div>
           </>
         )}
