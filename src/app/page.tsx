@@ -2,8 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
-import crossImage from "./assets/cross.svg";
-import Image from "next/image";
+import { FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
 import {
   useForm,
@@ -12,6 +11,12 @@ import {
   SubmitHandler,
 } from "react-hook-form";
 import { PLACEHOLDER_RESPONSES } from "./constants/constants";
+// import SampleResponse from "./constants/sample.json";
+
+import { ThreeDots } from "react-loader-spinner";
+import Header from "./components/Header";
+
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
 export default function Home() {
   const fileTypes = ["MP3", "WAV", "AAC"];
@@ -22,6 +27,9 @@ export default function Home() {
   const loadingResponsesInterval = useRef<any>(null);
   const [output, setOutput] = useState<any>([]);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+  const [currentLog, setCurrentLog] = useState(-1);
+  const [startLogging, setStartLogging] = useState(false);
 
   const scrollToBottom = () => {
     if (window.innerWidth < 768) {
@@ -67,13 +75,32 @@ export default function Home() {
     setAudioFileUrl(URL.createObjectURL(audioFile[0]));
   };
 
+  useEffect(() => {
+    if (!startLogging) return; // If logging hasn't started, don't do anything
+
+    if (currentLog < PLACEHOLDER_RESPONSES.length) {
+      // Check to prevent index out of bounds
+      const timer = setTimeout(() => {
+        setCurrentLog((prev) => prev + 1);
+      }, 10000); // Load a new log every 10 seconds
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentLog, startLogging]);
+
   const onSubmit: SubmitHandler<any> = async (values) => {
     if (!audioFile) {
       setAudioFileError(true);
       return;
     }
 
-    initiateLoadResponses();
+    setStartLogging(true);
+    setCurrentLog(0);
+    // initiateLoadResponses();
 
     try {
       let bodyFormData = new FormData();
@@ -89,40 +116,49 @@ export default function Home() {
           "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
         },
       });
+
+      //For testing
+      // const response: any = SampleResponse;
+
+      setStartLogging(false);
+      setCurrentLog(-1);
       clearInterval(loadingResponsesInterval.current);
       let outputContent: any = [];
       let outputLen = response.data.source_transcript.length;
-      for(let i=0;i<outputLen;i++){
+      for (let i = 0; i < outputLen; i++) {
         let chunk = {
           transcript: response.data.source_transcript[i].data,
-          answers: response.data.processed_data[`chunk${i+1}`]
+          answers: response.data.processed_data[`chunk${i + 1}`],
         };
         outputContent.push(chunk);
       }
-      setLogs("")
+      setLogs("");
+
       setOutput(outputContent);
-      console.log(outputContent)
+      console.log(outputContent);
     } catch (err) {
       console.log(err);
       clearInterval(loadingResponsesInterval.current);
       setOutput(err);
+      setStartLogging(false);
+      setCurrentLog(-1);
     }
   };
 
-  const initiateLoadResponses = async () => {
-    setOutput([]);
-    setLogs(`${PLACEHOLDER_RESPONSES[0]}\n`);
-    let i = 1;
-    loadingResponsesInterval.current = setInterval(() => {
-      setLogs(
-        (loadingResponses) => `${loadingResponses}${PLACEHOLDER_RESPONSES[i]}\n`
-      );
-      if (i == 9) {
-        clearInterval(loadingResponsesInterval.current);
-      }
-      i++;
-    }, 10000);
-  };
+  // const initiateLoadResponses = async () => {
+  //   setOutput([]);
+  //   setLogs(`${PLACEHOLDER_RESPONSES[0]}\n`);
+  //   let i = 1;
+  //   loadingResponsesInterval.current = setInterval(() => {
+  //     setLogs(
+  //       (loadingResponses) => `${loadingResponses}${PLACEHOLDER_RESPONSES[i]}\n`
+  //     );
+  //     if (i == 9) {
+  //       clearInterval(loadingResponsesInterval.current);
+  //     }
+  //     i++;
+  //   }, 10000);
+  // };
 
   useEffect(() => {
     scrollToBottom();
@@ -130,34 +166,52 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex flex-row w-full max-md:flex-col">
+      <Header />
+      <div className="p-4 text-2xl italic font-bold text-center">
+        {
+          '"AI-Powered Analytics and Training for Enhanced Agent-Customer Interactions"'
+        }
+      </div>
+      <div className="px-4 flex flex-row w-full max-md:flex-col">
         {/* Input div */}
         <div className="flex-1 p-4">
           <div className="flex items-center text-2xl">Input</div>
           {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
           {/* Choose Audio */}
           <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono mb-3">
+            <div className=" rounded-md  w-fit p-2 bg-gray-200 text-sm  font-mono mb-3">
               Audio
             </div>
-            <FileUploader
-              multiple={true}
-              handleChange={handleChange}
-              name="audioFileUrl"
-              types={fileTypes}
-            />
+            <div className="flex max-md:flex-col  gap-4">
+              <div className="">
+                <FileUploader
+                  multiple={true}
+                  handleChange={handleChange}
+                  name="audioFileUrl"
+                  types={fileTypes}
+                />
+              </div>
+
+              <button
+                className="bg-black text-white py-3 px-6 shadow-md rounded-md"
+                onClick={handleSubmit(onSubmit)}
+              >
+                Submit
+              </button>
+            </div>
+
             {audioFileError ? (
               <div className="text-sm pt-1 text-red-500">
                 Please upload an audio file!
               </div>
             ) : (
-              <span className="text-gray-500">Audio file</span>
+              <span className="text-gray-500 flex pt-2">Audio file</span>
             )}
           </div>
           {/* Choose Questions Form */}
           <div className="mt-4">
             <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
-              questions
+              Questions
             </div>
             {fields.map((item: any, index: number) => {
               return (
@@ -258,40 +312,106 @@ export default function Home() {
           </div>
         </div>
         {/* Output div */}
-        {output && output.length ? 
-        <>
-        <div className="flex-1 p-4" >
-          <div className="flex items-center text-2xl">Output</div>
-          {output.map((chunk:any, idx:number) =>
-                <div className="pt-4" key={idx}>
-                  Transcription
-                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
-                    {chunk.transcript}
-                  </div>
-                    {
-                      chunk.answers && chunk.answers.map((answer:any)=>(
-                        <div className="p-1 pt-4 mt-2 bg-gray-200 w-[80%] max-md:w-full" key={answer.question}>
-                          <div><span className="font-bold">Question: </span>{answer.question}</div>
-                          <div><span className="font-bold">Answer:</span>{answer.answer}</div>
-                          <div><span className="font-bold">Reason:</span>{answer.reason}</div>
-                        </div>)
-                      )
-                    }
-                </div>
-          )}
-          </div>
-        </> : <></>}
-        {logs && (
+        {output && output.length ? (
+          <>
+            <Box
+              p={2}
+              // bg="white"
+              className="w-full md:w-[50%] mb-4"
+              borderRadius="lg"
+              borderWidth="1px"
+            >
+              <div className="text-2xl text-center border-b mb-2">Output</div>
+              <Tabs variant="soft-rounded">
+                <TabList mb="1em">
+                  <Tab width="50%">Detailed Summary</Tab>
+                  <Tab width="50%">Transcript</Tab>
+                  <Tab width="50%">AI Feedback</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    {output.map(
+                      (chunk: any, idx: number) =>
+                        chunk.answers &&
+                        chunk.answers.map((answer: any) => (
+                          <div
+                            className="p-1 shadow-md rounded-md pt-4 mt-2 bg-gray-200  max-md:w-full"
+                            key={answer.question}
+                          >
+                            <div>
+                              <span className="font-bold">Question: </span>
+                              {answer.question}
+                            </div>
+                            <div>
+                              <span className="font-bold">Answer:</span>
+                              {answer.answer}
+                            </div>
+                            <div>
+                              <span className="font-bold">Reason:</span>
+                              {answer.reason}
+                            </div>
+                          </div>
+                        ))
+                    )}
+                  </TabPanel>
+                  <TabPanel>
+                    {output.map((chunk: any, idx: number) => (
+                      <div
+                        className="p-2 shadow-md rounded-md mt-2 bg-gray-200"
+                        key={idx}
+                      >
+                        <div>{chunk.transcript}</div>
+                      </div>
+                    ))}
+                  </TabPanel>
+                  <TabPanel>AI FeedBack</TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
+          </>
+        ) : (
+          <></>
+        )}
+
+        {startLogging && (
           <>
             <div className="flex-1 p-4">
               <div className="flex items-center text-2xl">Output</div>
-                <div className="pt-4">
-                  Logs
-                  <div className="pt-2 max-h-[200px] overflow-y-auto w-[80%] bg-gray-200 text-sm p-1 font-mono whitespace-pre-line max-md:w-full">
-                    {logs}
-                    <div ref={messagesEndRef} />
-                  </div>
+              <div className="pt-2">
+                <div className="p-2 text-xl font-bold">Logs</div>
+                <div className="p-2 rounded-xl shadow-md max-h-[200px] overflow-y-auto  bg-gray-200 text-sm font-mono whitespace-pre-line max-md:w-full">
+                  {PLACEHOLDER_RESPONSES.slice(0, currentLog + 1).map(
+                    (log, index) => (
+                      <div key={index} className="grid grid-cols-10 gap-4 p-2">
+                        <span className="col-span-8">{log}</span>
+                        <span className="col-span-2 flex justify-center mx-auto align-middle">
+                          {index < currentLog ? (
+                            <FaCheckCircle
+                              color="green"
+                              fontSize="1.5rem"
+                              className="my-auto"
+                            />
+                          ) : (
+                            <span className="flex  justify-center">
+                              <ThreeDots
+                                height="10"
+                                width="50"
+                                radius="9"
+                                color="#000"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                                wrapperStyle={{}}
+                                wrapperClass="flex  justify-center"
+                              />
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    )
+                  )}
+                  <div ref={messagesEndRef} />
                 </div>
+              </div>
             </div>
           </>
         )}
