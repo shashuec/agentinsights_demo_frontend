@@ -11,7 +11,7 @@ import {
   SubmitHandler,
 } from "react-hook-form";
 import { PLACEHOLDER_RESPONSES } from "./constants/constants";
-import SampleResponse from "./constants/sample.json";
+// import SampleResponse from "./constants/sample.json";
 
 import { ThreeDots } from "react-loader-spinner";
 import Header from "./components/Header";
