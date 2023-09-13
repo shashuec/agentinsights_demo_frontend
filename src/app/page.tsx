@@ -194,7 +194,7 @@ export default function Home() {
 
               <button
                 className="bg-black text-white py-3 px-6 shadow-md rounded-md"
-                onClick={handleSubmit(onSubmit)}
+                onClick={onSubmit}
               >
                 Submit
               </button>
