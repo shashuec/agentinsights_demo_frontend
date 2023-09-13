@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Width of the entire scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Width of the horizontal scrollbar */
+::-webkit-scrollbar {
+  height: 12px;
+}
+
+/* Handle of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 16px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Background of the scrollbar except handle */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 16px;
+}
+
+/* Add a shadow when scrollbar is pressed */
+::-webkit-scrollbar-thumb:active {
+  background: #444;
+}
