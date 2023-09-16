@@ -52,15 +52,17 @@ export default function Home() {
     } else {
       current.set("uuid", uuidValue);
     }
-
     const search = current.toString();
-    // or const query = `${'?'.repeat(search.length && 1)}${search}`;
     const query = search ? `?${search}` : "";
 
-    const path = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-
-    router.push(`${path}${query}`);
+    router.push(`${pathname}${query}`);
   };
+
+  useEffect(() => {
+    if (searchParams.has("uuid")) {
+      preComputedOutputHandler(searchParams.get("uuid"));
+    }
+  }, []);
 
   const scrollToBottom = () => {
     if (window.innerWidth < 768) {
@@ -192,10 +194,10 @@ export default function Home() {
   //   }
   // };
 
-  const exampleOutputHandler = async () => {
+  const preComputedOutputHandler = async (uuidVal: any) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/get_compile_transcript_and_processed_data?uuid=18c24669-4b17-463a-b835-5084ab3008d9`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/get_compile_transcript_and_processed_data?uuid=${uuidVal}`
       );
 
       setStartLogging(false);
@@ -207,7 +209,7 @@ export default function Home() {
     } catch (err: any) {
       console.log(err);
       toast({
-        title: err.response.data.error,
+        title: "UUID not correct or reselect the file and submit again",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -516,7 +518,9 @@ export default function Home() {
           Example
         </div>
         <div
-          onClick={exampleOutputHandler}
+          onClick={() =>
+            preComputedOutputHandler("18c24669-4b17-463a-b835-5084ab3008d9")
+          }
           className="flex aspect-square p-2 w-fit shadow-md rounded-md bg-gray-500 hover:scale-105 hover:bg-gray-400"
         >
           <Image src={exampleAudio} alt="" width="200" />
