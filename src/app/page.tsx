@@ -3,6 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
 import { FaCheckCircle } from "react-icons/fa";
+import { Spinner, useToast } from "@chakra-ui/react";
+import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import exampleAudio from "./assets/example_audio.png";
+
 import axios from "axios";
 import {
   useForm,
@@ -19,17 +24,45 @@ import Header from "./components/Header";
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
 export default function Home() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const fileTypes = ["MP3", "WAV", "AAC"];
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
   const [logs, setLogs] = useState<string>("");
   const loadingResponsesInterval = useRef<any>(null);
-  const [output, setOutput] = useState<any>([]);
+  const [output, setOutput] = useState<any>();
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const [currentLog, setCurrentLog] = useState(-1);
   const [startLogging, setStartLogging] = useState(false);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+
+  const toast = useToast();
+
+  const setUUIDQueryParam = (uuidValue: any) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    console.log(current);
+
+    if (!uuidValue) {
+      current.delete("uuid");
+    } else {
+      current.set("uuid", uuidValue);
+    }
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+
+    router.push(`${pathname}${query}`);
+  };
+
+  useEffect(() => {
+    if (searchParams.has("uuid")) {
+      preComputedOutputHandler(searchParams.get("uuid"));
+    }
+  }, []);
 
   const scrollToBottom = () => {
     if (window.innerWidth < 768) {
@@ -45,15 +78,18 @@ export default function Home() {
 
   const getAllQuestions = async () => {
     try {
+      setLoadingQuestions(true);
       const response = await axios.get(
-        "https://agentinsights-v1-5yfk5r5eya-el.a.run.app/get_questions"
+        `${process.env.NEXT_PUBLIC_BASE_URL}/get_questions`
       );
       console.log(response);
+      setLoadingQuestions(false);
       return {
         questions: response.data.questions,
       };
     } catch (err) {
       console.log(err);
+      setLoadingQuestions(false);
     }
   };
   const {
@@ -100,7 +136,6 @@ export default function Home() {
 
     setStartLogging(true);
     setCurrentLog(0);
-    // initiateLoadResponses();
 
     try {
       let bodyFormData = new FormData();
@@ -109,7 +144,7 @@ export default function Home() {
 
       const response = await axios({
         method: "post",
-        url: "https://agentinsights-v1-5yfk5r5eya-el.a.run.app/split_audio_file_based",
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/split_audio_file_based`,
         data: bodyFormData,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -120,45 +155,76 @@ export default function Home() {
       //For testing
       // const response: any = SampleResponse;
 
+      console.log(response.data);
+
       setStartLogging(false);
       setCurrentLog(-1);
       clearInterval(loadingResponsesInterval.current);
-      let outputContent: any = [];
-      let outputLen = response.data.source_transcript.length;
-      for (let i = 0; i < outputLen; i++) {
-        let chunk = {
-          transcript: response.data.source_transcript[i].data,
-          answers: response.data.processed_data[`chunk${i + 1}`],
-        };
-        outputContent.push(chunk);
-      }
       setLogs("");
-
-      setOutput(outputContent);
-      console.log(outputContent);
-    } catch (err) {
+      setUUIDQueryParam(response.data.uuid);
+      setOutput(response.data);
+    } catch (err: any) {
       console.log(err);
       clearInterval(loadingResponsesInterval.current);
-      setOutput(err);
+      toast({
+        title: err.response.data.error,
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
       setStartLogging(false);
       setCurrentLog(-1);
     }
   };
 
-  // const initiateLoadResponses = async () => {
-  //   setOutput([]);
-  //   setLogs(`${PLACEHOLDER_RESPONSES[0]}\n`);
-  //   let i = 1;
-  //   loadingResponsesInterval.current = setInterval(() => {
-  //     setLogs(
-  //       (loadingResponses) => `${loadingResponses}${PLACEHOLDER_RESPONSES[i]}\n`
-  //     );
-  //     if (i == 9) {
-  //       clearInterval(loadingResponsesInterval.current);
-  //     }
-  //     i++;
-  //   }, 10000);
+  // const fetchExampleAudio = async (url: any) => {
+  //   try {
+  //     console.log("working");
+
+  //     const response = await axios.get(url);
+  //     console.log(response);
+
+  //     const blob = new Blob([response.data], { type: "audio/wav" });
+  //     const objectURL = URL.createObjectURL(blob);
+
+  //     setAudioFileUrl(objectURL);
+  //   } catch (error) {
+  //     console.error("Failed to fetch audio:", error);
+  //   }
   // };
+
+  const preComputedOutputHandler = async (uuidVal: any) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/get_compile_transcript_and_processed_data?uuid=${uuidVal}`
+      );
+
+      setStartLogging(false);
+      setCurrentLog(-1);
+      setLogs("");
+      setUUIDQueryParam(response.data.uuid);
+      setOutput(response.data);
+      // fetchExampleAudio(response.data.audio_url);
+    } catch (err: any) {
+      console.log(err);
+      toast({
+        title: "UUID not correct or reselect the file and submit again",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setStartLogging(false);
+      setCurrentLog(-1);
+    }
+  };
+
+  const getBackgroundColor = (score: number) => {
+    if (score >= 7 && score <= 10) return "bg-green-500";
+    else if (score >= 5 && score <= 6) return "bg-yellow-500";
+    else return "bg-red-500";
+  };
 
   useEffect(() => {
     scrollToBottom();
@@ -174,7 +240,7 @@ export default function Home() {
       </div>
       <div className="px-4 flex flex-row w-full max-md:flex-col">
         {/* Input div */}
-        <div className="flex-1 p-4">
+        <div className="flex-1 p-4 relative">
           <div className="flex items-center text-2xl">Input</div>
           {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
           {/* Choose Audio */}
@@ -182,23 +248,23 @@ export default function Home() {
             <div className=" rounded-md  w-fit p-2 bg-gray-200 text-sm  font-mono mb-3">
               Audio
             </div>
-            <div className="flex max-md:flex-col  gap-4">
-              <div className="">
-                <FileUploader
-                  multiple={true}
-                  handleChange={handleChange}
-                  name="audioFileUrl"
-                  types={fileTypes}
-                />
-              </div>
+            {/* <div className="flex max-md:flex-col  gap-4"> */}
+            <div className="">
+              <FileUploader
+                multiple={true}
+                handleChange={handleChange}
+                name="audioFileUrl"
+                types={fileTypes}
+              />
+            </div>
 
-              <button
+            {/* <button
                 className="bg-black text-white py-3 px-6 shadow-md rounded-md"
                 onClick={onSubmit}
               >
                 Submit
-              </button>
-            </div>
+              </button> */}
+            {/* </div> */}
 
             {audioFileError ? (
               <div className="text-sm pt-1 text-red-500">
@@ -210,68 +276,83 @@ export default function Home() {
           </div>
           {/* Choose Questions Form */}
           <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 text-sm font-mono">
+            <div className="w-fit p-2 bg-gray-200 shadow-md rounded-md text-sm font-mono">
               Questions
             </div>
-            {fields.map((item: any, index: number) => {
-              return (
-                <div
-                  className="grid grid-cols-9 py-3 border-b-[1px] border-gray-300 max-md:flex max-md:flex-col"
-                  key={item.id}
-                >
-                  <div className="col-start-1 col-end-3 w-full flex items-start justify-center max-md: mb-2 max-md:px-1">
-                    <Controller
-                      name={`questions.${index}.category`}
-                      control={control}
-                      render={({ field }) => (
-                        <select
-                          {...field}
-                          className="w-full text-sm p-2 mt-[0.2rem] px-1 border-[1px] ml-2 border-black max-md:font-semibold max-md:ml-0"
-                        >
-                          <option value={item.category}>{item.category}</option>
-                        </select>
-                      )}
-                    />
-                  </div>
-                  <div className="col-start-3 col-end-10 pl-3 flex items-center justify-center max-md:px-1">
-                    <Controller
-                      name={`questions.${index}.question_template`}
-                      control={control}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: "This field cannot be empty",
-                        },
-                      }}
-                      render={({ field }) => (
-                        <div className="flex flex-col w-full">
-                          <div
-                            placeholder="Question"
-                            className="text-black p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
-                          >
-                            {field.value}
-                          </div>
-                          {/* <input
+            {loadingQuestions ? (
+              <div
+                className={` ${
+                  output || startLogging ? "w-full" : "w-[50%]"
+                }  text-center p-4 max-md:w-full flex align-center justify-center gap-2`}
+              >
+                <div>Loading Questions</div> <Spinner color="blue.500" />
+              </div>
+            ) : (
+              <>
+                {fields.map((item: any, index: number) => {
+                  return (
+                    <div
+                      className={` ${
+                        output || startLogging ? "w-full" : "w-[50%]"
+                      }  max-md:w-full py-3 border-b-[1px] border-gray-300 flex flex-col`}
+                      key={item.id}
+                    >
+                      <div className="col-start-1 col-end-3   max-md: mb-2 max-md:px-1">
+                        <Controller
+                          name={`questions.${index}.category`}
+                          control={control}
+                          render={({ field }) => (
+                            <div
+                              {...field}
+                              className="w-full text-lg p-2 mt-[0.2rem] px-1  ml-2 border-black max-md:ml-0"
+                            >
+                              <div className="font-bold">{item.category}</div>
+                              <div className="text-sm text-gray-600">
+                                {item.sub_category}
+                              </div>
+                            </div>
+                          )}
+                        />
+                      </div>
+                      <div className=" pl-3 flex  max-md:px-1">
+                        <Controller
+                          name={`questions.${index}.question_template`}
+                          control={control}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "This field cannot be empty",
+                            },
+                          }}
+                          render={({ field }) => (
+                            <div className="flex flex-col">
+                              <div
+                                placeholder="Question"
+                                className="text-black shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                              >
+                                {field.value}
+                              </div>
+                              {/* <input
                             {...field}
                             placeholder="Question"
                             className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
                             type="text"
                             disabled
                           ></input> */}
-                          {(errors?.questions as any)?.at?.(index)
-                            ?.question_template?.message && (
-                            <div className="text-sm pt-1 text-red-500">
-                              {
-                                (errors?.questions as any)?.at?.(index)
-                                  ?.question_template?.message
-                              }
+                              {(errors?.questions as any)?.at?.(index)
+                                ?.question_template?.message && (
+                                <div className="text-sm pt-1 text-red-500">
+                                  {
+                                    (errors?.questions as any)?.at?.(index)
+                                      ?.question_template?.message
+                                  }
+                                </div>
+                              )}
                             </div>
                           )}
-                        </div>
-                      )}
-                    />
-                  </div>
-                  {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
+                        />
+                      </div>
+                      {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
                     <Image
                       src={crossImage}
                       width={25}
@@ -283,9 +364,12 @@ export default function Home() {
                       }}
                     />
                   </div> */}
-                </div>
-              );
-            })}
+                    </div>
+                  );
+                })}
+              </>
+            )}
+
             {/* <div
               className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
               onClick={() =>
@@ -299,25 +383,29 @@ export default function Home() {
             </div> */}
           </div>
           {/* Submit Div */}
-          <div className="mt-4 max-md:w-full max-md:flex max-md:justify-center">
+          <div
+            className={`sticky bottom-0 bg-white p-2 mt-4 ${
+              output || startLogging ? "w-full" : "w-[50%]"
+            } max-md:w-full max-md:flex max-md:justify-center`}
+          >
             <button
-              className="bg-black text-white p-3"
+              className="bg-black text-white p-3 shadow-md rounded-md"
               onClick={handleSubmit(onSubmit)}
             >
               Submit
             </button>
-            <button className="border-[1px] border-solid border-black p-3 ml-3">
+            <button className="border-[1px] border-solid border-black p-3 ml-3 shadow-md rounded-md">
               Reset
             </button>
           </div>
         </div>
         {/* Output div */}
-        {output && output.length ? (
+        {output ? (
           <>
             <Box
               p={2}
               // bg="white"
-              className="w-full md:w-[50%] mb-4"
+              className="w-full flex-1 md:w-[50%] mb-4"
               borderRadius="lg"
               borderWidth="1px"
             >
@@ -325,46 +413,55 @@ export default function Home() {
               <Tabs variant="soft-rounded">
                 <TabList mb="1em">
                   <Tab width="50%">Detailed Summary</Tab>
-                  <Tab width="50%">Transcript</Tab>
                   <Tab width="50%">AI Feedback</Tab>
+                  <Tab width="50%">Transcript</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    {output.map(
-                      (chunk: any, idx: number) =>
-                        chunk.answers &&
-                        chunk.answers.map((answer: any) => (
-                          <div
-                            className="p-1 shadow-md rounded-md pt-4 mt-2 bg-gray-200  max-md:w-full"
-                            key={answer.question}
-                          >
-                            <div>
-                              <span className="font-bold">Question: </span>
-                              {answer.question}
-                            </div>
-                            <div>
-                              <span className="font-bold">Answer:</span>
-                              {answer.answer}
-                            </div>
-                            <div>
-                              <span className="font-bold">Reason:</span>
-                              {answer.reason}
-                            </div>
-                          </div>
-                        ))
-                    )}
-                  </TabPanel>
-                  <TabPanel>
-                    {output.map((chunk: any, idx: number) => (
+                    <div className="flex flex-col ">
+                      <div className="font-bold">Score : </div>
                       <div
-                        className="p-2 shadow-md rounded-md mt-2 bg-gray-200"
-                        key={idx}
+                        className={`rounded-full w-fit aspect-square p-6 text-center text-white text-4xl font-bold ${getBackgroundColor(
+                          output.score
+                        )}`}
                       >
-                        <div>{chunk.transcript}</div>
+                        {output.score}
+                      </div>
+                    </div>
+                    {output.combined_output.map((answer: any) => (
+                      <div
+                        className=" shadow-md rounded-md p-4 mt-2 bg-blue-950 text-white  max-md:w-full"
+                        key={answer.question}
+                      >
+                        <div>
+                          <span className="font-bold">Question: </span>
+                          {answer.question}
+                        </div>
+                        <div>
+                          <span className="font-bold">Answer:</span>
+                          {answer.answer}
+                        </div>
+                        <div>
+                          <span className="font-bold">Reason:</span>
+                          {answer.reason}
+                        </div>
                       </div>
                     ))}
                   </TabPanel>
-                  <TabPanel>AI FeedBack</TabPanel>
+                  <TabPanel>
+                    <ul className="list-disc shadow-md rounded-md p-4 px-6 bg-blue-950 text-white space-y-3">
+                      {output.areas.map((area: any, index: number) => (
+                        <li className="" key={index}>
+                          {area}
+                        </li>
+                      ))}
+                    </ul>
+                  </TabPanel>
+                  <TabPanel>
+                    <div className="shadow-md rounded-md p-4 bg-blue-950 text-white">
+                      {output.source_transcript}
+                    </div>
+                  </TabPanel>
                 </TabPanels>
               </Tabs>
             </Box>
@@ -415,6 +512,19 @@ export default function Home() {
             </div>
           </>
         )}
+      </div>
+      <div className="p-4 space-y-8">
+        <div className="text-2xl py-2 border-b-[1px] border-gray-400 ">
+          Example
+        </div>
+        <div
+          onClick={() =>
+            preComputedOutputHandler("18c24669-4b17-463a-b835-5084ab3008d9")
+          }
+          className="flex aspect-square p-2 w-fit shadow-md rounded-md bg-gray-500 hover:scale-105 hover:bg-gray-400"
+        >
+          <Image src={exampleAudio} alt="" width="200" />
+        </div>
       </div>
     </>
   );
