@@ -246,14 +246,6 @@ export default function Home() {
               />
             </div>
 
-            {/* <button
-                className="bg-black text-white py-3 px-6 shadow-md rounded-md"
-                onClick={onSubmit}
-              >
-                Submit
-              </button> */}
-            {/* </div> */}
-
             {audioFileError ? (
               <div className="text-sm pt-1 text-red-500">
                 Please upload an audio file!
@@ -268,23 +260,14 @@ export default function Home() {
               Questions
             </div>
             {loadingQuestions ? (
-              <div
-                className={` ${
-                  output || startLogging ? "w-full" : "w-[50%]"
-                }  text-center p-4 max-md:w-full flex align-center justify-center gap-2`}
-              >
+              <div className="w-full text-center p-4 max-md:w-full flex align-center justify-center gap-2">
                 <div>Loading Questions</div> <Spinner color="blue.500" />
               </div>
             ) : (
               <>
                 {fields.map((item: any, index: number) => {
                   return (
-                    <div
-                      className={` ${
-                        output || startLogging ? "w-full" : "w-[50%]"
-                      }  max-md:w-full   flex flex-col`}
-                      key={item.id}
-                    >
+                    <div className="w-full flex flex-col" key={item.id}>
                       <div className="col-start-1 col-end-3 max-md:mb-2 max-md:px-1">
                         <Controller
                           name={`questions.${index}.category`}
@@ -374,11 +357,7 @@ export default function Home() {
           </div>
           {/* Submit Div */}
           {!startLogging && (
-            <div
-              className={`sticky bottom-0 bg-white p-2 pl-1 mt-4 ${
-                output || startLogging ? "w-full" : "w-[50%]"
-              } max-md:w-full max-md:flex max-md:justify-center`}
-            >
+            <div className="sticky bottom-0 bg-white p-2 pl-1 mt-4 w-full max-md:flex max-md:justify-center">
               <button
                 className="bg-black text-white p-2 shadow-md rounded-md"
                 onClick={handleSubmit(onSubmit)}
@@ -392,69 +371,109 @@ export default function Home() {
           )}
         </div>
         {/* Output div */}
-        {output ? (
-          <>
-            <Box
-              p={2}
-              // bg="white"
-              className="w-full flex-1 md:w-[50%] mb-4"
-              borderRadius="lg"
-              borderWidth="1px"
-            >
-              <div className="text-2xl text-center border-b mb-2">Output</div>
-              <Tabs variant="soft-rounded">
-                <TabList mb="1em">
-                  <Tab width="50%">Detailed Summary</Tab>
-                  <Tab width="50%">AI Feedback</Tab>
-                  <Tab width="50%">Transcript</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <div className="flex  justify-between align-middle">
-                      <div className="font-bold text-2xl flex  my-auto">
-                        Score :
-                      </div>
-                      <div>
-                        <CircularProgress
-                          value={output.score * 10}
-                          size="80px"
-                          color={getProgressColor(output.score)}
-                        >
-                          <CircularProgressLabel>
-                            {output.score}/10
-                          </CircularProgressLabel>
-                        </CircularProgress>
-                      </div>
 
-                      {/* <div
-                        className={`rounded-full w-fit aspect-square p-6 text-center text-white text-4xl font-bold ${getBackgroundColor(
-                          output.score
-                        )}`}
-                      >
-                        {output.score}
-                      </div> */}
+        {startLogging ? (
+          <div className="flex-1 p-4">
+            <div className="flex items-center text-2xl">Output</div>
+            <div className="pt-2">
+              <div className="p-2 text-xl font-bold">Logs</div>
+              <div className="p-2 rounded-xl shadow-md max-h-[200px] overflow-y-auto  bg-gray-200 text-sm font-mono whitespace-pre-line max-md:w-full">
+                {PLACEHOLDER_RESPONSES.slice(0, currentLog + 1).map(
+                  (log, index) => (
+                    <div key={index} className="grid grid-cols-10 gap-4 p-2">
+                      <span className="col-span-8">{log}</span>
+                      <span className="col-span-2 flex justify-center mx-auto align-middle">
+                        {index < currentLog ? (
+                          <FaCheckCircle
+                            color="green"
+                            fontSize="1.5rem"
+                            className="my-auto"
+                          />
+                        ) : (
+                          <span className="flex  justify-center">
+                            <ThreeDots
+                              height="10"
+                              width="50"
+                              radius="9"
+                              color="#000"
+                              ariaLabel="three-dots-loading"
+                              visible={true}
+                              wrapperStyle={{}}
+                              wrapperClass="flex  justify-center"
+                            />
+                          </span>
+                        )}
+                      </span>
                     </div>
-                    {output.combined_output.map((answer: any) => (
-                      <div
-                        className=" shadow-md rounded-md text-sm p-4 mt-2 bg-gray-200  max-md:w-full"
-                        key={answer.question}
-                      >
-                        <div>
-                          <span className="font-bold">Question: </span>
-                          {answer.question}
+                  )
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Box
+            p={2}
+            // bg="white"
+            className="w-full flex-1 md:w-[50%] mb-4"
+            borderRadius="lg"
+            borderWidth="1px"
+          >
+            <div className="text-2xl text-center border-b mb-2">Output</div>
+            <Tabs variant="soft-rounded">
+              <TabList mb="1em">
+                <Tab width="50%">Detailed Summary</Tab>
+                <Tab width="50%">AI Feedback</Tab>
+                <Tab width="50%">Transcript</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  {output ? (
+                    <>
+                      <div className="flex  justify-between align-middle">
+                        <div className="font-bold text-2xl flex  my-auto">
+                          Score :
                         </div>
                         <div>
-                          <span className="font-bold">Answer:</span>
-                          {answer.answer}
-                        </div>
-                        <div>
-                          <span className="font-bold">Reason:</span>
-                          {answer.reason}
+                          <CircularProgress
+                            value={output.score * 10}
+                            size="80px"
+                            color={getProgressColor(output.score)}
+                          >
+                            <CircularProgressLabel>
+                              {output.score}/10
+                            </CircularProgressLabel>
+                          </CircularProgress>
                         </div>
                       </div>
-                    ))}
-                  </TabPanel>
-                  <TabPanel>
+                      {output.combined_output.map((answer: any) => (
+                        <div
+                          className=" shadow-md rounded-md text-sm p-4 mt-2 bg-gray-200  max-md:w-full"
+                          key={answer.question}
+                        >
+                          <div>
+                            <span className="font-bold">Question: </span>
+                            {answer.question}
+                          </div>
+                          <div>
+                            <span className="font-bold">Answer:</span>
+                            {answer.answer}
+                          </div>
+                          <div>
+                            <span className="font-bold">Reason:</span>
+                            {answer.reason}
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div className="p-2 text-center text-gray-600 ">
+                      Upload Audio File to see the results
+                    </div>
+                  )}
+                </TabPanel>
+                <TabPanel>
+                  {output ? (
                     <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
                       {output.areas.map((area: any, index: number) => (
                         <li className="" key={index}>
@@ -462,61 +481,26 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
-                  </TabPanel>
-                  <TabPanel>
+                  ) : (
+                    <div className="p-2 text-center text-gray-600">
+                      Upload Audio File to see the results
+                    </div>
+                  )}
+                </TabPanel>
+                <TabPanel>
+                  {output ? (
                     <div className="shadow-md text-sm rounded-md p-4 bg-gray-200">
                       {output.source_transcript}
                     </div>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </Box>
-          </>
-        ) : (
-          <></>
-        )}
-
-        {startLogging && (
-          <>
-            <div className="flex-1 p-4">
-              <div className="flex items-center text-2xl">Output</div>
-              <div className="pt-2">
-                <div className="p-2 text-xl font-bold">Logs</div>
-                <div className="p-2 rounded-xl shadow-md max-h-[200px] overflow-y-auto  bg-gray-200 text-sm font-mono whitespace-pre-line max-md:w-full">
-                  {PLACEHOLDER_RESPONSES.slice(0, currentLog + 1).map(
-                    (log, index) => (
-                      <div key={index} className="grid grid-cols-10 gap-4 p-2">
-                        <span className="col-span-8">{log}</span>
-                        <span className="col-span-2 flex justify-center mx-auto align-middle">
-                          {index < currentLog ? (
-                            <FaCheckCircle
-                              color="green"
-                              fontSize="1.5rem"
-                              className="my-auto"
-                            />
-                          ) : (
-                            <span className="flex  justify-center">
-                              <ThreeDots
-                                height="10"
-                                width="50"
-                                radius="9"
-                                color="#000"
-                                ariaLabel="three-dots-loading"
-                                visible={true}
-                                wrapperStyle={{}}
-                                wrapperClass="flex  justify-center"
-                              />
-                            </span>
-                          )}
-                        </span>
-                      </div>
-                    )
+                  ) : (
+                    <div className="p-2 text-center text-gray-600">
+                      Upload Audio File to see the results
+                    </div>
                   )}
-                  <div ref={messagesEndRef} />
-                </div>
-              </div>
-            </div>
-          </>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Box>
         )}
       </div>
       <div className="p-4 space-y-4">
