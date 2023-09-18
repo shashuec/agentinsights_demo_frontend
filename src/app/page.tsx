@@ -7,6 +7,7 @@ import { Spinner, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import exampleAudio from "./assets/example_audio.png";
+import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 import axios from "axios";
 import {
@@ -28,7 +29,7 @@ export default function Home() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const fileTypes = ["MP3", "WAV", "AAC"];
+  const fileTypes = ["MP3", "WAV", "MP4", "AAC"];
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
@@ -36,9 +37,11 @@ export default function Home() {
   const loadingResponsesInterval = useRef<any>(null);
   const [output, setOutput] = useState<any>();
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const [audioFileName, setAudioFileName] = useState("Audio File");
 
   const [currentLog, setCurrentLog] = useState(-1);
   const [startLogging, setStartLogging] = useState(false);
+
   const [loadingQuestions, setLoadingQuestions] = useState(false);
 
   const toast = useToast();
@@ -106,6 +109,7 @@ export default function Home() {
   });
 
   const handleChange = (audioFile: any) => {
+    setAudioFileName(audioFile[0].name);
     setAudioFileError(false);
     setAudioFile(audioFile);
     setAudioFileUrl(URL.createObjectURL(audioFile[0]));
@@ -178,22 +182,6 @@ export default function Home() {
     }
   };
 
-  // const fetchExampleAudio = async (url: any) => {
-  //   try {
-  //     console.log("working");
-
-  //     const response = await axios.get(url);
-  //     console.log(response);
-
-  //     const blob = new Blob([response.data], { type: "audio/wav" });
-  //     const objectURL = URL.createObjectURL(blob);
-
-  //     setAudioFileUrl(objectURL);
-  //   } catch (error) {
-  //     console.error("Failed to fetch audio:", error);
-  //   }
-  // };
-
   const preComputedOutputHandler = async (uuidVal: any) => {
     try {
       const response = await axios.get(
@@ -205,7 +193,7 @@ export default function Home() {
       setLogs("");
       setUUIDQueryParam(response.data.uuid);
       setOutput(response.data);
-      // fetchExampleAudio(response.data.audio_url);
+      setAudioFileUrl(response.data.audio_url.split("?")[0]);
     } catch (err: any) {
       console.log(err);
       toast({
@@ -220,10 +208,10 @@ export default function Home() {
     }
   };
 
-  const getBackgroundColor = (score: number) => {
-    if (score >= 7 && score <= 10) return "bg-green-500";
-    else if (score >= 5 && score <= 6) return "bg-yellow-500";
-    else return "bg-red-500";
+  const getProgressColor = (score: number) => {
+    if (score >= 7 && score <= 10) return "green.500";
+    else if (score >= 5 && score <= 6) return "yellow.500";
+    else return "red.500";
   };
 
   useEffect(() => {
@@ -271,7 +259,7 @@ export default function Home() {
                 Please upload an audio file!
               </div>
             ) : (
-              <span className="text-gray-500 flex pt-2">Audio file</span>
+              <span className="text-gray-500 flex pt-2">{audioFileName}</span>
             )}
           </div>
           {/* Choose Questions Form */}
@@ -294,27 +282,29 @@ export default function Home() {
                     <div
                       className={` ${
                         output || startLogging ? "w-full" : "w-[50%]"
-                      }  max-md:w-full py-3 border-b-[1px] border-gray-300 flex flex-col`}
+                      }  max-md:w-full   flex flex-col`}
                       key={item.id}
                     >
-                      <div className="col-start-1 col-end-3   max-md: mb-2 max-md:px-1">
+                      <div className="col-start-1 col-end-3 max-md:mb-2 max-md:px-1">
                         <Controller
                           name={`questions.${index}.category`}
                           control={control}
                           render={({ field }) => (
                             <div
                               {...field}
-                              className="w-full text-lg p-2 mt-[0.2rem] px-1  ml-2 border-black max-md:ml-0"
+                              className="w-full text-lg p-2 px-1 border-black max-md:ml-0"
                             >
-                              <div className="font-bold">{item.category}</div>
-                              <div className="text-sm text-gray-600">
+                              <div className="font-bold text-sm">
+                                {item.category}
+                              </div>
+                              <div className="text-xs text-gray-600">
                                 {item.sub_category}
                               </div>
                             </div>
                           )}
                         />
                       </div>
-                      <div className=" pl-3 flex  max-md:px-1">
+                      <div className="px-1 flex  max-md:px-1">
                         <Controller
                           name={`questions.${index}.question_template`}
                           control={control}
@@ -328,7 +318,7 @@ export default function Home() {
                             <div className="flex flex-col">
                               <div
                                 placeholder="Question"
-                                className="text-black shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                                className="text-black text-sm shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
                               >
                                 {field.value}
                               </div>
@@ -383,21 +373,23 @@ export default function Home() {
             </div> */}
           </div>
           {/* Submit Div */}
-          <div
-            className={`sticky bottom-0 bg-white p-2 mt-4 ${
-              output || startLogging ? "w-full" : "w-[50%]"
-            } max-md:w-full max-md:flex max-md:justify-center`}
-          >
-            <button
-              className="bg-black text-white p-3 shadow-md rounded-md"
-              onClick={handleSubmit(onSubmit)}
+          {!startLogging && (
+            <div
+              className={`sticky bottom-0 bg-white p-2 pl-1 mt-4 ${
+                output || startLogging ? "w-full" : "w-[50%]"
+              } max-md:w-full max-md:flex max-md:justify-center`}
             >
-              Submit
-            </button>
-            <button className="border-[1px] border-solid border-black p-3 ml-3 shadow-md rounded-md">
-              Reset
-            </button>
-          </div>
+              <button
+                className="bg-black text-white p-2 shadow-md rounded-md"
+                onClick={handleSubmit(onSubmit)}
+              >
+                Submit
+              </button>
+              <button className="border-[1px] border-solid border-black p-2 ml-3 shadow-md rounded-md">
+                Reset
+              </button>
+            </div>
+          )}
         </div>
         {/* Output div */}
         {output ? (
@@ -418,19 +410,33 @@ export default function Home() {
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <div className="flex flex-col ">
-                      <div className="font-bold">Score : </div>
-                      <div
+                    <div className="flex  justify-between align-middle">
+                      <div className="font-bold text-2xl flex  my-auto">
+                        Score :
+                      </div>
+                      <div>
+                        <CircularProgress
+                          value={output.score * 10}
+                          size="80px"
+                          color={getProgressColor(output.score)}
+                        >
+                          <CircularProgressLabel>
+                            {output.score}/10
+                          </CircularProgressLabel>
+                        </CircularProgress>
+                      </div>
+
+                      {/* <div
                         className={`rounded-full w-fit aspect-square p-6 text-center text-white text-4xl font-bold ${getBackgroundColor(
                           output.score
                         )}`}
                       >
                         {output.score}
-                      </div>
+                      </div> */}
                     </div>
                     {output.combined_output.map((answer: any) => (
                       <div
-                        className=" shadow-md rounded-md p-4 mt-2 bg-blue-950 text-white  max-md:w-full"
+                        className=" shadow-md rounded-md text-sm p-4 mt-2 bg-gray-200  max-md:w-full"
                         key={answer.question}
                       >
                         <div>
@@ -449,7 +455,7 @@ export default function Home() {
                     ))}
                   </TabPanel>
                   <TabPanel>
-                    <ul className="list-disc shadow-md rounded-md p-4 px-6 bg-blue-950 text-white space-y-3">
+                    <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
                       {output.areas.map((area: any, index: number) => (
                         <li className="" key={index}>
                           {area}
@@ -458,7 +464,7 @@ export default function Home() {
                     </ul>
                   </TabPanel>
                   <TabPanel>
-                    <div className="shadow-md rounded-md p-4 bg-blue-950 text-white">
+                    <div className="shadow-md text-sm rounded-md p-4 bg-gray-200">
                       {output.source_transcript}
                     </div>
                   </TabPanel>
@@ -513,17 +519,17 @@ export default function Home() {
           </>
         )}
       </div>
-      <div className="p-4 space-y-8">
-        <div className="text-2xl py-2 border-b-[1px] border-gray-400 ">
+      <div className="p-4 space-y-4">
+        <div className="text-2xl pt-2 border-b-[1px] border-gray-400 ">
           Example
         </div>
         <div
           onClick={() =>
             preComputedOutputHandler("18c24669-4b17-463a-b835-5084ab3008d9")
           }
-          className="flex aspect-square p-2 w-fit shadow-md rounded-md bg-gray-500 hover:scale-105 hover:bg-gray-400"
+          className="flex aspect-square p-2 w-fit shadow-md rounded-md bg-gray-300 hover:scale-105 hover:bg-gray-400"
         >
-          <Image src={exampleAudio} alt="" width="200" />
+          <Image src={exampleAudio} alt="" width="100" />
         </div>
       </div>
     </>
