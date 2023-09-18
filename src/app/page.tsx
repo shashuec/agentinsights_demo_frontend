@@ -193,7 +193,7 @@ export default function Home() {
       setLogs("");
       setUUIDQueryParam(response.data.uuid);
       setOutput(response.data);
-      setAudioFileUrl(response.data.audio_url.split("?")[0]);
+      setAudioFileUrl(response.data.audio_url);
     } catch (err: any) {
       console.log(err);
       toast({
