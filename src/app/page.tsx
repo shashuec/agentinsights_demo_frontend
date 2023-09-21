@@ -6,8 +6,12 @@ import { FaCheckCircle } from "react-icons/fa";
 import { Spinner, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import exampleAudio from "./assets/example_audio.png";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+
+import example_1 from "./assets/example_1.png";
+import example_2 from "./assets/example_2.png";
+import example_3 from "./assets/example_3.png";
+import example_4 from "./assets/example_4.png";
 
 import axios from "axios";
 import {
@@ -41,10 +45,30 @@ export default function Home() {
 
   const [currentLog, setCurrentLog] = useState(-1);
   const [startLogging, setStartLogging] = useState(false);
+  const [showQuestions, setShowQuestions] = useState(true);
 
   const [loadingQuestions, setLoadingQuestions] = useState(false);
 
   const toast = useToast();
+
+  const examples = [
+    {
+      exampleUUID: "428e6953-a268-405b-a67f-ca0a1d453e9e",
+      exampleIcon: example_1,
+    },
+    {
+      exampleUUID: "b92803ff-bb68-4d79-ad7c-32d2c74a7484",
+      exampleIcon: example_2,
+    },
+    {
+      exampleUUID: "296ebb6e-75ba-48aa-8869-3ca6f24ba019",
+      exampleIcon: example_3,
+    },
+    {
+      exampleUUID: "f55d2b86-d158-4b69-921e-be3c666863e8",
+      exampleIcon: example_4,
+    },
+  ];
 
   const setUUIDQueryParam = (uuidValue: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -160,7 +184,9 @@ export default function Home() {
       // const response: any = SampleResponse;
 
       console.log(response.data);
-
+      if (window.innerWidth < 768) {
+        setShowQuestions(false);
+      }
       setStartLogging(false);
       setCurrentLog(-1);
       clearInterval(loadingResponsesInterval.current);
@@ -190,9 +216,13 @@ export default function Home() {
 
       setStartLogging(false);
       setCurrentLog(-1);
+
       setLogs("");
       setUUIDQueryParam(response.data.uuid);
       setOutput(response.data);
+      if (window.innerWidth < 768) {
+        setShowQuestions(false);
+      }
       setAudioFileUrl(response.data.audio_url);
     } catch (err: any) {
       console.log(err);
@@ -255,77 +285,78 @@ export default function Home() {
             )}
           </div>
           {/* Choose Questions Form */}
-          <div className="mt-4">
-            <div className="w-fit p-2 bg-gray-200 shadow-md rounded-md text-sm font-mono">
-              Questions
-            </div>
-            {loadingQuestions ? (
-              <div className="w-full text-center p-4 max-md:w-full flex align-center justify-center gap-2">
-                <div>Loading Questions</div> <Spinner color="blue.500" />
+          {showQuestions && (
+            <div className="mt-4">
+              <div className="w-fit p-2 bg-gray-200 shadow-md rounded-md text-sm font-mono">
+                Questions
               </div>
-            ) : (
-              <>
-                {fields.map((item: any, index: number) => {
-                  return (
-                    <div className="w-full flex flex-col" key={item.id}>
-                      <div className="col-start-1 col-end-3 max-md:mb-2 max-md:px-1">
-                        <Controller
-                          name={`questions.${index}.category`}
-                          control={control}
-                          render={({ field }) => (
-                            <div
-                              {...field}
-                              className="w-full text-lg p-2 px-1 border-black max-md:ml-0"
-                            >
-                              <div className="font-bold text-sm">
-                                {item.category}
-                              </div>
-                              <div className="text-xs text-gray-600">
-                                {item.sub_category}
-                              </div>
-                            </div>
-                          )}
-                        />
-                      </div>
-                      <div className="px-1 flex  max-md:px-1">
-                        <Controller
-                          name={`questions.${index}.question_template`}
-                          control={control}
-                          rules={{
-                            required: {
-                              value: true,
-                              message: "This field cannot be empty",
-                            },
-                          }}
-                          render={({ field }) => (
-                            <div className="flex flex-col">
+              {loadingQuestions ? (
+                <div className="w-full text-center p-4 max-md:w-full flex align-center justify-center gap-2">
+                  <div>Loading Questions</div> <Spinner color="blue.500" />
+                </div>
+              ) : (
+                <>
+                  {fields.map((item: any, index: number) => {
+                    return (
+                      <div className="w-full flex flex-col" key={item.id}>
+                        <div className="col-start-1 col-end-3 max-md:mb-2 max-md:px-1">
+                          <Controller
+                            name={`questions.${index}.category`}
+                            control={control}
+                            render={({ field }) => (
                               <div
-                                placeholder="Question"
-                                className="text-black text-sm shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                                {...field}
+                                className="w-full text-lg p-2 px-1 border-black max-md:ml-0"
                               >
-                                {field.value}
+                                <div className="font-bold text-sm">
+                                  {item.category}
+                                </div>
+                                <div className="text-xs text-gray-600">
+                                  {item.sub_category}
+                                </div>
                               </div>
-                              {/* <input
+                            )}
+                          />
+                        </div>
+                        <div className="px-1 flex  max-md:px-1">
+                          <Controller
+                            name={`questions.${index}.question_template`}
+                            control={control}
+                            rules={{
+                              required: {
+                                value: true,
+                                message: "This field cannot be empty",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <div className="flex flex-col">
+                                <div
+                                  placeholder="Question"
+                                  className="text-black text-sm shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                                >
+                                  {field.value}
+                                </div>
+                                {/* <input
                             {...field}
                             placeholder="Question"
                             className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
                             type="text"
                             disabled
                           ></input> */}
-                              {(errors?.questions as any)?.at?.(index)
-                                ?.question_template?.message && (
-                                <div className="text-sm pt-1 text-red-500">
-                                  {
-                                    (errors?.questions as any)?.at?.(index)
-                                      ?.question_template?.message
-                                  }
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        />
-                      </div>
-                      {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
+                                {(errors?.questions as any)?.at?.(index)
+                                  ?.question_template?.message && (
+                                  <div className="text-sm pt-1 text-red-500">
+                                    {
+                                      (errors?.questions as any)?.at?.(index)
+                                        ?.question_template?.message
+                                    }
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          />
+                        </div>
+                        {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
                     <Image
                       src={crossImage}
                       width={25}
@@ -337,13 +368,13 @@ export default function Home() {
                       }}
                     />
                   </div> */}
-                    </div>
-                  );
-                })}
-              </>
-            )}
+                      </div>
+                    );
+                  })}
+                </>
+              )}
 
-            {/* <div
+              {/* <div
               className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
               onClick={() =>
                 append({
@@ -354,7 +385,8 @@ export default function Home() {
             >
               + Add Question
             </div> */}
-          </div>
+            </div>
+          )}
           {/* Submit Div */}
           {!startLogging && (
             <div className="sticky bottom-0 bg-white p-2 pl-1 mt-4 w-full max-md:flex max-md:justify-center">
@@ -507,13 +539,21 @@ export default function Home() {
         <div className="text-2xl pt-2 border-b-[1px] border-gray-400 ">
           Example
         </div>
-        <div
-          onClick={() =>
-            preComputedOutputHandler("b92803ff-bb68-4d79-ad7c-32d2c74a7484")
-          }
-          className="flex aspect-square p-2 w-fit shadow-md rounded-md bg-gray-300 hover:scale-105 hover:bg-gray-400"
-        >
-          <Image src={exampleAudio} alt="" width="100" />
+        <div className="flex gap-4 overflow-x-scroll">
+          {examples.map((example) => (
+            <div
+              key={example.exampleUUID}
+              onClick={() => preComputedOutputHandler(example.exampleUUID)}
+              className="p-2 min-w-[7rem] shadow-md rounded-md flex justify-center  bg-gray-300 hover:scale-105 hover:bg-gray-400"
+            >
+              <Image
+                src={example.exampleIcon}
+                alt=""
+                className="p-2"
+                width="100"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </>
