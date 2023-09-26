@@ -3,10 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "./components/PlayAudio";
 import { FaCheckCircle } from "react-icons/fa";
-import { Spinner, useToast } from "@chakra-ui/react";
+import { Button, Spinner, Text, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
 import example_1 from "./assets/example_1.png";
 import example_2 from "./assets/example_2.png";
@@ -34,6 +35,7 @@ export default function Home() {
   const searchParams = useSearchParams();
 
   const fileTypes = ["MP3", "WAV", "MP4", "AAC"];
+  const [isOpen, setIsOpen] = useState(false);
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
@@ -506,13 +508,44 @@ export default function Home() {
                 </TabPanel>
                 <TabPanel>
                   {output ? (
-                    <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                      {output.areas.map((area: any, index: number) => (
-                        <li className="" key={index}>
-                          {area}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="w-full space-y-4">
+                      <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                        <div className="font-bold text-lg">Call To Actions</div>
+                        {output.call_to_actions.map(
+                          (call_to_action: any, index: number) => (
+                            <li className="" key={index}>
+                              {call_to_action}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                      <Box className="w-full p-2 border rounded-md shadow-sm">
+                        <Button
+                          className="w-full flex justify-between"
+                          variant="ghost"
+                          onClick={() => setIsOpen(!isOpen)}
+                        >
+                          <Text>Areas of Improvement</Text>
+                          {isOpen ? (
+                            <ChevronUpIcon boxSize="6" />
+                          ) : (
+                            <ChevronDownIcon boxSize="6" />
+                          )}
+                        </Button>
+
+                        {isOpen && (
+                          <Box className="mt-2">
+                            <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                              {output.areas.map((area: any, index: number) => (
+                                <li className="" key={index}>
+                                  {area}
+                                </li>
+                              ))}
+                            </ul>
+                          </Box>
+                        )}
+                      </Box>
+                    </div>
                   ) : (
                     <div className="p-2 text-center text-gray-600">
                       Upload Audio File to see the results
