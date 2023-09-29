@@ -9,11 +9,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
-import example_1 from "./assets/example_1.png";
-import example_2 from "./assets/example_2.png";
-import example_3 from "./assets/example_3.png";
-import example_4 from "./assets/example_4.png";
-
 import axios from "axios";
 import {
   useForm,
@@ -21,13 +16,14 @@ import {
   useFieldArray,
   SubmitHandler,
 } from "react-hook-form";
-import { PLACEHOLDER_RESPONSES } from "./constants/constants";
+import { PLACEHOLDER_RESPONSES, EXAMPLES } from "./constants/constants";
 // import SampleResponse from "./constants/sample.json";
 
 import { ThreeDots } from "react-loader-spinner";
 import Header from "./components/Header";
 
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import TranscriptBox from "./components/TranscriptBox";
 
 export default function Home() {
   const router = useRouter();
@@ -52,25 +48,6 @@ export default function Home() {
   const [loadingQuestions, setLoadingQuestions] = useState(false);
 
   const toast = useToast();
-
-  const examples = [
-    {
-      exampleUUID: "428e6953-a268-405b-a67f-ca0a1d453e9e",
-      exampleIcon: example_1,
-    },
-    {
-      exampleUUID: "b92803ff-bb68-4d79-ad7c-32d2c74a7484",
-      exampleIcon: example_2,
-    },
-    {
-      exampleUUID: "296ebb6e-75ba-48aa-8869-3ca6f24ba019",
-      exampleIcon: example_3,
-    },
-    {
-      exampleUUID: "f55d2b86-d158-4b69-921e-be3c666863e8",
-      exampleIcon: example_4,
-    },
-  ];
 
   const setUUIDQueryParam = (uuidValue: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -166,6 +143,7 @@ export default function Home() {
 
     setStartLogging(true);
     setCurrentLog(0);
+    setShowQuestions(true);
 
     try {
       let bodyFormData = new FormData();
@@ -186,9 +164,7 @@ export default function Home() {
       // const response: any = SampleResponse;
 
       console.log(response.data);
-      if (window.innerWidth < 768) {
-        setShowQuestions(false);
-      }
+      setShowQuestions(false);
       setStartLogging(false);
       setCurrentLog(-1);
       clearInterval(loadingResponsesInterval.current);
@@ -222,9 +198,7 @@ export default function Home() {
       setLogs("");
       setUUIDQueryParam(response.data.uuid);
       setOutput(response.data);
-      if (window.innerWidth < 768) {
-        setShowQuestions(false);
-      }
+      setShowQuestions(false);
       setAudioFileUrl(response.data.audio_url);
     } catch (err: any) {
       console.log(err);
@@ -260,7 +234,7 @@ export default function Home() {
       </div>
       <div className="px-4 flex flex-row w-full max-md:flex-col">
         {/* Input div */}
-        <div className="flex-1 p-4 relative">
+        <div className="flex-1 p-4 pt-2 relative">
           <div className="flex items-center text-2xl">Input</div>
           {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
           {/* Choose Audio */}
@@ -283,11 +257,13 @@ export default function Home() {
                 Please upload an audio file!
               </div>
             ) : (
-              <span className="text-gray-500 flex pt-2">{audioFileName}</span>
+              <span className="text-gray-500 flex pt-2 overflow-hidden">
+                {audioFileName}
+              </span>
             )}
           </div>
           {/* Choose Questions Form */}
-          {showQuestions && (
+          {showQuestions ? (
             <div className="mt-4">
               <div className="w-fit p-2 bg-gray-200 shadow-md rounded-md text-sm font-mono">
                 Questions
@@ -388,6 +364,8 @@ export default function Home() {
               + Add Question
             </div> */}
             </div>
+          ) : (
+            <TranscriptBox transcript={output.source_transcript} />
           )}
           {/* Submit Div */}
           {!startLogging && (
@@ -458,7 +436,7 @@ export default function Home() {
               <TabList mb="1em">
                 <Tab width="50%">Detailed Summary</Tab>
                 <Tab width="50%">AI Feedback</Tab>
-                <Tab width="50%">Transcript</Tab>
+                <Tab width="50%">Summary</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
@@ -554,9 +532,15 @@ export default function Home() {
                 </TabPanel>
                 <TabPanel>
                   {output ? (
-                    <div className="shadow-md text-sm rounded-md p-4 bg-gray-200">
-                      {output.source_transcript}
-                    </div>
+                    <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                      {output.customer_insights.map(
+                        (customer_insight: any, index: number) => (
+                          <li className="" key={index}>
+                            {customer_insight}
+                          </li>
+                        )
+                      )}
+                    </ul>
                   ) : (
                     <div className="p-2 text-center text-gray-600">
                       Upload Audio File to see the results
@@ -572,8 +556,8 @@ export default function Home() {
         <div className="text-2xl pt-2 border-b-[1px] border-gray-400 ">
           Example
         </div>
-        <div className="flex gap-4 overflow-x-scroll">
-          {examples.map((example) => (
+        <div className="flex gap-4 overflow-x-auto">
+          {EXAMPLES.map((example) => (
             <div
               key={example.exampleUUID}
               onClick={() => preComputedOutputHandler(example.exampleUUID)}
