@@ -436,7 +436,7 @@ export default function Home() {
               <TabList mb="1em">
                 <Tab width="50%">Detailed Summary</Tab>
                 <Tab width="50%">AI Feedback</Tab>
-                <Tab width="50%">Summary</Tab>
+                <Tab width="50%">Customer Insights </Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
