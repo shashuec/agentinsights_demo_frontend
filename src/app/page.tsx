@@ -215,8 +215,8 @@ export default function Home() {
   };
 
   const getProgressColor = (score: number) => {
-    if (score >= 7 && score <= 10) return "green.500";
-    else if (score >= 5 && score <= 6) return "yellow.500";
+    if (score >= 4 && score <= 5) return "green.500";
+    else if (score >= 2.5) return "yellow.500";
     else return "red.500";
   };
 
@@ -448,12 +448,12 @@ export default function Home() {
                         </div>
                         <div>
                           <CircularProgress
-                            value={output.score * 10}
+                            value={output.score * 20}
                             size="80px"
                             color={getProgressColor(output.score)}
                           >
                             <CircularProgressLabel>
-                              {output.score}/10
+                              {output.score}/5
                             </CircularProgressLabel>
                           </CircularProgress>
                         </div>
