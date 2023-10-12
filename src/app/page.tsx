@@ -31,7 +31,7 @@ export default function Home() {
   const searchParams = useSearchParams();
 
   const fileTypes = ["MP3", "WAV", "MP4", "AAC"];
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
@@ -215,8 +215,8 @@ export default function Home() {
   };
 
   const getProgressColor = (score: number) => {
-    if (score >= 4 && score <= 5) return "green.500";
-    else if (score >= 2.5) return "yellow.500";
+    if (score >= 7 && score <= 10) return "green.500";
+    else if (score >= 5 && score <= 6) return "yellow.500";
     else return "red.500";
   };
 
@@ -448,12 +448,12 @@ export default function Home() {
                         </div>
                         <div>
                           <CircularProgress
-                            value={output.score * 20}
+                            value={output.score * 10}
                             size="80px"
                             color={getProgressColor(output.score)}
                           >
                             <CircularProgressLabel>
-                              {output.score}/5
+                              {output.score}/10
                             </CircularProgressLabel>
                           </CircularProgress>
                         </div>
