@@ -24,6 +24,8 @@ import Header from "../components/Header";
 
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import TranscriptBox from "../components/TranscriptBox";
+import AppFooter from "../components/AppFooter";
+import LandingPageHeader from "../components/LandingPageHeader";
 
 export default function Home() {
   const router = useRouter();
@@ -31,7 +33,7 @@ export default function Home() {
   const searchParams = useSearchParams();
 
   const fileTypes = ["MP3", "WAV", "MP4", "AAC"];
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
@@ -214,9 +216,19 @@ export default function Home() {
     }
   };
 
+  const categorizeResults = (combinedOutput: any) => {
+    return combinedOutput.reduce((acc: any, answer: any) => {
+      if (!acc[answer.category]) {
+        acc[answer.category] = [];
+      }
+      acc[answer.category].push(answer);
+      return acc;
+    }, {});
+  };
+
   const getProgressColor = (score: number) => {
-    if (score >= 4 && score <= 5) return "green.500";
-    else if (score >= 2.5) return "yellow.500";
+    if (score >= 7 && score <= 10) return "green.500";
+    else if (score >= 5 && score <= 6) return "yellow.500";
     else return "red.500";
   };
 
@@ -225,116 +237,118 @@ export default function Home() {
   }, [output, logs]);
 
   return (
-    <>
-      <Header />
-      <div className="p-4 text-2xl italic font-bold text-center">
-        {
-          '"AI-Powered Analytics and Training for Enhanced Agent-Customer Interactions"'
-        }
-      </div>
-      <div className="px-4 flex flex-row w-full max-md:flex-col">
-        {/* Input div */}
-        <div className="flex-1 p-4 pt-2 relative">
-          <div className="flex items-center text-2xl">Input</div>
-          {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
-          {/* Choose Audio */}
-          <div className="mt-4">
-            <div className=" rounded-md  w-fit p-2 bg-gray-200 text-sm  font-mono mb-3">
-              Audio
-            </div>
-            {/* <div className="flex max-md:flex-col  gap-4"> */}
-            <div className="">
-              <FileUploader
-                multiple={true}
-                handleChange={handleChange}
-                name="audioFileUrl"
-                types={fileTypes}
-              />
-            </div>
-
-            {audioFileError ? (
-              <div className="text-sm pt-1 text-red-500">
-                Please upload an audio file!
-              </div>
-            ) : (
-              <span className="text-gray-500 flex pt-2 overflow-hidden">
-                {audioFileName}
-              </span>
-            )}
-          </div>
-          {/* Choose Questions Form */}
-          {showQuestions ? (
+    <div className="relative">
+      {/* <Header /> */}
+      <LandingPageHeader />
+      <div>
+        <div className="p-4 text-2xl italic font-bold text-center">
+          {
+            '"AI-Powered Analytics and Training for Enhanced Agent-Customer Interactions"'
+          }
+        </div>
+        <div className="px-4 flex flex-row w-full max-md:flex-col">
+          {/* Input div */}
+          <div className="flex-1 p-4 pt-2 relative">
+            <div className="flex items-center text-2xl">Input</div>
+            {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
+            {/* Choose Audio */}
             <div className="mt-4">
-              <div className="w-fit p-2 bg-gray-200 shadow-md rounded-md text-sm font-mono">
-                Questions
+              <div className=" rounded-md  w-fit p-2 bg-gray-200 text-sm  font-mono mb-3">
+                Audio
               </div>
-              {loadingQuestions ? (
-                <div className="w-full text-center p-4 max-md:w-full flex align-center justify-center gap-2">
-                  <div>Loading Questions</div> <Spinner color="blue.500" />
+              {/* <div className="flex max-md:flex-col  gap-4"> */}
+              <div className="">
+                <FileUploader
+                  multiple={true}
+                  handleChange={handleChange}
+                  name="audioFileUrl"
+                  types={fileTypes}
+                />
+              </div>
+
+              {audioFileError ? (
+                <div className="text-sm pt-1 text-red-500">
+                  Please upload an audio file!
                 </div>
               ) : (
-                <>
-                  {fields.map((item: any, index: number) => {
-                    return (
-                      <div className="w-full flex flex-col" key={item.id}>
-                        <div className="col-start-1 col-end-3 max-md:mb-2 max-md:px-1">
-                          <Controller
-                            name={`questions.${index}.category`}
-                            control={control}
-                            render={({ field }) => (
-                              <div
-                                {...field}
-                                className="w-full text-lg p-2 px-1 border-black max-md:ml-0"
-                              >
-                                <div className="font-bold text-sm">
-                                  {item.category}
-                                </div>
-                                <div className="text-xs text-gray-600">
-                                  {item.sub_category}
-                                </div>
-                              </div>
-                            )}
-                          />
-                        </div>
-                        <div className="px-1 flex  max-md:px-1">
-                          <Controller
-                            name={`questions.${index}.question_template`}
-                            control={control}
-                            rules={{
-                              required: {
-                                value: true,
-                                message: "This field cannot be empty",
-                              },
-                            }}
-                            render={({ field }) => (
-                              <div className="flex flex-col">
+                <span className="text-gray-500 flex pt-2 overflow-hidden">
+                  {audioFileName}
+                </span>
+              )}
+            </div>
+            {/* Choose Questions Form */}
+            {showQuestions ? (
+              <div className="mt-4">
+                <div className="w-fit p-2 bg-gray-200 shadow-md rounded-md text-sm font-mono">
+                  Questions
+                </div>
+                {loadingQuestions ? (
+                  <div className="w-full text-center p-4 max-md:w-full flex align-center justify-center gap-2">
+                    <div>Loading Questions</div> <Spinner color="blue.500" />
+                  </div>
+                ) : (
+                  <>
+                    {fields.map((item: any, index: number) => {
+                      return (
+                        <div className="w-full flex flex-col" key={item.id}>
+                          <div className="col-start-1 col-end-3 max-md:mb-2 max-md:px-1">
+                            <Controller
+                              name={`questions.${index}.category`}
+                              control={control}
+                              render={({ field }) => (
                                 <div
-                                  placeholder="Question"
-                                  className="text-black text-sm shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                                  {...field}
+                                  className="w-full text-lg p-2 px-1 border-black max-md:ml-0"
                                 >
-                                  {field.value}
+                                  <div className="font-bold text-sm">
+                                    {item.category}
+                                  </div>
+                                  <div className="text-xs text-gray-600">
+                                    {item.sub_category}
+                                  </div>
                                 </div>
-                                {/* <input
+                              )}
+                            />
+                          </div>
+                          <div className="px-1 flex  max-md:px-1">
+                            <Controller
+                              name={`questions.${index}.question_template`}
+                              control={control}
+                              rules={{
+                                required: {
+                                  value: true,
+                                  message: "This field cannot be empty",
+                                },
+                              }}
+                              render={({ field }) => (
+                                <div className="flex flex-col">
+                                  <div
+                                    placeholder="Question"
+                                    className="text-black text-sm shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                                  >
+                                    {field.value}
+                                  </div>
+                                  {/* <input
                             {...field}
                             placeholder="Question"
                             className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
                             type="text"
                             disabled
                           ></input> */}
-                                {(errors?.questions as any)?.at?.(index)
-                                  ?.question_template?.message && (
-                                  <div className="text-sm pt-1 text-red-500">
-                                    {
-                                      (errors?.questions as any)?.at?.(index)
-                                        ?.question_template?.message
-                                    }
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          />
-                        </div>
-                        {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
+                                  {(errors?.questions as any)?.at?.(index)
+                                    ?.question_template?.message && (
+                                    <div className="text-sm pt-1 text-red-500">
+                                      {
+                                        (errors?.questions as any)?.at?.(index)
+                                          ?.question_template?.message
+                                      }
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            />
+                          </div>
+                          {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
                     <Image
                       src={crossImage}
                       width={25}
@@ -346,13 +360,13 @@ export default function Home() {
                       }}
                     />
                   </div> */}
-                      </div>
-                    );
-                  })}
-                </>
-              )}
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
 
-              {/* <div
+                {/* <div
               className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
               onClick={() =>
                 append({
@@ -363,196 +377,219 @@ export default function Home() {
             >
               + Add Question
             </div> */}
-            </div>
-          ) : (
-            <TranscriptBox transcript={output.source_transcript} />
-          )}
-          {/* Submit Div */}
-          {!startLogging && (
-            <div className="sticky bottom-0 bg-white p-2 pl-1 mt-4 w-full max-md:flex max-md:justify-center">
-              <button
-                className="bg-black text-white p-2 shadow-md rounded-md"
-                onClick={handleSubmit(onSubmit)}
-              >
-                Submit
-              </button>
-              <button className="border-[1px] border-solid border-black p-2 ml-3 shadow-md rounded-md">
-                Reset
-              </button>
-            </div>
-          )}
-        </div>
-        {/* Output div */}
+              </div>
+            ) : (
+              <TranscriptBox transcript={output.source_transcript} />
+            )}
+            {/* Submit Div */}
+            {!startLogging && (
+              <div className="sticky bottom-0 bg-white p-2 pl-1 mt-4 w-full max-md:flex max-md:justify-center">
+                <button
+                  className="bg-black text-white p-2 shadow-md rounded-md"
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  Submit
+                </button>
+                <button className="border-[1px] border-solid border-black p-2 ml-3 shadow-md rounded-md">
+                  Reset
+                </button>
+              </div>
+            )}
+          </div>
+          {/* Output div */}
 
-        {startLogging ? (
-          <div className="flex-1 p-4">
-            <div className="flex items-center text-2xl">Output</div>
-            <div className="pt-2">
-              <div className="p-2 text-xl font-bold">Logs</div>
-              <div className="p-2 rounded-xl shadow-md max-h-[200px] overflow-y-auto  bg-gray-200 text-sm font-mono whitespace-pre-line max-md:w-full">
-                {PLACEHOLDER_RESPONSES.slice(0, currentLog + 1).map(
-                  (log, index) => (
-                    <div key={index} className="grid grid-cols-10 gap-4 p-2">
-                      <span className="col-span-8">{log}</span>
-                      <span className="col-span-2 flex justify-center mx-auto align-middle">
-                        {index < currentLog ? (
-                          <FaCheckCircle
-                            color="green"
-                            fontSize="1.5rem"
-                            className="my-auto"
-                          />
-                        ) : (
-                          <span className="flex  justify-center">
-                            <ThreeDots
-                              height="10"
-                              width="50"
-                              radius="9"
-                              color="#000"
-                              ariaLabel="three-dots-loading"
-                              visible={true}
-                              wrapperStyle={{}}
-                              wrapperClass="flex  justify-center"
+          {startLogging ? (
+            <div className="flex-1 p-4">
+              <div className="flex items-center text-2xl">Output</div>
+              <div className="pt-2">
+                <div className="p-2 text-xl font-bold">Logs</div>
+                <div className="p-2 rounded-xl shadow-md max-h-[200px] overflow-y-auto  bg-gray-200 text-sm font-mono whitespace-pre-line max-md:w-full">
+                  {PLACEHOLDER_RESPONSES.slice(0, currentLog + 1).map(
+                    (log, index) => (
+                      <div key={index} className="grid grid-cols-10 gap-4 p-2">
+                        <span className="col-span-8">{log}</span>
+                        <span className="col-span-2 flex justify-center mx-auto align-middle">
+                          {index < currentLog ? (
+                            <FaCheckCircle
+                              color="green"
+                              fontSize="1.5rem"
+                              className="my-auto"
                             />
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  )
-                )}
-                <div ref={messagesEndRef} />
+                          ) : (
+                            <span className="flex  justify-center">
+                              <ThreeDots
+                                height="10"
+                                width="50"
+                                radius="9"
+                                color="#000"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                                wrapperStyle={{}}
+                                wrapperClass="flex  justify-center"
+                              />
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    )
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <Box
-            p={2}
-            // bg="white"
-            className="w-full flex-1 md:w-[50%] mb-4"
-            borderRadius="lg"
-            borderWidth="1px"
-          >
-            <div className="text-2xl text-center border-b mb-2">Output</div>
-            <Tabs variant="soft-rounded">
-              <TabList mb="1em">
-                <Tab width="50%">Detailed Summary</Tab>
-                <Tab width="50%">AI Feedback</Tab>
-                <Tab width="50%">Customer Insights </Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  {output ? (
-                    <>
-                      <div className="flex  justify-between align-middle">
-                        <div className="font-bold text-2xl flex  my-auto">
-                          Score :
+          ) : (
+            <Box
+              p={2}
+              // bg="white"
+              className="w-full flex-1 md:w-[50%] mb-4"
+              borderRadius="lg"
+              borderWidth="1px"
+            >
+              <div className="text-2xl text-center border-b mb-2">Output</div>
+              <Tabs variant="soft-rounded">
+                <TabList mb="1em">
+                  <Tab width="50%">Detailed Summary</Tab>
+                  <Tab width="50%">AI Feedback</Tab>
+                  <Tab width="50%">Customer Insights </Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    {output ? (
+                      <>
+                        <div className="flex  gap-4 align-middle pb-2">
+                          <div className="font-bold text-2xl flex  my-auto">
+                            Score :
+                          </div>
+                          <div>
+                            <CircularProgress
+                              value={output.score * 10}
+                              size="80px"
+                              color={getProgressColor(output.score)}
+                            >
+                              <CircularProgressLabel>
+                                {output.score}/10
+                              </CircularProgressLabel>
+                            </CircularProgress>
+                          </div>
                         </div>
-                        <div>
-                          <CircularProgress
-                            value={output.score * 20}
-                            size="80px"
-                            color={getProgressColor(output.score)}
-                          >
-                            <CircularProgressLabel>
-                              {output.score}/5
-                            </CircularProgressLabel>
-                          </CircularProgress>
-                        </div>
+                        {output &&
+                          Object.entries(
+                            categorizeResults(output.combined_output)
+                          ).map(([category, answers]: any) => (
+                            <div
+                              key={category}
+                              className="mb-6 bg-white border rounded-lg shadow-sm p-4"
+                            >
+                              <h2 className="text-base font-bold mb-2 border-b pb-2 text-blue-600">
+                                {category}
+                              </h2>
+                              {answers.map((answer: any) => (
+                                <div
+                                  className="shadow-md rounded-md text-xs p-2 mt-2 bg-gray-200 border border-gray-300"
+                                  key={answer.question}
+                                >
+                                  <div className="mb-2">
+                                    <span className="font-bold text-gray-700">
+                                      Question:{" "}
+                                    </span>
+                                    {answer.question}
+                                  </div>
+                                  <div className="mb-2">
+                                    <span className="font-bold text-gray-700">
+                                      Answer:
+                                    </span>{" "}
+                                    {answer.answer}
+                                  </div>
+                                  <div>
+                                    <span className="font-bold text-gray-700">
+                                      Reason:
+                                    </span>{" "}
+                                    {answer.reason}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ))}
+                      </>
+                    ) : (
+                      <div className="p-2 text-center text-gray-600 ">
+                        Upload Audio File to see the results
                       </div>
-                      {output.combined_output.map((answer: any) => (
-                        <div
-                          className=" shadow-md rounded-md text-sm p-4 mt-2 bg-gray-200  max-md:w-full"
-                          key={answer.question}
-                        >
-                          <div>
-                            <span className="font-bold">Question: </span>
-                            {answer.question}
+                    )}
+                  </TabPanel>
+                  <TabPanel>
+                    {output ? (
+                      <div className="w-full space-y-4">
+                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                          <div className="font-bold text-lg">
+                            Call To Actions
                           </div>
-                          <div>
-                            <span className="font-bold">Answer:</span>
-                            {answer.answer}
-                          </div>
-                          <div>
-                            <span className="font-bold">Reason:</span>
-                            {answer.reason}
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    <div className="p-2 text-center text-gray-600 ">
-                      Upload Audio File to see the results
-                    </div>
-                  )}
-                </TabPanel>
-                <TabPanel>
-                  {output ? (
-                    <div className="w-full space-y-4">
+                          {output.call_to_actions.map(
+                            (call_to_action: any, index: number) => (
+                              <li className="" key={index}>
+                                {call_to_action}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                        <Box className="w-full p-2 border rounded-md shadow-sm">
+                          <Button
+                            className="w-full flex justify-between"
+                            variant="ghost"
+                            onClick={() => setIsOpen(!isOpen)}
+                          >
+                            <Text>Areas of Improvement</Text>
+                            {isOpen ? (
+                              <ChevronUpIcon boxSize="6" />
+                            ) : (
+                              <ChevronDownIcon boxSize="6" />
+                            )}
+                          </Button>
+
+                          {isOpen && (
+                            <Box className="mt-2">
+                              <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                                {output.areas.map(
+                                  (area: any, index: number) => (
+                                    <li className="" key={index}>
+                                      {area}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </Box>
+                          )}
+                        </Box>
+                      </div>
+                    ) : (
+                      <div className="p-2 text-center text-gray-600">
+                        Upload Audio File to see the results
+                      </div>
+                    )}
+                  </TabPanel>
+                  <TabPanel>
+                    {output ? (
                       <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                        <div className="font-bold text-lg">Call To Actions</div>
-                        {output.call_to_actions.map(
-                          (call_to_action: any, index: number) => (
+                        {output.customer_insights.map(
+                          (customer_insight: any, index: number) => (
                             <li className="" key={index}>
-                              {call_to_action}
+                              {customer_insight}
                             </li>
                           )
                         )}
                       </ul>
-                      <Box className="w-full p-2 border rounded-md shadow-sm">
-                        <Button
-                          className="w-full flex justify-between"
-                          variant="ghost"
-                          onClick={() => setIsOpen(!isOpen)}
-                        >
-                          <Text>Areas of Improvement</Text>
-                          {isOpen ? (
-                            <ChevronUpIcon boxSize="6" />
-                          ) : (
-                            <ChevronDownIcon boxSize="6" />
-                          )}
-                        </Button>
-
-                        {isOpen && (
-                          <Box className="mt-2">
-                            <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                              {output.areas.map((area: any, index: number) => (
-                                <li className="" key={index}>
-                                  {area}
-                                </li>
-                              ))}
-                            </ul>
-                          </Box>
-                        )}
-                      </Box>
-                    </div>
-                  ) : (
-                    <div className="p-2 text-center text-gray-600">
-                      Upload Audio File to see the results
-                    </div>
-                  )}
-                </TabPanel>
-                <TabPanel>
-                  {output ? (
-                    <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                      {output.customer_insights.map(
-                        (customer_insight: any, index: number) => (
-                          <li className="" key={index}>
-                            {customer_insight}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  ) : (
-                    <div className="p-2 text-center text-gray-600">
-                      Upload Audio File to see the results
-                    </div>
-                  )}
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </Box>
-        )}
-      </div>
-      <div className="p-4 space-y-4">
+                    ) : (
+                      <div className="p-2 text-center text-gray-600">
+                        Upload Audio File to see the results
+                      </div>
+                    )}
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
+          )}
+        </div>
+        {/* <div className="p-4 space-y-4">
         <div className="text-2xl pt-2 border-b-[1px] border-gray-400 ">
           Example
         </div>
@@ -572,7 +609,9 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </div> */}
       </div>
-    </>
+      <AppFooter />
+    </div>
   );
 }
