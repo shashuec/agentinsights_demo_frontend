@@ -243,9 +243,7 @@ export default function Home() {
       <LandingPageHeader />
       <div>
         <div className="p-4 text-2xl italic font-bold text-center">
-          {
-            '"AI-Powered Analytics and Training for Enhanced Agent-Customer Interactions"'
-          }
+          Upload Your Audio and Experience the Magic
         </div>
         <div className="px-4 flex flex-row w-full max-md:flex-col">
           {/* Input div */}
