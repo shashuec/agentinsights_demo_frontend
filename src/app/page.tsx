@@ -104,7 +104,7 @@ const LandingPage = () => {
               </div>
               <div className="flex pt-4 md:pt-4">
                 <a
-                  href="mailto:partnership@agentinsights.live"
+                  href="mailto:partnerships@agentinsights.live"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline w-full md:w-fit"
