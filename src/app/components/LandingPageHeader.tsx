@@ -78,6 +78,15 @@ const LandingPageHeader = () => {
                       Pricing
                     </MenuItem>
                   </Link>
+                  <a
+                    href="https://drive.google.com/file/d/1BFLvonYdLAvcv3aZ_-GkHW6MFqVlWQKP/view?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <MenuItem color="blue.700" _hover={{ color: "blue.500" }}>
+                      Discover Our Product
+                    </MenuItem>
+                  </a>
                   <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
                     <MenuItem color="blue.700" _hover={{ color: "blue.500" }}>
                       Demo
@@ -102,6 +111,15 @@ const LandingPageHeader = () => {
                 Pricing
               </Box>
             </Link>
+            <a
+              href="https://drive.google.com/file/d/1BFLvonYdLAvcv3aZ_-GkHW6MFqVlWQKP/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Box p={2} _hover={{ color: "blue.500" }} className="font-bold">
+                Discover Our Product
+              </Box>
+            </a>
             <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
               <Box className="p-2  bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
                 Demo

@@ -25,12 +25,12 @@ const AppFooter = () => {
                 <p>123-456-7890</p> */}
             <h2 className="font-bold">Email</h2>
             <a
-              href="mailto:partnership@agentinsights.live"
+              href="mailto:partnerships@agentinsights.live"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline"
             >
-              partnership@agentinsights.live
+              partnerships@agentinsights.live
             </a>
             <h2 className="font-bold">Social</h2>
             <div className="flex space-x-4">
@@ -63,7 +63,7 @@ const AppFooter = () => {
         <div className="flex-1 space-y-2">
           <h2 className="font-bold text-lg">Company</h2>
           <Link href="/about">About Us</Link>
-          <p className="block">Pricing</p>
+          <Link href="/pricing">Pricing</Link>
           <p className="block">Request Demo</p>
         </div>
 
