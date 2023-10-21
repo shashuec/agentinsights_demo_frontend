@@ -60,7 +60,7 @@ const AppFooter = () => {
 
         {/* Column 2 */}
         {/* Column 2 */}
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 flex flex-col space-y-2">
           <h2 className="font-bold text-lg">Company</h2>
           <Link href="/about">About Us</Link>
           <Link href="/pricing">Pricing</Link>
