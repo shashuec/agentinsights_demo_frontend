@@ -447,11 +447,105 @@ export default function Home() {
               <div className="text-2xl text-center border-b mb-2">Output</div>
               <Tabs variant="soft-rounded">
                 <TabList mb="1em">
+                  <Tab width="50%">Customer Insights & Agent Actions</Tab>
+                  <Tab width="50%">Areas of Improvement</Tab>
                   <Tab width="50%">Detailed Summary</Tab>
-                  <Tab width="50%">AI Feedback</Tab>
-                  <Tab width="50%">Customer Insights </Tab>
                 </TabList>
                 <TabPanels>
+                  <TabPanel>
+                    {output ? (
+                      <div className="w-full space-y-4">
+                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                          {output.purpose_of_call &&
+                          output.purpose_of_call.length > 0 ? (
+                            output.purpose_of_call.map(
+                              (purpose: any, index: number) => (
+                                <li className="" key={index}>
+                                  {purpose}
+                                </li>
+                              )
+                            )
+                          ) : (
+                            <li>Purpose of the call not available.</li>
+                          )}
+                        </ul>
+                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                          <div className="font-bold text-lg">
+                            Customer Insights
+                          </div>
+                          {output.customer_insights &&
+                          output.customer_insights.length > 0 ? (
+                            output.customer_insights.map(
+                              (customer_insight: any, index: number) => (
+                                <li className="" key={index}>
+                                  {customer_insight}
+                                </li>
+                              )
+                            )
+                          ) : (
+                            <li>No customer insights available.</li>
+                          )}
+                        </ul>
+                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                          <div className="font-bold text-lg">Agent Actions</div>
+                          {output.call_to_actions &&
+                          output.call_to_actions.length > 0 ? (
+                            output.call_to_actions.map(
+                              (call_to_action: any, index: number) => (
+                                <li className="" key={index}>
+                                  {call_to_action}
+                                </li>
+                              )
+                            )
+                          ) : (
+                            <li>No call to actions available.</li>
+                          )}
+                        </ul>
+                      </div>
+                    ) : (
+                      <div className="p-2 text-center text-gray-600">
+                        Upload Audio File to see the results
+                      </div>
+                    )}
+                  </TabPanel>
+                  <TabPanel>
+                    {output ? (
+                      <div className="w-full space-y-4">
+                        <Box className="w-full p-2 border rounded-md shadow-sm">
+                          <Button
+                            className="w-full flex justify-between"
+                            variant="ghost"
+                            onClick={() => setIsOpen(!isOpen)}
+                          >
+                            <Text>Areas of Improvement</Text>
+                            {isOpen ? (
+                              <ChevronUpIcon boxSize="6" />
+                            ) : (
+                              <ChevronDownIcon boxSize="6" />
+                            )}
+                          </Button>
+
+                          {isOpen && (
+                            <Box className="mt-2">
+                              <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
+                                {output.areas.map(
+                                  (area: any, index: number) => (
+                                    <li className="" key={index}>
+                                      {area}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </Box>
+                          )}
+                        </Box>
+                      </div>
+                    ) : (
+                      <div className="p-2 text-center text-gray-600">
+                        Upload Audio File to see the results
+                      </div>
+                    )}
+                  </TabPanel>
                   <TabPanel>
                     {output ? (
                       <>
@@ -512,73 +606,6 @@ export default function Home() {
                       </>
                     ) : (
                       <div className="p-2 text-center text-gray-600 ">
-                        Upload Audio File to see the results
-                      </div>
-                    )}
-                  </TabPanel>
-                  <TabPanel>
-                    {output ? (
-                      <div className="w-full space-y-4">
-                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                          <div className="font-bold text-lg">
-                            Call To Actions
-                          </div>
-                          {output.call_to_actions.map(
-                            (call_to_action: any, index: number) => (
-                              <li className="" key={index}>
-                                {call_to_action}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                        <Box className="w-full p-2 border rounded-md shadow-sm">
-                          <Button
-                            className="w-full flex justify-between"
-                            variant="ghost"
-                            onClick={() => setIsOpen(!isOpen)}
-                          >
-                            <Text>Areas of Improvement</Text>
-                            {isOpen ? (
-                              <ChevronUpIcon boxSize="6" />
-                            ) : (
-                              <ChevronDownIcon boxSize="6" />
-                            )}
-                          </Button>
-
-                          {isOpen && (
-                            <Box className="mt-2">
-                              <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                                {output.areas.map(
-                                  (area: any, index: number) => (
-                                    <li className="" key={index}>
-                                      {area}
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            </Box>
-                          )}
-                        </Box>
-                      </div>
-                    ) : (
-                      <div className="p-2 text-center text-gray-600">
-                        Upload Audio File to see the results
-                      </div>
-                    )}
-                  </TabPanel>
-                  <TabPanel>
-                    {output ? (
-                      <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                        {output.customer_insights.map(
-                          (customer_insight: any, index: number) => (
-                            <li className="" key={index}>
-                              {customer_insight}
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    ) : (
-                      <div className="p-2 text-center text-gray-600">
                         Upload Audio File to see the results
                       </div>
                     )}
