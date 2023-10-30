@@ -8,6 +8,8 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import Cookies from "js-cookie";
+import PopUpForm from "../components/PopUpForm";
 
 import axios from "axios";
 import {
@@ -52,6 +54,19 @@ export default function Home() {
 
   const toast = useToast();
 
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  useEffect(() => {
+    // Show the form if the cookie is not set
+    if (!Cookies.get("formSubmitted")) {
+      setIsFormOpen(true);
+    }
+  }, []);
+
+  const closeForm = () => {
+    setIsFormOpen(false);
+  };
+
   const setUUIDQueryParam = (uuidValue: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     console.log(current);
@@ -89,7 +104,7 @@ export default function Home() {
     try {
       setLoadingQuestions(true);
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/get_questions`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/audio/get_questions`
       );
       console.log(response);
       setLoadingQuestions(false);
@@ -155,7 +170,7 @@ export default function Home() {
 
       const response = await axios({
         method: "post",
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/split_audio_file_based`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/audio/split_audio_file_based`,
         data: bodyFormData,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -192,7 +207,7 @@ export default function Home() {
   const preComputedOutputHandler = async (uuidVal: any) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/get_compile_transcript_and_processed_data?uuid=${uuidVal}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/audio/get_compile_transcript_and_processed_data?uuid=${uuidVal}`
       );
 
       setStartLogging(false);
@@ -638,6 +653,7 @@ export default function Home() {
       </div> */}
       </div>
       <AppFooter />
+      {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />}
     </div>
   );
 }
