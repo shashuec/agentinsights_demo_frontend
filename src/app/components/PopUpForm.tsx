@@ -19,12 +19,12 @@ import {
 function PopUpForm({ onClose }: any) {
   const [formData, setFormData] = useState({
     name: "",
-    phoneNumber: "",
+    email: "",
     companyName: "",
   });
   const [errors, setErrors] = useState({
     name: false,
-    phoneNumber: false,
+    email: false,
     companyName: false,
   });
 
@@ -37,10 +37,16 @@ function PopUpForm({ onClose }: any) {
     setErrors({ ...errors, [name]: false });
   };
 
+  const validateEmail = (email: any) => {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const validateForm = () => {
     const newErrors = {
       name: !formData.name,
-      phoneNumber: !formData.phoneNumber,
+      email: !formData.email || !validateEmail(formData.email),
       companyName: !formData.companyName,
     };
     setErrors(newErrors);
@@ -57,7 +63,7 @@ function PopUpForm({ onClose }: any) {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard/submit_demo_page_details`,
           {
             name: formData.name,
-            phone_number: formData.phoneNumber,
+            email: formData.email,
             company_name: formData.companyName,
           }
         );
@@ -100,8 +106,12 @@ function PopUpForm({ onClose }: any) {
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
       <ModalContent mx={4} maxW={isSmallerThan768 ? "90vw" : "md"}>
-        <ModalHeader fontSize="lg" fontWeight="bold">
-          Submit Your Details
+        <ModalHeader
+          fontSize="lg"
+          fontWeight="bold"
+          className="text-center text-blue-500"
+        >
+          Enter your details and experience the power of our Call Analysis
         </ModalHeader>
         <ModalBody pb={6}>
           <FormControl isInvalid={errors.name}>
@@ -117,17 +127,19 @@ function PopUpForm({ onClose }: any) {
               <FormErrorMessage>Name is required.</FormErrorMessage>
             )}
           </FormControl>
-          <FormControl mt={4} isInvalid={errors.phoneNumber}>
-            <FormLabel>Phone Number</FormLabel>
+          <FormControl mt={4} isInvalid={errors.email}>
+            <FormLabel>Email</FormLabel>
             <Input
-              type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
             />
-            {errors.phoneNumber && (
-              <FormErrorMessage>Phone Number is required.</FormErrorMessage>
+            {errors.email && (
+              <FormErrorMessage>
+                Please enter a valid email address.
+              </FormErrorMessage>
             )}
           </FormControl>
           <FormControl mt={4} isInvalid={errors.companyName}>
