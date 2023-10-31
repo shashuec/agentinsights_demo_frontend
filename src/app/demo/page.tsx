@@ -487,19 +487,19 @@ export default function Home() {
                     flexDir={["column", "column", "row"]}
                     className="flex-wrap font-semibold flex justify-between"
                   >
-                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
                       <Icon as={MdInsights} className="text-xl" />
                       Customer Insight
                     </Tab>
-                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
                       <Icon as={MdSupportAgent} className="text-xl" />
                       Agent Actions
                     </Tab>
-                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
                       <Icon as={FaLightbulb} className="text-lg" />
                       Areas of Improvement
                     </Tab>
-                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
                       <Icon as={BsFillFileTextFill} className="text-lg" />
                       Detailed Summary
                     </Tab>
