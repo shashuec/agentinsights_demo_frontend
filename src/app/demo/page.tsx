@@ -338,7 +338,7 @@ export default function Home() {
                                 <div className="flex flex-col w-full">
                                   <div
                                     placeholder="Question"
-                                    className="text-purple-800 text-sm shadow-md rounded-md p-2 border-[1px]  bg-purple-100 w-full outline-none"
+                                    className=" text-sm shadow-md rounded-md p-2 border-[1px]  bg-gray-100 w-full outline-none"
                                   >
                                     {field.value}
                                   </div>
@@ -456,7 +456,7 @@ export default function Home() {
             <div className="p-2 w-full col-span-4  bg-white space-y-2">
               <Box borderRadius="sm">
                 <div className=" flex gap-2 py-2 items-center text-2xl  border-b mb-2">
-                  <Icon as={FaWandMagicSparkles} color="purple.500" />{" "}
+                  <Icon as={FaWandMagicSparkles} color="blue.400" />{" "}
                   <span>Report</span>
                 </div>
                 {output ? (
@@ -481,7 +481,7 @@ export default function Home() {
                     Upload Audio File to see the results
                   </div>
                 )}
-                <Tabs variant="line" colorScheme="purple">
+                <Tabs variant="line" colorScheme="linkedin">
                   <TabList
                     mb={["1em", "1em", "0"]}
                     flexDir={["column", "column", "row"]}
@@ -508,7 +508,7 @@ export default function Home() {
                     <TabPanel>
                       {output ? (
                         <div className="w-full space-y-4">
-                          <ul className="list-disc text-sm shadow-md text-purple-800  p-4 px-6 bg-purple-100 space-y-3">
+                          <ul className="list-disc text-sm shadow-md text-black  p-4 px-6 bg-gray-100 space-y-3">
                             {output.customer_insights &&
                             output.customer_insights.length > 0 ? (
                               output.customer_insights.map(
@@ -532,7 +532,7 @@ export default function Home() {
                     <TabPanel>
                       {output ? (
                         <div className="w-full space-y-4">
-                          <ul className="list-disc text-sm shadow-md text-purple-800  p-4 px-6 bg-purple-100 space-y-3">
+                          <ul className="list-disc text-sm shadow-md text-black  p-4 px-6 bg-gray-100 space-y-3">
                             {output.call_to_actions &&
                             output.call_to_actions.length > 0 ? (
                               output.call_to_actions.map(
@@ -572,7 +572,7 @@ export default function Home() {
 
                             {isOpen && (
                               <Box className="mt-2"> */}
-                          <ul className="list-disc text-sm shadow-md text-purple-800  p-4 px-6 bg-purple-100 space-y-3">
+                          <ul className="list-disc text-sm shadow-md text-black  p-4 px-6 bg-gray-100 space-y-3">
                             {output.areas.map((area: any, index: number) => (
                               <li className="" key={index}>
                                 {area}
@@ -616,27 +616,27 @@ export default function Home() {
                                 key={category}
                                 className="mb-6 bg-white border rounded-lg shadow-sm p-2"
                               >
-                                <h2 className="text-base font-bold  border-b pb-2 text-purple-600">
+                                <h2 className="text-base font-bold  border-b pb-2 text-blue-600">
                                   {category}
                                 </h2>
                                 {answers.map((answer: any) => (
                                   <div
-                                    className="shadow-md  text-xs p-2 mt-2 bg-purple-100 border "
+                                    className="shadow-md  text-xs p-2 mt-2 bg-gray-100 border "
                                     key={answer.question}
                                   >
-                                    <div className="mb-2 text-purple-800">
+                                    <div className="mb-2 ">
                                       <span className="font-bold ">
                                         Question:{" "}
                                       </span>
                                       {answer.question}
                                     </div>
-                                    <div className="mb-2 text-purple-800">
+                                    <div className="mb-2 ">
                                       <span className="font-bold ">
                                         Answer:
                                       </span>{" "}
                                       {answer.answer}
                                     </div>
-                                    <div className="text-purple-800">
+                                    <div className="">
                                       <span className="font-bold ">
                                         Reason:
                                       </span>{" "}
