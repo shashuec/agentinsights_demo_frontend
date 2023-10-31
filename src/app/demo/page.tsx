@@ -3,13 +3,18 @@ import { useState, useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "../components/PlayAudio";
 import { FaCheckCircle } from "react-icons/fa";
-import { Button, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Button, Icon, Spinner, Text, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import Cookies from "js-cookie";
 import PopUpForm from "../components/PopUpForm";
+import { FcUpload } from "react-icons/fc";
+import { FaWandMagicSparkles } from "react-icons/fa6";
+import { MdSupportAgent, MdInsights } from "react-icons/md";
+import { FaLightbulb } from "react-icons/fa";
+import { BsFillFileTextFill } from "react-icons/bs";
 
 import axios from "axios";
 import {
@@ -253,24 +258,20 @@ export default function Home() {
   }, [output, logs]);
 
   return (
-    <div className="relative">
-      {/* <Header /> */}
+    <div className="relative bg-blue-100">
       <LandingPageHeader />
       <div>
         <div className="p-4 text-2xl italic font-bold text-center">
           Upload Your Audio and Experience the Magic
         </div>
-        <div className="px-4 flex flex-row w-full max-md:flex-col">
-          {/* Input div */}
-          <div className="flex-1 p-4 pt-2 relative">
-            <div className="flex items-center text-2xl">Input</div>
+        <div className="px-4 grid grid-cols-1 md:grid-cols-7 space-y-2 md:space-y-0  md:gap-2  pb-4 w-full">
+          <div className="p-4 pt-2 relative bg-white rounded-sm col-span-3 ">
+            {/* <div className="flex items-center text-2xl">Input</div> */}
             {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
-            {/* Choose Audio */}
             <div className="mt-4">
-              <div className=" rounded-md  w-fit p-2 bg-gray-200 text-sm  font-mono mb-3">
+              <div className=" w-fit p-2 text-white bg-black rounded-md font-bold  font-mono mb-3">
                 Audio
               </div>
-              {/* <div className="flex max-md:flex-col  gap-4"> */}
               <div className="">
                 <FileUploader
                   multiple={true}
@@ -285,15 +286,14 @@ export default function Home() {
                   Please upload an audio file!
                 </div>
               ) : (
-                <span className="text-gray-500 flex pt-2 overflow-hidden">
+                <span className="text-gray-500 flex pt-2 text-xs overflow-hidden">
                   {audioFileName}
                 </span>
               )}
             </div>
-            {/* Choose Questions Form */}
             {showQuestions ? (
               <div className="mt-4">
-                <div className="w-fit p-2 bg-gray-200 shadow-md rounded-md text-sm font-mono">
+                <div className="w-fit p-2 text-white bg-black rounded-md font-bold shadow-md  font-mono">
                   Questions
                 </div>
                 {loadingQuestions ? (
@@ -335,10 +335,10 @@ export default function Home() {
                                 },
                               }}
                               render={({ field }) => (
-                                <div className="flex flex-col">
+                                <div className="flex flex-col w-full">
                                   <div
                                     placeholder="Question"
-                                    className="text-black text-sm shadow-md rounded-md p-2 border-[1px] border-gray-400 bg-gray-100 w-full outline-none"
+                                    className="text-purple-800 text-sm shadow-md rounded-md p-2 border-[1px]  bg-purple-100 w-full outline-none"
                                   >
                                     {field.value}
                                   </div>
@@ -410,14 +410,15 @@ export default function Home() {
               </div>
             )}
           </div>
-          {/* Output div */}
-
           {startLogging ? (
-            <div className="flex-1 p-4">
-              <div className="flex items-center text-2xl">Output</div>
-              <div className="pt-2">
-                <div className="p-2 text-xl font-bold">Logs</div>
-                <div className="p-2 rounded-xl shadow-md max-h-[200px] overflow-y-auto  bg-gray-200 text-sm font-mono whitespace-pre-line max-md:w-full">
+            <div className="col-span-4 p-4 bg-white rounded-sm">
+              {/* <div className="flex items-center text-2xl">Output</div> */}
+              <div className="">
+                <div className="flex gap-2 items-center py-2 text-xl">
+                  <Icon as={FcUpload} />
+                  <span>Logs</span>
+                </div>
+                <div className="p-2 rounded-sm shadow-md max-h-[200px] overflow-y-auto  bg-gray-200 text-sm font-mono whitespace-pre-line max-md:w-full">
                   {PLACEHOLDER_RESPONSES.slice(0, currentLog + 1).map(
                     (log, index) => (
                       <div key={index} className="grid grid-cols-10 gap-4 p-2">
@@ -452,182 +453,210 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <Box
-              p={2}
-              // bg="white"
-              className="w-full flex-1 md:w-[50%] mb-4"
-              borderRadius="lg"
-              borderWidth="1px"
-            >
-              <div className="text-2xl text-center border-b mb-2">Output</div>
-              <Tabs variant="soft-rounded">
-                <TabList mb="1em">
-                  <Tab width="50%">Customer Insights & Agent Actions</Tab>
-                  <Tab width="50%">Areas of Improvement</Tab>
-                  <Tab width="50%">Detailed Summary</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    {output ? (
-                      <div className="w-full space-y-4">
-                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                          {output.purpose_of_call &&
-                          output.purpose_of_call.length > 0 ? (
-                            output.purpose_of_call.map(
-                              (purpose: any, index: number) => (
-                                <li className="" key={index}>
-                                  {purpose}
-                                </li>
+            <div className="p-2 w-full col-span-4  bg-white space-y-2">
+              <Box borderRadius="sm">
+                <div className=" flex gap-2 py-2 items-center text-2xl  border-b mb-2">
+                  <Icon as={FaWandMagicSparkles} color="purple.500" />{" "}
+                  <span>Report</span>
+                </div>
+                {output ? (
+                  <div className="w-full space-y-4">
+                    <ul className="list-disc text-sm  p-4 px-6  space-y-3">
+                      {output?.purpose_of_call &&
+                      output.purpose_of_call.length > 0 ? (
+                        output.purpose_of_call.map(
+                          (purpose: any, index: number) => (
+                            <li className="" key={index}>
+                              {purpose}
+                            </li>
+                          )
+                        )
+                      ) : (
+                        <li>Purpose of the call not available.</li>
+                      )}
+                    </ul>
+                  </div>
+                ) : (
+                  <div className="p-2  text-gray-600">
+                    Upload Audio File to see the results
+                  </div>
+                )}
+                <Tabs variant="line" colorScheme="purple">
+                  <TabList
+                    mb={["1em", "1em", "0"]}
+                    flexDir={["column", "column", "row"]}
+                    className="flex-wrap font-semibold flex justify-between"
+                  >
+                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                      <Icon as={MdInsights} className="text-xl" />
+                      Customer Insight
+                    </Tab>
+                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                      <Icon as={MdSupportAgent} className="text-xl" />
+                      Agent Actions
+                    </Tab>
+                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                      <Icon as={FaLightbulb} className="text-lg" />
+                      Areas of Improvement
+                    </Tab>
+                    <Tab fontSize={["xs", "sm", "md"]} className="flex gap-1">
+                      <Icon as={BsFillFileTextFill} className="text-lg" />
+                      Detailed Summary
+                    </Tab>
+                  </TabList>
+                  <TabPanels>
+                    <TabPanel>
+                      {output ? (
+                        <div className="w-full space-y-4">
+                          <ul className="list-disc text-sm shadow-md text-purple-800  p-4 px-6 bg-purple-100 space-y-3">
+                            {output.customer_insights &&
+                            output.customer_insights.length > 0 ? (
+                              output.customer_insights.map(
+                                (customer_insight: any, index: number) => (
+                                  <li className="" key={index}>
+                                    {customer_insight}
+                                  </li>
+                                )
                               )
-                            )
-                          ) : (
-                            <li>Purpose of the call not available.</li>
-                          )}
-                        </ul>
-                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                          <div className="font-bold text-lg">
-                            Customer Insights
-                          </div>
-                          {output.customer_insights &&
-                          output.customer_insights.length > 0 ? (
-                            output.customer_insights.map(
-                              (customer_insight: any, index: number) => (
-                                <li className="" key={index}>
-                                  {customer_insight}
-                                </li>
-                              )
-                            )
-                          ) : (
-                            <li>No customer insights available.</li>
-                          )}
-                        </ul>
-                        <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                          <div className="font-bold text-lg">Agent Actions</div>
-                          {output.call_to_actions &&
-                          output.call_to_actions.length > 0 ? (
-                            output.call_to_actions.map(
-                              (call_to_action: any, index: number) => (
-                                <li className="" key={index}>
-                                  {call_to_action}
-                                </li>
-                              )
-                            )
-                          ) : (
-                            <li>No call to actions available.</li>
-                          )}
-                        </ul>
-                      </div>
-                    ) : (
-                      <div className="p-2 text-center text-gray-600">
-                        Upload Audio File to see the results
-                      </div>
-                    )}
-                  </TabPanel>
-                  <TabPanel>
-                    {output ? (
-                      <div className="w-full space-y-4">
-                        <Box className="w-full p-2 border rounded-md shadow-sm">
-                          <Button
-                            className="w-full flex justify-between"
-                            variant="ghost"
-                            onClick={() => setIsOpen(!isOpen)}
-                          >
-                            <Text>Areas of Improvement</Text>
-                            {isOpen ? (
-                              <ChevronUpIcon boxSize="6" />
                             ) : (
-                              <ChevronDownIcon boxSize="6" />
+                              <li>No customer insights available.</li>
                             )}
-                          </Button>
-
-                          {isOpen && (
-                            <Box className="mt-2">
-                              <ul className="list-disc text-sm shadow-md rounded-md p-4 px-6 bg-gray-200 space-y-3">
-                                {output.areas.map(
-                                  (area: any, index: number) => (
-                                    <li className="" key={index}>
-                                      {area}
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            </Box>
-                          )}
-                        </Box>
-                      </div>
-                    ) : (
-                      <div className="p-2 text-center text-gray-600">
-                        Upload Audio File to see the results
-                      </div>
-                    )}
-                  </TabPanel>
-                  <TabPanel>
-                    {output ? (
-                      <>
-                        <div className="flex  gap-4 align-middle pb-2">
-                          <div className="font-bold text-2xl flex  my-auto">
-                            Score :
-                          </div>
-                          <div>
-                            <CircularProgress
-                              value={output.score * 10}
-                              size="80px"
-                              color={getProgressColor(output.score)}
-                            >
-                              <CircularProgressLabel>
-                                {output.score}/10
-                              </CircularProgressLabel>
-                            </CircularProgress>
-                          </div>
+                          </ul>
                         </div>
-                        {output &&
-                          Object.entries(
-                            categorizeResults(output.combined_output)
-                          ).map(([category, answers]: any) => (
-                            <div
-                              key={category}
-                              className="mb-6 bg-white border rounded-lg shadow-sm p-4"
+                      ) : (
+                        <div className="p-2 text-center text-gray-600">
+                          Upload Audio File to see the results
+                        </div>
+                      )}
+                    </TabPanel>
+                    <TabPanel>
+                      {output ? (
+                        <div className="w-full space-y-4">
+                          <ul className="list-disc text-sm shadow-md text-purple-800  p-4 px-6 bg-purple-100 space-y-3">
+                            {output.call_to_actions &&
+                            output.call_to_actions.length > 0 ? (
+                              output.call_to_actions.map(
+                                (call_to_action: any, index: number) => (
+                                  <li className="" key={index}>
+                                    {call_to_action}
+                                  </li>
+                                )
+                              )
+                            ) : (
+                              <li>No call to actions available.</li>
+                            )}
+                          </ul>
+                        </div>
+                      ) : (
+                        <div className="p-2 text-center text-gray-600">
+                          Upload Audio File to see the results
+                        </div>
+                      )}
+                    </TabPanel>
+                    <TabPanel>
+                      {output ? (
+                        <div className="w-full space-y-4">
+                          {/* <Box className="w-full p-2 border rounded-md shadow-sm">
+                            <Button
+                              className="w-full flex justify-between"
+                              variant="ghost"
+                              onClick={() => setIsOpen(!isOpen)}
                             >
-                              <h2 className="text-base font-bold mb-2 border-b pb-2 text-blue-600">
-                                {category}
-                              </h2>
-                              {answers.map((answer: any) => (
-                                <div
-                                  className="shadow-md rounded-md text-xs p-2 mt-2 bg-gray-200 border border-gray-300"
-                                  key={answer.question}
-                                >
-                                  <div className="mb-2">
-                                    <span className="font-bold text-gray-700">
-                                      Question:{" "}
-                                    </span>
-                                    {answer.question}
-                                  </div>
-                                  <div className="mb-2">
-                                    <span className="font-bold text-gray-700">
-                                      Answer:
-                                    </span>{" "}
-                                    {answer.answer}
-                                  </div>
-                                  <div>
-                                    <span className="font-bold text-gray-700">
-                                      Reason:
-                                    </span>{" "}
-                                    {answer.reason}
-                                  </div>
-                                </div>
-                              ))}
+                              <Text>Areas of Improvement</Text>
+                              {isOpen ? (
+                                <ChevronUpIcon boxSize="6" />
+                              ) : (
+                                <ChevronDownIcon boxSize="6" />
+                              )}
+                            </Button>
+
+                            {isOpen && (
+                              <Box className="mt-2"> */}
+                          <ul className="list-disc text-sm shadow-md text-purple-800  p-4 px-6 bg-purple-100 space-y-3">
+                            {output.areas.map((area: any, index: number) => (
+                              <li className="" key={index}>
+                                {area}
+                              </li>
+                            ))}
+                          </ul>
+                          {/* </Box>
+                            )}
+                          </Box> */}
+                        </div>
+                      ) : (
+                        <div className="p-2 text-center text-gray-600">
+                          Upload Audio File to see the results
+                        </div>
+                      )}
+                    </TabPanel>
+                    <TabPanel>
+                      {output ? (
+                        <>
+                          <div className="flex  gap-4 align-middle pb-2">
+                            <div className="font-bold text-2xl flex  my-auto">
+                              Score :
                             </div>
-                          ))}
-                      </>
-                    ) : (
-                      <div className="p-2 text-center text-gray-600 ">
-                        Upload Audio File to see the results
-                      </div>
-                    )}
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </Box>
+                            <div>
+                              <CircularProgress
+                                value={output.score * 10}
+                                size="70px"
+                                color={getProgressColor(output.score)}
+                              >
+                                <CircularProgressLabel>
+                                  {output.score}/10
+                                </CircularProgressLabel>
+                              </CircularProgress>
+                            </div>
+                          </div>
+                          {output &&
+                            Object.entries(
+                              categorizeResults(output.combined_output)
+                            ).map(([category, answers]: any) => (
+                              <div
+                                key={category}
+                                className="mb-6 bg-white border rounded-lg shadow-sm p-2"
+                              >
+                                <h2 className="text-base font-bold  border-b pb-2 text-purple-600">
+                                  {category}
+                                </h2>
+                                {answers.map((answer: any) => (
+                                  <div
+                                    className="shadow-md  text-xs p-2 mt-2 bg-purple-100 border "
+                                    key={answer.question}
+                                  >
+                                    <div className="mb-2 text-purple-800">
+                                      <span className="font-bold ">
+                                        Question:{" "}
+                                      </span>
+                                      {answer.question}
+                                    </div>
+                                    <div className="mb-2 text-purple-800">
+                                      <span className="font-bold ">
+                                        Answer:
+                                      </span>{" "}
+                                      {answer.answer}
+                                    </div>
+                                    <div className="text-purple-800">
+                                      <span className="font-bold ">
+                                        Reason:
+                                      </span>{" "}
+                                      {answer.reason}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ))}
+                        </>
+                      ) : (
+                        <div className="p-2 text-center text-gray-600 ">
+                          Upload Audio File to see the results
+                        </div>
+                      )}
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              </Box>
+            </div>
           )}
         </div>
         {/* <div className="p-4 space-y-4">

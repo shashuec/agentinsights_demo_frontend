@@ -15,7 +15,7 @@ export const PlayAudio = ({ audio }: any) => {
     const waveSurfer = WaveSurfer.create({
       container: containerRef.current,
       barWidth: 0,
-      barHeight: 1,
+      barHeight: 0.7,
       cursorWidth: 0,
       waveColor: "#900090",
       progressColor: "#450476",
@@ -38,10 +38,14 @@ export const PlayAudio = ({ audio }: any) => {
             return !play;
           });
         }}
-        className="w-[30px] h-[30px]"
+        className="w-[30px] h-[10px]"
         type="button"
       >
-        {isPlaying ? <FaPauseCircle size="3em" /> : <FaPlayCircle size="3em" />}
+        {isPlaying ? (
+          <FaPauseCircle size="2rem" />
+        ) : (
+          <FaPlayCircle size="2rem" />
+        )}
       </button>
       <div className="pl-4 mt-4" ref={containerRef} />
     </div>

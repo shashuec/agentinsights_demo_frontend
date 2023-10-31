@@ -9,8 +9,8 @@ const TranscriptBox = ({ transcript }: TranscriptBoxProps) => {
   const words = transcript.split(" ");
 
   return (
-    <div className="shadow-md mt-2 text-sm rounded-md px-4 py-2 bg-gray-200">
-      <div className="text-center text-lg pb-2 font-bold">Transcript</div>
+    <div className=" mt-2 text-sm py-2 ">
+      <div className=" text-lg pb-2 font-bold">Transcript</div>
       <div>
         {words.length > 50 && !showMore
           ? `${words.slice(0, 50).join(" ")}...`

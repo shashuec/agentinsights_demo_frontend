@@ -104,7 +104,7 @@ function PopUpForm({ onClose }: any) {
       motionPreset="slideInBottom"
       isCentered
     >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(2px)" />
       <ModalContent mx={4} maxW={isSmallerThan768 ? "90vw" : "md"}>
         <ModalHeader
           fontSize="lg"
@@ -122,6 +122,7 @@ function PopUpForm({ onClose }: any) {
               value={formData.name}
               onChange={handleChange}
               required
+              placeholder="Elon Musk"
             />
             {errors.name && (
               <FormErrorMessage>Name is required.</FormErrorMessage>
@@ -135,6 +136,7 @@ function PopUpForm({ onClose }: any) {
               value={formData.email}
               onChange={handleChange}
               required
+              placeholder="elon@tesla.com"
             />
             {errors.email && (
               <FormErrorMessage>
@@ -150,6 +152,7 @@ function PopUpForm({ onClose }: any) {
               value={formData.companyName}
               onChange={handleChange}
               required
+              placeholder="Tesla"
             />
             {errors.companyName && (
               <FormErrorMessage>Company Name is required.</FormErrorMessage>
