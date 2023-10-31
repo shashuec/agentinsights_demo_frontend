@@ -104,7 +104,7 @@ function PopUpForm({ onClose }: any) {
       motionPreset="slideInBottom"
       isCentered
     >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(2px)" />
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(1px)" />
       <ModalContent mx={4} maxW={isSmallerThan768 ? "90vw" : "md"}>
         <ModalHeader
           fontSize="lg"

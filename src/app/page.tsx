@@ -6,6 +6,7 @@ import { FcCheckmark } from "react-icons/fc";
 import how_AI_works_1 from "./assets/how_AI_works_1.png";
 import how_AI_works_2 from "./assets/how_AI_works_2.png";
 import how_AI_works_3 from "./assets/how_AI_works_3.png";
+import floating_demo from "./assets/floating_demo.png";
 import android_app from "./assets/android_app.png";
 import analytics_dash from "./assets/analytics_dash.png";
 import AppFooter from "./components/AppFooter";
@@ -170,6 +171,15 @@ const LandingPage = () => {
         </section>
         <AppFooter />
       </main>
+      <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
+        <div className="fixed bottom-0 right-0 mr-[-1rem] mb-[-0.5rem] md:hidden  flex items-center justify-center ">
+          <Image
+            src={floating_demo}
+            className="w-36"
+            alt="floating demo button"
+          />
+        </div>
+      </Link>
     </div>
   );
 };
