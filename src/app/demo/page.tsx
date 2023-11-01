@@ -487,20 +487,25 @@ export default function Home() {
                     flexDir={["column", "column", "row"]}
                     className="flex-wrap font-semibold flex justify-between"
                   >
-                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
                       <Icon as={MdInsights} className="text-xl" />
-                      Customer Insight
+                      Customer Insight{" "}
+                      {output && (
+                        <span>({output.customer_insights.length})</span>
+                      )}
                     </Tab>
-                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
                       <Icon as={MdSupportAgent} className="text-xl" />
-                      Agent Actions
+                      Agent Actions{" "}
+                      {output && <span>({output.call_to_actions.length})</span>}
                     </Tab>
-                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
-                      <Icon as={FaLightbulb} className="text-lg" />
-                      Areas of Improvement
+                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                      <Icon as={FaLightbulb} className="text-base" />
+                      Areas of Improvement{" "}
+                      {output && <span>({output.areas.length})</span>}
                     </Tab>
-                    <Tab fontSize={["xs", "xs", "sm"]} className="flex gap-1">
-                      <Icon as={BsFillFileTextFill} className="text-lg" />
+                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                      <Icon as={BsFillFileTextFill} className="text-base" />
                       Detailed Summary
                     </Tab>
                   </TabList>
@@ -594,7 +599,7 @@ export default function Home() {
                         <>
                           <div className="flex  gap-4 align-middle pb-2">
                             <div className="font-bold text-2xl flex  my-auto">
-                              Score :
+                              AI Score :
                             </div>
                             <div>
                               <CircularProgress

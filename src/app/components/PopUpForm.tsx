@@ -73,8 +73,9 @@ function PopUpForm({ onClose }: any) {
           Cookies.set("formSubmitted", "true", { expires: 7 });
           onClose();
           toast({
-            title: "Success",
-            description: "Your details have been successfully submitted.",
+            title: "Welcome to the Demo!",
+            description:
+              "You're all set! Proceed to explore the demo right ahead.",
             status: "success",
             duration: 5000,
             isClosable: true,
@@ -84,8 +85,7 @@ function PopUpForm({ onClose }: any) {
         console.error("Error submitting form", error);
         toast({
           title: "Error",
-          description:
-            "There was an error submitting your details. Please try again.",
+          description: "There was an error please try again.",
           status: "error",
           duration: 5000,
           isClosable: true,
