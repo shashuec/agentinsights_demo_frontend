@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const AppFooter = () => {
   return (
-    <footer className="bg-gray-800 py-8 px-4 md:px-20 text-white">
+    <footer className="bg-gray-800 py-8 pb-24 px-4 md:px-20 text-white">
       <div className="flex flex-col md:flex-row justify-between gap-8 space-y-8 md:space-y-0">
         {/* Column 1 */}
         <div className=" flex-1 space-y-4">

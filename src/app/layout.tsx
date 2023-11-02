@@ -18,20 +18,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   const unsubscribe = router.subscribe(
-  //     "routeChangeComplete",
-  //     ({ url }: any) => {
-  //       ga.pageview(url);
-  //     }
-  //   );
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [router]);
-
   return (
     <html lang="en">
       <head>
@@ -48,24 +34,6 @@ export default function RootLayout({
         `,
           }}
         ></script>
-
-        {/* Google Analytics */}
-        {/* {ga.GA_TRACKING_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${ga.GA_TRACKING_ID}`}
-            ></script>
-            <script>
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${ga.GA_TRACKING_ID}');
-              `}
-            </script>
-          </>
-        )} */}
       </head>
       <body className={inter.className}>
         <Providers>{children}</Providers>

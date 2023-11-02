@@ -28,9 +28,10 @@ const LandingPage = () => {
               operations, ensuring every interaction is data-driven, insightful,
               and customer-centric.
             </div>
-            <div className="flex pt-4 md:pt-4">
+            <div className="flex pt-4 md:pt-4 fixed bottom-0 left-0 right-0 flex-col  md:relative md:p-0 md:bg-transparent md:m-0">
+              <div className="bg-gradient-to-t from-blue-400 to-transparent p-1 md:p-0"></div>
               <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
-                <button className="font-bold px-2 py-1 md:px-4 md:py-2 border-2 border-blue-700 bg-white text-blue-700 hover:bg-blue-700 hover:text-white rounded-full ">
+                <button className="font-bold px-2 py-1 md:px-4 md:py-2 md:rounded-full shadow-xl bg-gradient-to-r from-teal-600 to-blue-500 text-white  w-full md:w-fit">
                   Upload Your Audio and Witness the Transformation
                 </button>
               </Link>
@@ -171,7 +172,7 @@ const LandingPage = () => {
         </section>
         <AppFooter />
       </main>
-      <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
+      {/* <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
         <div className="fixed bottom-0 right-0 mr-[-1rem] mb-[-0.5rem] md:hidden  flex items-center justify-center ">
           <Image
             src={floating_demo}
@@ -179,7 +180,7 @@ const LandingPage = () => {
             alt="floating demo button"
           />
         </div>
-      </Link>
+      </Link> */}
     </div>
   );
 };
