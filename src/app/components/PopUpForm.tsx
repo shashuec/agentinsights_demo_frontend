@@ -105,17 +105,19 @@ function PopUpForm({ onClose }: any) {
       isCentered
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(1px)" />
-      <ModalContent mx={4} maxW={isSmallerThan768 ? "90vw" : "md"}>
+      <ModalContent mx={2} maxW={isSmallerThan768 ? "80vw" : "md"}>
         <ModalHeader
-          fontSize="lg"
+          fontSize={isSmallerThan768 ? "md" : "lg"}
           fontWeight="bold"
           className="text-center text-blue-500"
         >
-          Enter your details and experience the power of our Call Analysis
+          Access Demo
         </ModalHeader>
-        <ModalBody pb={6}>
+        <ModalBody pb={2}>
           <FormControl isInvalid={errors.name}>
-            <FormLabel>Name</FormLabel>
+            <FormLabel fontSize={isSmallerThan768 ? "sm" : "md"}>
+              Name
+            </FormLabel>
             <Input
               type="text"
               name="name"
@@ -123,13 +125,16 @@ function PopUpForm({ onClose }: any) {
               onChange={handleChange}
               required
               placeholder="Elon Musk"
+              fontSize={isSmallerThan768 ? "sm" : "md"}
             />
             {errors.name && (
               <FormErrorMessage>Name is required.</FormErrorMessage>
             )}
           </FormControl>
           <FormControl mt={4} isInvalid={errors.email}>
-            <FormLabel>Email</FormLabel>
+            <FormLabel fontSize={isSmallerThan768 ? "sm" : "md"}>
+              Email
+            </FormLabel>
             <Input
               type="email"
               name="email"
@@ -137,6 +142,7 @@ function PopUpForm({ onClose }: any) {
               onChange={handleChange}
               required
               placeholder="elon@tesla.com"
+              fontSize={isSmallerThan768 ? "sm" : "md"}
             />
             {errors.email && (
               <FormErrorMessage>
@@ -145,7 +151,9 @@ function PopUpForm({ onClose }: any) {
             )}
           </FormControl>
           <FormControl mt={4} isInvalid={errors.companyName}>
-            <FormLabel>Company Name</FormLabel>
+            <FormLabel fontSize={isSmallerThan768 ? "sm" : "md"}>
+              Company Name
+            </FormLabel>
             <Input
               type="text"
               name="companyName"
@@ -153,6 +161,7 @@ function PopUpForm({ onClose }: any) {
               onChange={handleChange}
               required
               placeholder="Tesla"
+              fontSize={isSmallerThan768 ? "sm" : "md"}
             />
             {errors.companyName && (
               <FormErrorMessage>Company Name is required.</FormErrorMessage>
@@ -162,8 +171,10 @@ function PopUpForm({ onClose }: any) {
         <ModalFooter>
           <button
             className={`text-white font-bold p-2 rounded-md ${
-              isSubmitting ? "bg-blue-400" : "bg-blue-500"
-            } ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"}`}
+              isSmallerThan768 ? "text-sm" : "text-md"
+            } ${isSubmitting ? "bg-blue-400" : "bg-blue-500"} ${
+              isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
