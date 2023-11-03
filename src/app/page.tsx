@@ -29,9 +29,9 @@ const LandingPage = () => {
               and customer-centric.
             </div>
             <div className="flex pt-4 md:pt-4 fixed bottom-0 left-0 right-0 flex-col  md:relative md:p-0 md:bg-transparent md:m-0">
-              <div className="bg-gradient-to-t from-blue-400 to-transparent p-1 md:p-0"></div>
+              <div className="bg-gradient-to-t from-blue-700 to-transparent p-1 md:p-0"></div>
               <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
-                <button className="font-bold px-2 py-1 md:px-4 md:py-2 md:rounded-full shadow-xl bg-gradient-to-r from-teal-600 to-blue-500 text-white  w-full md:w-fit">
+                <button className="font-bold px-2 py-1 md:px-4 md:py-2 md:rounded-full shadow-xl bg-blue-700 text-white  w-full md:w-fit">
                   Upload Your Audio and Witness the Transformation
                 </button>
               </Link>

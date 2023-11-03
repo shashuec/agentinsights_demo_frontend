@@ -19,12 +19,12 @@ import {
 function PopUpForm({ onClose }: any) {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    phoneNumber: "",
     companyName: "",
   });
   const [errors, setErrors] = useState({
     name: false,
-    email: false,
+    phoneNumber: false,
     companyName: false,
   });
 
@@ -43,10 +43,14 @@ function PopUpForm({ onClose }: any) {
     return re.test(String(email).toLowerCase());
   };
 
+  const isValidPhoneNumber = (phoneNumber: string) => {
+    return phoneNumber.length >= 10;
+  };
+
   const validateForm = () => {
     const newErrors = {
       name: !formData.name,
-      email: !formData.email || !validateEmail(formData.email),
+      phoneNumber: !isValidPhoneNumber(formData.phoneNumber),
       companyName: !formData.companyName,
     };
     setErrors(newErrors);
@@ -63,12 +67,18 @@ function PopUpForm({ onClose }: any) {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard/submit_demo_page_details`,
           {
             name: formData.name,
-            email: formData.email,
+            phone_number: formData.phoneNumber,
             company_name: formData.companyName,
           }
         );
 
         if (response.status === 200) {
+          if (typeof window.gtag === "function") {
+            // Fire Google Ads conversion tracking
+            window.gtag("event", "conversion", {
+              send_to: `${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID}/VvgeCJ6fuvIYEL6kjbkq`,
+            });
+          }
           console.log("User details successfully submitted");
           Cookies.set("formSubmitted", "true", { expires: 7 });
           onClose();
@@ -131,22 +141,22 @@ function PopUpForm({ onClose }: any) {
               <FormErrorMessage>Name is required.</FormErrorMessage>
             )}
           </FormControl>
-          <FormControl mt={4} isInvalid={errors.email}>
+          <FormControl mt={4} isInvalid={errors.phoneNumber}>
             <FormLabel fontSize={isSmallerThan768 ? "sm" : "md"}>
-              Email
+              Phone Number
             </FormLabel>
             <Input
-              type="email"
-              name="email"
-              value={formData.email}
+              type="tel"
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
               required
-              placeholder="elon@tesla.com"
+              placeholder="1234567890"
               fontSize={isSmallerThan768 ? "sm" : "md"}
             />
-            {errors.email && (
+            {errors.phoneNumber && (
               <FormErrorMessage>
-                Please enter a valid email address.
+                Please enter a valid phone number with at least 10 digits.
               </FormErrorMessage>
             )}
           </FormControl>
