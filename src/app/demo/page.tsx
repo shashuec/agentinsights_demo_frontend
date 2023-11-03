@@ -3,11 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "../components/PlayAudio";
 import { FaCheckCircle } from "react-icons/fa";
-import { Button, Icon, Spinner, Text, useToast } from "@chakra-ui/react";
-import Image from "next/image";
+import { Icon, Spinner, useToast } from "@chakra-ui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import Cookies from "js-cookie";
 import PopUpForm from "../components/PopUpForm";
 import { FcUpload } from "react-icons/fc";
@@ -15,7 +13,6 @@ import { FaWandMagicSparkles } from "react-icons/fa6";
 import { MdSupportAgent, MdInsights } from "react-icons/md";
 import { FaLightbulb } from "react-icons/fa";
 import { BsFillFileTextFill } from "react-icons/bs";
-
 import axios from "axios";
 import {
   useForm,
@@ -25,10 +22,7 @@ import {
 } from "react-hook-form";
 import { PLACEHOLDER_RESPONSES, EXAMPLES } from "../constants/constants";
 // import SampleResponse from "./constants/sample.json";
-
 import { ThreeDots } from "react-loader-spinner";
-import Header from "../components/Header";
-
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import TranscriptBox from "../components/TranscriptBox";
 import AppFooter from "../components/AppFooter";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
@@ -15,8 +15,10 @@ import {
   useMediaQuery,
   useToast,
 } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
 
 function PopUpForm({ onClose }: any) {
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     name: "",
     phoneNumber: "",
@@ -30,6 +32,36 @@ function PopUpForm({ onClose }: any) {
 
   const toast = useToast();
   const [isSmallerThan768] = useMediaQuery("(max-width: 768px)");
+
+  useEffect(() => {
+    const utmParams: any = {};
+    let shouldUpdateCookies = false;
+
+    // Check for UTM parameters in the URL
+    [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+    ].forEach((key) => {
+      const value = searchParams.get(key);
+      if (value) {
+        utmParams[key] = value;
+        shouldUpdateCookies = true;
+      } else {
+        // If not present in URL, try getting from cookies
+        utmParams[key] = Cookies.get(key) || "";
+      }
+    });
+
+    // Update cookies if UTM params are present in the URL
+    if (shouldUpdateCookies) {
+      for (const [key, value] of Object.entries(utmParams)) {
+        Cookies.set(key, value as any, { expires: 7 }); // Expires in 30 days
+      }
+    }
+  }, []);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -63,12 +95,20 @@ function PopUpForm({ onClose }: any) {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
+        const utmParams = {
+          utmSource: Cookies.get("utm_source") || "",
+          utmMedium: Cookies.get("utm_medium") || "",
+          utmCampaign: Cookies.get("utm_campaign") || "",
+          utmTerm: Cookies.get("utm_term") || "",
+          utmContent: Cookies.get("utm_content") || "",
+        };
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard/submit_demo_page_details`,
           {
             name: formData.name,
             phone_number: formData.phoneNumber,
             company_name: formData.companyName,
+            utmParams: utmParams,
           }
         );
 

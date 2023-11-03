@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import LandingPageHeader from "./components/LandingPageHeader";
 import Image from "next/image";
 import landing_agent from "./assets/landing_agent.png";
@@ -11,8 +13,33 @@ import android_app from "./assets/android_app.png";
 import analytics_dash from "./assets/analytics_dash.png";
 import AppFooter from "./components/AppFooter";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 
 const LandingPage = () => {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    // If no UTM parameters are present, set a cookie to indicate this
+    const utmKeys = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+    ];
+    utmKeys.forEach((key) => {
+      if (searchParams.has(key)) {
+        Cookies.set(key, searchParams.get(key) || "", { expires: 7 });
+      }
+    });
+
+    // if (!hasUtmParams) {
+    //   console.log("Not present utm");
+    // } else {
+    //   console.log("present");
+    // }
+  }, [searchParams]);
+
   return (
     <div className="relative bg-gray-100 min-h-screen">
       <LandingPageHeader />
