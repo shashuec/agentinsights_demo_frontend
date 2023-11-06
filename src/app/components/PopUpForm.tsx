@@ -115,8 +115,14 @@ function PopUpForm({ onClose }: any) {
         if (response.status === 200) {
           if (typeof window.gtag === "function") {
             // Fire Google Ads conversion tracking
+            // console.log("Sending conversion tracking event to Google Ads");
+            // console.log(window.gtag);
+
             window.gtag("event", "conversion", {
               send_to: `${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID}/VvgeCJ6fuvIYEL6kjbkq`,
+              event_callback: () => {
+                console.log("Conversion event tracked!");
+              },
             });
           }
           console.log("User details successfully submitted");

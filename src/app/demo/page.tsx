@@ -34,7 +34,7 @@ export default function Home() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const fileTypes = ["MP3", "WAV", "MP4", "AAC"];
+  const fileTypes = ["MP3", "WAV", "MP4", "AAC", "AMR", "M4A"];
   const [isOpen, setIsOpen] = useState(true);
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
