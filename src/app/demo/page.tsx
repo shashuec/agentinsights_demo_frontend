@@ -85,6 +85,34 @@ export default function Home() {
     if (searchParams.has("uuid")) {
       preComputedOutputHandler(searchParams.get("uuid"));
     }
+
+    const utmParams: any = {};
+    let shouldUpdateCookies = false;
+
+    // Check for UTM parameters in the URL
+    [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+    ].forEach((key) => {
+      const value = searchParams.get(key);
+      if (value) {
+        utmParams[key] = value;
+        shouldUpdateCookies = true;
+      } else {
+        // If not present in URL, try getting from cookies
+        utmParams[key] = Cookies.get(key) || "";
+      }
+    });
+
+    // Update cookies if UTM params are present in the URL
+    if (shouldUpdateCookies) {
+      for (const [key, value] of Object.entries(utmParams)) {
+        Cookies.set(key, value as any, { expires: 7 }); // Expires in 30 days
+      }
+    }
   }, []);
 
   const scrollToBottom = () => {
