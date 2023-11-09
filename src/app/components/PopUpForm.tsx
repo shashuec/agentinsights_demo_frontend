@@ -94,6 +94,13 @@ function PopUpForm({ onClose }: any) {
                 console.log("Conversion event tracked!");
               },
             });
+
+            window.gtag("event", "conversion", {
+              send_to: `${process.env.NEXT_PUBLIC_GOOGLE_ADS_ANALYTICS_ID}'}/VvgeCJ6fuvIYEL6kjbkq`,
+              event_callback: () => {
+                console.log("Analytics event tracked!");
+              },
+            });
           }
           console.log("User details successfully submitted");
           Cookies.set("formSubmitted", "true", { expires: 7 });
