@@ -53,39 +53,33 @@ export default function RootLayout({
         />
 
         {/* Google tag (gtag.js) */}
-        <script
+        <Script
           async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID}`}
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID}',{
-                  page_path: window.location.pathname,
-                });
-                `,
-          }}
+          src="https://www.googletagmanager.com/gtag/js?id=AW-11394044478"
         />
+        <Script id="google-analytics">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'AW-11394044478');
+        `}
+        </Script>
 
-        <script
+        <Script
           async
-          src={`https://www.googletagmanager.com/gtag/js?id='${process.env.NEXT_PUBLIC_GOOGLE_ADS_ANALYTICS_ID}'}`}
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ANALYTICS_ID}'}',{
-                  page_path: window.location.pathname,
-                });
-                `,
-          }}
+          src="https://www.googletagmanager.com/gtag/js?id=G-QMW8FCCMXB"
         />
+        <Script id="google-analytics">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-QMW8FCCMXB');
+        `}
+        </Script>
       </head>
       <body className={inter.className}>
         <noscript
