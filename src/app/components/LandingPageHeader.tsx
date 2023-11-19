@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import logo_end from "../assets/logo_end.svg";
+import AILogo from "../assets/AgentInsightSLogo.png";
 import { BiRightArrowAlt } from "react-icons/bi";
 import { AiOutlineMenu } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
@@ -28,7 +29,7 @@ const LandingPageHeader = () => {
       borderBottom="2px"
       borderColor="gray.200"
       p={4}
-      className="sticky top-0 left-0 bg-white shadow-md z-10"
+      className="sticky top-0 left-0 bg-white shadow-md z-10 sm:px-10"
     >
       <Box
         display="flex"
@@ -44,13 +45,9 @@ const LandingPageHeader = () => {
           onClick={() => handleNavigation("/")}
         >
           <Box fontWeight="bold" className="md:text-[2rem] text-[1.4rem]">
-            AgentInsight
+            {/* AgentInsight */}
+            <Image className="w-[10rem] ml-[-0.3rem]" src={AILogo} alt="" />
           </Box>
-          <Image
-            className="w-[1.5rem] md:w-[2rem] pb-[0.5rem] ml-[-0.3rem]"
-            src={logo_end}
-            alt=""
-          />
         </Box>
 
         {/* Mobile Menu - visible only on small screens */}
@@ -88,8 +85,12 @@ const LandingPageHeader = () => {
                     </MenuItem>
                   </a>
                   <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
-                    <MenuItem color="blue.700" _hover={{ color: "blue.500" }}>
-                      Demo
+                    <MenuItem
+                      color="blue.700"
+                      // _hover={{ color: "blue.500" }}
+                      className="w-52 p-2 mx-2 overflow-x-hidden font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out"
+                    >
+                      Try Demo
                     </MenuItem>
                   </Link>
                 </MenuList>
@@ -100,7 +101,7 @@ const LandingPageHeader = () => {
 
         {/* Desktop Menu - visible only on medium and larger screens */}
         <Box display={{ base: "none", md: "flex" }}>
-          <Box display="flex" className="space-x-4">
+          <Box display="flex" className="space-x-4 mr-10">
             <Link href="/about">
               <Box p={2} _hover={{ color: "blue.500" }} className="font-bold">
                 About Us
@@ -120,9 +121,13 @@ const LandingPageHeader = () => {
                 Discover Our Product
               </Box>
             </a>
+          </Box>
+        </Box>
+        <Box display={{ base: "none", md: "flex" }}>
+          <Box display="flex" className="space-x-4">
             <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
-              <Box className="p-2  bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
-                Demo
+              <Box className="p-2 font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
+                Try Demo
               </Box>
             </Link>
           </Box>

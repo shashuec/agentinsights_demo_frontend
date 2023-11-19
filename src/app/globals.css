@@ -39,3 +39,23 @@ body {
 ::-webkit-scrollbar-thumb:active {
   background: #444;
 }
+
+/* styles.css */
+.half-gradient::after {
+  content: "";
+  display: block;
+  height: 50%; /* This controls the height of the gradient effect */
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0; /* Position the gradient at the bottom; use `top: 0;` to position it at the top */
+  z-index: 0;
+  transform: skewY(
+    -10deg
+  ); /* This skews the pseudo-element, creating an angled effect */
+  transform-origin: bottom left; /* This defines the origin point of the transform */
+}
+
+.relative {
+  position: relative;
+}
