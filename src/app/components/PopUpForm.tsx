@@ -102,6 +102,12 @@ function PopUpForm({ onClose }: any) {
             //   },
             // });
           }
+
+          fbq("track", "Lead", {
+            value: 1,
+            currency: "INR",
+          });
+
           console.log("User details successfully submitted");
           Cookies.set("formSubmitted", "true", { expires: 7 });
           onClose();

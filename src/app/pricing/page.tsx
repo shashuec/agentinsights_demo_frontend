@@ -66,7 +66,7 @@ export default function Pricing() {
             {/* Starter plan */}
             <div
               key={plans[0].name}
-              className="rounded-2xl border border-t-4 border-t-green-600 border-gray-200 bg-white shadow"
+              className="mx-3 lg:mx-0 rounded-2xl border border-t-4 border-t-green-600 border-gray-200 bg-white shadow"
             >
               <div className="flex w-full flex-col justify-start space-y-4 px-8 pt-10">
                 <p className="text-4xl font-bold leading-10 flex justify-between items-center">
@@ -111,7 +111,7 @@ export default function Pricing() {
             {/* Business plan */}
             <div
               key={plans[1].name}
-              className="rounded-2xl border border-t-4 border-t-blue-500 border-gray-200 bg-white shadow"
+              className="mx-3 lg:mx-0 rounded-2xl border border-t-4 border-t-blue-500 border-gray-200 bg-white shadow"
             >
               <div className="flex w-full flex-col justify-start space-y-4 px-8 pt-10">
                 <p className="text-4xl font-bold leading-10 flex justify-between items-center">
@@ -160,7 +160,7 @@ export default function Pricing() {
             {/* Custom */}
             <div
               key={plans[2].name}
-              className="rounded-2xl border border-t-4 border-t-red-600 border-gray-200 bg-white shadow"
+              className="mx-3 lg:mx-0 rounded-2xl border border-t-4 border-t-red-600 border-gray-200 bg-white shadow"
             >
               <div className="flex w-full flex-col justify-start space-y-4 px-8 pt-10">
                 <p className="text-4xl font-bold leading-10 flex justify-between items-center">

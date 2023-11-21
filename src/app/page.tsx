@@ -54,7 +54,7 @@ const LandingPage = () => {
     <>
       <LandingPageHeader />
       <div className="">
-        <div className="relative isolate z-0 bg-hero-gradient px-6 pt-14 lg:px-8">
+        <div className="relative isolate z-0 bg-hero-gradient px-6 pt-14 lg:px-8 overflow-x-hidden">
           <div className="relative mx-auto max-w-2xl">
             <div className="bg-gradient-to-r border max-w-xs mx-auto mb-8 border-purple-500 text-purple-800 py-2 flex items-center justify-center gap-x-4 rounded-lg">
               <FaRegCreditCard className="h-4 w-4 text-purple-600" />
@@ -94,12 +94,6 @@ const LandingPage = () => {
                   quality={100}
                   alt="Bg Image"
                 />
-
-                <Image
-                  className="w-full md:w-[80rem] object-contain"
-                  src={Hero}
-                  alt="Landing Agent"
-                />
                 <Image
                   className="absolute z-[-10] left-[18rem] -top-44 w-28 h-28 md:left-[40rem] md:-top-36 md:w-40 md:h-40"
                   src={Object2}
@@ -107,6 +101,11 @@ const LandingPage = () => {
                   objectFit="cover"
                   quality={100}
                   alt="Bg Image"
+                />
+                <Image
+                  className="w-full md:w-[80rem] object-contain"
+                  src={Hero}
+                  alt="Landing Agent"
                 />
               </div>
             </div>
