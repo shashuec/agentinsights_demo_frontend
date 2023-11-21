@@ -197,9 +197,10 @@ const LandingPage = () => {
                           </span>
                         </h2>
                         <p className="text-gray-600 text-lg md:text-xl">
-                          Using call analysis, you'll obtain automated feedback,
-                          AI scoring, and call transcriptions, resulting in
-                          performance assessment and actionable insights
+                          Using call analysis, you&apos;ll obtain automated
+                          feedback, AI scoring, and call transcriptions,
+                          resulting in performance assessment and actionable
+                          insights
                         </p>
                       </div>
                     </div>
