@@ -3,18 +3,28 @@
 import React, { useEffect } from "react";
 import LandingPageHeader from "./components/LandingPageHeader";
 import Image from "next/image";
-import landing_agent from "./assets/landing_agent.png";
-import { FcCheckmark } from "react-icons/fc";
-import how_AI_works_1 from "./assets/how_AI_works_1.png";
-import how_AI_works_2 from "./assets/how_AI_works_2.png";
-import how_AI_works_3 from "./assets/how_AI_works_3.png";
-import floating_demo from "./assets/floating_demo.png";
-import android_app from "./assets/android_app.png";
-import analytics_dash from "./assets/analytics_dash.png";
 import AppFooter from "./components/AppFooter";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
+import { FaRegCreditCard } from "react-icons/fa6";
+import { FaCog } from "react-icons/fa";
+
+import Hero from "./assets/hero.png";
+import AiScore from "./assets/aiScore.png";
+import CallAnalysis from "./assets/CallAnalysis.png";
+import CustomerInsights from "./assets/CustomerInsights.png";
+import CallToAction from "./assets/CallToAction.png";
+import CallRecording from "./assets/CallRecording.png";
+import DecisionMaker from "./assets/DecisionMaker.png";
+import Managers from "./assets/Managers.png";
+import Agents from "./assets/Agents.png";
+import HowItWorksBg from "./assets/HowItWorksBack.jpg";
+import Object1 from "./assets/Object1.png";
+import Object2 from "./assets/Object2.png";
+
+import { PiStarFourFill } from "react-icons/pi";
+import { GoDotFill } from "react-icons/go";
 
 const LandingPage = () => {
   const searchParams = useSearchParams();
@@ -41,155 +51,367 @@ const LandingPage = () => {
   }, [searchParams]);
 
   return (
-    <div className="relative bg-gray-100 min-h-screen">
+    <>
       <LandingPageHeader />
-      <main>
-        <section className="flex flex-col-reverse md:flex-row p-2 md:p-4 md:px-[5rem] align-middle justify-center gap-4 pt-4 md:pt-8">
-          <div className="flex flex-col my-auto align-middle">
-            <div className="text-2xl md:text-4xl text-center md:text-left font-bold">
-              Empower Your Call Operations with Smart, Accessible AI Solutions
+      <div className="">
+        <div className="relative isolate z-0 bg-hero-gradient px-6 pt-14 lg:px-8">
+          <div className="relative mx-auto max-w-2xl">
+            <div className="bg-gradient-to-r border max-w-xs mx-auto mb-8 border-purple-500 text-purple-800 py-2 flex items-center justify-center gap-x-4 rounded-lg">
+              <FaRegCreditCard className="h-4 w-4 text-purple-600" />
+              <span className="font-medium text-xs">
+                No Credit Card required
+              </span>
+              {/* <div className="h-5 w-px bg-purple-500"></div> Divider */}
+              <FaCog className="h-4 w-4 text-purple-600" />
+              <span className="font-medium text-xs">Quick Setup</span>
             </div>
-
-            <div className="pt-2 md:pt-4 text-base md:text-xl text-center md:text-left">
-              Seamlessly integrate innovative AI technology to elevate your call
-              operations, ensuring every interaction is data-driven, insightful,
-              and customer-centric.
-            </div>
-            <div className="flex pt-4 md:pt-4 fixed bottom-0 left-0 right-0 flex-col  md:relative md:p-0 md:bg-transparent md:m-0">
-              <div className="bg-gradient-to-t from-blue-700 to-transparent p-1 md:p-0"></div>
-              <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
-                <button className="font-bold px-2 py-1 md:px-4 md:py-2 md:rounded-full shadow-xl bg-blue-700 text-white  w-full md:w-fit">
-                  Upload Your Audio and Witness the Transformation
-                </button>
-              </Link>
-            </div>
-            <div className="flex align-middle pt-4 md:pt-8 gap-2 md:gap-4 font-bold">
-              <div className="flex align-middle gap-1 md:gap-2">
-                <FcCheckmark size="1.5rem" />
-                <span>No Credit Card required</span>
-              </div>
-              <div className="flex align-middle gap-1 md:gap-2">
-                <FcCheckmark size="1.5rem" />
-                <span>Quick setup</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-center align-middle">
-            <Image
-              className="w-full md:w-[80rem] object-contain"
-              src={landing_agent}
-              alt="Landing Agent"
-            />
-          </div>
-        </section>
-
-        <section className="bg-gradient-to-r from-indigo-600 to-pink-500 p-2 md:p-4">
-          <div className="text-center text-white text-xl font-bold md:text-3xl p-4">
-            How AgentInsightS Works
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 text-center">
-            <div className="shadow-md rounded-md p-4 bg-white flex justify-center flex-col">
-              <div className="flex justify-center">
-                <Image className="w-[15rem]" src={how_AI_works_1} alt="" />
-              </div>
-              <div className="text-3xl pb-8 font-bold">Call Recording App</div>
-              <div>
-                With our app, capture 100% of call details, ensuring zero missed
-                interactions and boosting audit & analysis accuracy by up to 95%
-              </div>
-            </div>
-            <div className="shadow-md rounded-md p-4 bg-white flex justify-center flex-col">
-              <div className="flex justify-center">
-                <Image className="w-[15rem] " src={how_AI_works_2} alt="" />
-              </div>
-              <div className="text-3xl pb-8 pt-5  font-bold">Call Analysis</div>
-              <div>
-                Using call analysis, you&apos;ll obtain automated feedback, AI
-                scoring, and call transcriptions, resulting in performance
-                assessment and actionable insights
-              </div>
-            </div>
-            <div className="shadow-md rounded-md p-4 bg-white flex justify-center flex-col">
-              <div className="flex justify-center">
-                <Image className="w-[15rem]" src={how_AI_works_3} alt="" />
-              </div>
-              <div className="text-3xl pb-8 font-bold">AI Coaching</div>
-              <div>
-                Using AI-driven guidance, enhance agent performance. and elevate
-                customer interaction quality by up to 40%
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 py-8">
-          <div className="flex flex-col align-middle p-4">
-            <div className="text-3xl font-bold">Call Recording App</div>
-            <div className="h-full flex flex-col   ">
-              <div className="py-4 text-xl">
-                Our Call Recording Android App delivers a 99.8% hassle-free
-                solution, ensuring 100% clarity, top-tier data security, and 95%
-                seamless recording rates, addressing the technical challenges
-                that have historically plagued such features
-              </div>
-              <div className="flex pt-4 md:pt-4">
-                <a
-                  href="mailto:partnerships@agentinsights.live"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline w-full md:w-fit"
-                >
-                  <button className="font-bold px-2 py-1 md:px-4 md:py-2 w-full md:w-fit border-2 border-blue-700 hover:bg-white hover:text-blue-700 bg-blue-700 text-white rounded-full ">
-                    Contact Us
+            <div className="text-center">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                Elevate Call Operations with{" "}
+                <span className="text-blue-500">AI Excellence</span>
+              </h1>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                AI-Powered Call Operations: Data-Driven, Customer-Centric
+                Excellence
+              </p>
+              <div className="mt-8 flex items-center justify-center gap-x-2">
+                <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
+                  <button
+                    type="button"
+                    className="rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                  >
+                    Upload Your Audio and Witness the Transformation
                   </button>
-                </a>
+                </Link>
+              </div>
+
+              <div className="relative mt-8">
+                <Image
+                  className="absolute z-[-10] -left-20 -top-44 w-28 h-28 md:-left-36 md:-top-36 md:w-40 md:h-40"
+                  src={Object1}
+                  // layout="fill"
+                  objectFit="cover"
+                  quality={100}
+                  alt="Bg Image"
+                />
+
+                <Image
+                  className="w-full md:w-[80rem] object-contain"
+                  src={Hero}
+                  alt="Landing Agent"
+                />
+                <Image
+                  className="absolute z-[-10] left-[18rem] -top-44 w-28 h-28 md:left-[40rem] md:-top-36 md:w-40 md:h-40"
+                  src={Object2}
+                  // layout="fill"
+                  objectFit="cover"
+                  quality={100}
+                  alt="Bg Image"
+                />
               </div>
             </div>
           </div>
-          <div className="flex justify-center align-middle p-4">
-            <Image className="w-[30rem]" src={android_app} alt="" />
+        </div>
+      </div>
+
+      <div className="relative h-fit" id="what-we-offer">
+        <Image
+          id="bg"
+          className="absolute z-[-500] w-full h-full"
+          src={HowItWorksBg}
+          // layout="fill"
+          objectFit="cover"
+          quality={100}
+          alt="Bg Image"
+        />
+        <section className="isolate relative z-0 px-6 pt-14 lg:px-8 pb-20">
+          <div className="font-bold text-3xl mb-16">
+            What we <span className="text-blue-500">Offer</span>
+          </div>
+          <div className="">
+            <div className="flex flex-col gap-y-20">
+              {/* AI Score */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
+                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={AiScore}
+                    alt="AI Score Image"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="">
+                    <div className="flex mb-4 max-w-3xl">
+                      <div>
+                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
+                          <span>
+                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
+                          </span>
+                          <span className="text-2xl md:text-2xl lg:text-3xl">
+                            AI Score
+                          </span>
+                        </h2>
+                        <p className="text-gray-600 text-lg md:text-xl">
+                          Explore rich customer insights through advanced
+                          analytics, guiding strategic decisions and fostering
+                          continuous improvement.
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="text-lg md:text-xl md:space-y-3">
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Precision Assessment with AI
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Efficient Feedback Mechanism
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Enhance Decision-Making
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              {/* Call anaylsis */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse">
+                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={CallAnalysis}
+                    alt="AI Score Image"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="">
+                    <div className="flex mb-4 max-w-3xl">
+                      <div>
+                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
+                          <span>
+                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
+                          </span>
+                          <span className="text-2xl md:text-2xl lg:text-3xl">
+                            Call Analysis
+                          </span>
+                        </h2>
+                        <p className="text-gray-600 text-lg md:text-xl">
+                          Using call analysis, you'll obtain automated feedback,
+                          AI scoring, and call transcriptions, resulting in
+                          performance assessment and actionable insights
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="text-lg md:text-xl md:space-y-3">
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Call Transcriptions
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Performance Assessment
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Actionable Insights
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              {/* Customer insights */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
+                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={CustomerInsights}
+                    alt="AI Score Image"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="">
+                    <div className="flex mb-4 max-w-3xl">
+                      <div>
+                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
+                          <span>
+                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
+                          </span>
+                          <span className="text-2xl md:text-2xl lg:text-3xl">
+                            Customer Insights
+                          </span>
+                        </h2>
+                        <p className="text-gray-600 text-lg md:text-xl">
+                          Explore rich customer insights through advanced
+                          analytics, guiding strategic decisions and fostering
+                          continuous improvement.
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="text-lg md:text-xl md:space-y-3">
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Customer-Centric Analytics
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Precision in Decision-Making
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Continuous Improvement Pathway
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              {/* Call To Action */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse">
+                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={CallToAction}
+                    alt="AI Score Image"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="">
+                    <div className="flex mb-4 max-w-3xl">
+                      <div>
+                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
+                          <span>
+                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
+                          </span>
+                          <span className="text-2xl md:text-2xl lg:text-3xl">
+                            Call To Action
+                          </span>
+                        </h2>
+                        <p className="text-gray-600 text-lg md:text-xl">
+                          Seize control of your customer experience! Click here
+                          to gain valuable insights, enhance performance, and
+                          elevate satisfaction.
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="text-lg md:text-xl md:space-y-3">
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Elevate Your Experience
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Seamless Communication Awaits
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Transform Insights into Action
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              {/* Call Recording App */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
+                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={CallRecording}
+                    alt="AI Score Image"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="">
+                    <div className="flex mb-4 max-w-3xl">
+                      <div>
+                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
+                          <span>
+                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
+                          </span>
+                          <span className="text-2xl md:text-2xl lg:text-3xl">
+                            Call Recording App
+                          </span>
+                        </h2>
+                        <p className="text-gray-600 text-lg md:text-xl">
+                          With our app, capture 100% of call details, ensuring
+                          zero missed interactions and boosting audit & analysis
+                          accuracy by up to 95%
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="text-lg md:text-xl md:space-y-3">
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Comprehensive Call Capture
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Enhanced Audit Accuracy
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Seamless Integration
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
-        <section className="bg-gradient-to-r from-indigo-600 to-pink-500  md:p-4 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 py-8">
-          <div className="h-full flex flex-col p-4 space-y-4 text-center md:text-left ">
-            <div className="text-3xl font-bold text-white">
-              ANALYTICS DASHBOARD
-            </div>
-            <div className="pb-4 text-xl text-white">
-              Get a custom view of important numbers, offering clear insights
-              for every job role. Make twice as smart decisions using
-              easy-tounderstand data just for you. Plus, our user-friendly
-              dashboard means anyone can quickly find and use key information,
-              helping your whole team make better choices with data.
-            </div>
+      </div>
+      <div className="bg-blue-50" id="solutions">
+        <section className="isolate flex flex-col items-center relative z-0 pt-14 lg:px-8 pb-8">
+          <div className="font-bold text-3xl mb-10 px-4">
+            Custom Solutions for{" "}
+            <span className="text-blue-500">Each Team Member</span>
           </div>
-          <div className="flex justify-center align-middle p-4">
-            <Image className="w-[20rem]" src={analytics_dash} alt="" />
-          </div>
-        </section>
-        <section className="bg-white p-2 md:p-4">
-          <div className="text-center text-xl font-bold md:text-3xl p-4">
-            Custom Solutions for Each Team Member
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 text-center text-white">
-            <div className="shadow-md rounded-md p-4 bg-gradient-to-b from-indigo-600 to-pink-500 flex  flex-col">
-              <div className="text-3xl pb-8 font-bold">Decision-Makers</div>
-              <div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 text-center text-black">
+            <div className="shadow-even rounded-md px-6 pt-6 pb-14 bg-blue-100 flex flex-col">
+              <div className="mb-16">
+                <Image
+                  className="rounded-lg object-contain max-h-72"
+                  src={DecisionMaker}
+                  alt="AI Score Image"
+                />
+              </div>
+              <div className="text-2xl pb-4 font-semibold text-left">
+                Decision-Makers
+              </div>
+              <div className="text-left">
                 Dive into a world of easy agent reviews. Use our AI Analytics
                 Dashboard to quickly access call data, highlighting areas for
                 praise and growth.
               </div>
             </div>
-            <div className="shadow-md rounded-md bg-gradient-to-b from-indigo-600 to-pink-500 p-4  flex  flex-col">
-              <div className="text-3xl pb-8   font-bold">Managers</div>
-              <div>
+            <div className="shadow-even rounded-md px-6 pt-6 pb-14 bg-blue-100 flex flex-col">
+              <div className="mb-16">
+                <Image
+                  className="rounded-lg object-contain max-h-72"
+                  src={Managers}
+                  alt="AI Score Image"
+                />
+              </div>
+              <div className="text-2xl pb-4 font-semibold text-left">
+                Managers
+              </div>
+              <div className="text-left">
                 Enhance team results with a glance! Navigate through smart
                 analytics and employ AI-driven strategies to uplift and guide
                 your team to excellence in every customer interaction.
               </div>
             </div>
-            <div className="shadow-md rounded-md bg-gradient-to-b from-indigo-600 to-pink-500 p-4  flex  flex-col">
-              <div className="text-3xl pb-8 font-bold">Agents</div>
-              <div>
+            <div className="shadow-even rounded-md px-6 pt-6 pb-14 bg-blue-100 flex flex-col">
+              <div className="mb-16">
+                <Image
+                  className="rounded-lg object-contain max-h-72"
+                  src={Agents}
+                  alt="AI Score Image"
+                />
+              </div>
+              <div className="text-2xl pb-4 font-semibold text-left">
+                Agents
+              </div>
+              <div className="text-left">
                 Amplify your customer service with real-time AI coaching,
                 ensuring you deliver consistently exemplary interactions,
                 nurturing customer satisfaction and loyalty with every call
@@ -197,18 +419,10 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-        <AppFooter />
-      </main>
-      {/* <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
-        <div className="fixed bottom-0 right-0 mr-[-1rem] mb-[-0.5rem] md:hidden  flex items-center justify-center ">
-          <Image
-            src={floating_demo}
-            className="w-36"
-            alt="floating demo button"
-          />
-        </div>
-      </Link> */}
-    </div>
+      </div>
+
+      <AppFooter />
+    </>
   );
 };
 

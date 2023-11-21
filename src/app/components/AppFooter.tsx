@@ -43,27 +43,19 @@ const AppFooter = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="" className="text-gray-200">
+                  <Link href="/#what-we-offer" className="text-gray-200">
                     What we offer
                   </Link>
                 </li>
                 <li>
-                  <a
-                    rel="noopener noreferrer"
-                    href="#"
-                    className="text-gray-200"
-                  >
+                  <Link href="/#solutions" className="text-gray-200">
                     Solutions
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    rel="noopener noreferrer"
-                    href="#"
-                    className="text-gray-200"
-                  >
+                  <Link href="/pricing" className="text-gray-200">
                     Pricing
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
