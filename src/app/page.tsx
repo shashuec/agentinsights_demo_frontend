@@ -7,8 +7,11 @@ import AppFooter from "./components/AppFooter";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
+
 import { FaRegCreditCard } from "react-icons/fa6";
 import { FaCog } from "react-icons/fa";
+import { PiStarFourFill } from "react-icons/pi";
+import { GoDotFill } from "react-icons/go";
 
 import Hero from "./assets/hero.png";
 import AiScore from "./assets/aiScore.png";
@@ -22,9 +25,6 @@ import Agents from "./assets/Agents.png";
 import HowItWorksBg from "./assets/HowItWorksBack.jpg";
 import Object1 from "./assets/Object1.png";
 import Object2 from "./assets/Object2.png";
-
-import { PiStarFourFill } from "react-icons/pi";
-import { GoDotFill } from "react-icons/go";
 
 const LandingPage = () => {
   const searchParams = useSearchParams();
@@ -54,7 +54,7 @@ const LandingPage = () => {
     <>
       <LandingPageHeader />
       <div className="">
-        <div className="relative isolate z-0 bg-hero-gradient px-6 pt-14 lg:px-8 overflow-x-hidden">
+        <div className="relative isolate bg-hero-gradient px-6 pt-14 lg:px-8 overflow-x-hidden">
           <div className="relative mx-auto max-w-2xl">
             <div className="bg-gradient-to-r border max-w-xs mx-auto mb-8 border-purple-500 text-purple-800 py-2 flex items-center justify-center gap-x-4 rounded-lg">
               <FaRegCreditCard className="h-4 w-4 text-purple-600" />
@@ -74,11 +74,11 @@ const LandingPage = () => {
                 AI-Powered Call Operations: Data-Driven, Customer-Centric
                 Excellence
               </p>
-              <div className="mt-8 flex items-center justify-center gap-x-2">
+              <div className="bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
                 <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
                   <button
                     type="button"
-                    className="rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="md:rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                   >
                     Upload Your Audio and Witness the Transformation
                   </button>
@@ -95,7 +95,7 @@ const LandingPage = () => {
                   alt="Bg Image"
                 />
                 <Image
-                  className="absolute z-[-10] left-[18rem] -top-44 w-28 h-28 md:left-[40rem] md:-top-36 md:w-40 md:h-40"
+                  className="absolute z-[-10] right-[-5rem]  md:right-[-8rem] -top-44 w-28 h-28  md:-top-36 md:w-40 md:h-40"
                   src={Object2}
                   // layout="fill"
                   objectFit="cover"
@@ -113,7 +113,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="relative h-fit" id="what-we-offer">
+      <div className="z-[-10] relative h-fit" id="what-we-offer">
         <Image
           id="bg"
           className="absolute z-[-500] w-full h-full"
@@ -123,7 +123,7 @@ const LandingPage = () => {
           quality={100}
           alt="Bg Image"
         />
-        <section className="isolate relative z-0 px-6 pt-14 lg:px-8 pb-20">
+        <section className="isolate relative px-6 pt-14 lg:px-8 pb-20">
           <div className="font-bold text-3xl mb-16">
             What we <span className="text-blue-500">Offer</span>
           </div>
@@ -359,8 +359,8 @@ const LandingPage = () => {
           </div>
         </section>
       </div>
-      <div className="bg-blue-50" id="solutions">
-        <section className="isolate flex flex-col items-center relative z-0 pt-14 lg:px-8 pb-8">
+      <div>
+        <section className="-z-10 flex flex-col bg-blue-50 items-center relative pt-14 lg:px-8 pb-8">
           <div className="font-bold text-3xl mb-10 px-4">
             Custom Solutions for{" "}
             <span className="text-blue-500">Each Team Member</span>

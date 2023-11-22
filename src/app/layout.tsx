@@ -81,11 +81,8 @@ export default function RootLayout({
         `}
         </Script>
 
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-QMW8FCCMXB"
-        />
-        <Script id="google-analytics">
+        {/* Facebook Pixel Code */}
+        <Script id="facebook-pixel">
           {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
