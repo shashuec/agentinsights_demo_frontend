@@ -74,7 +74,7 @@ const LandingPage = () => {
                 AI-Powered Call Operations: Data-Driven, Customer-Centric
                 Excellence
               </p>
-              <div className="mb-3 mx-3 rounded-md shadow-lg shadow-zinc-400 bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
+              <div className="mb-3 mx-3 rounded-md shadow-lg shadow-zinc-400 md:mx-0 md:mb-0 md:shadow-none bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
                 <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
                   <button
                     type="button"
