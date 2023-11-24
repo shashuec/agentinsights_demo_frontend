@@ -74,11 +74,11 @@ const LandingPage = () => {
                 AI-Powered Call Operations: Data-Driven, Customer-Centric
                 Excellence
               </p>
-              <div className="bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
+              <div className="mb-3 mx-3 rounded-md shadow-lg shadow-zinc-400 bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
                 <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
                   <button
                     type="button"
-                    className="md:rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="rounded-md bg-blue-500 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                   >
                     Upload Your Audio and Witness the Transformation
                   </button>
