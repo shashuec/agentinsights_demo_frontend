@@ -79,6 +79,11 @@ function PopUpForm({ onClose }: any) {
             phone_number: formData.phoneNumber,
             company_name: formData.companyName,
             utmParams: utmParams,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_COMPANY_TOKEN}`,
+            },
           }
         );
 
