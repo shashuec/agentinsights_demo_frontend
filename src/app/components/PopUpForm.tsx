@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
@@ -150,16 +151,51 @@ function PopUpForm({ onClose }: any) {
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(1px)" />
       <ModalContent mx={2} maxW={isSmallerThan768 ? "80vw" : "md"}>
-        <ModalHeader
-          fontSize={isSmallerThan768 ? "md" : "lg"}
-          fontWeight="bold"
-          className="text-center text-blue-500"
-        >
-          Access Demo
+        <ModalHeader className="text-center text-2xl font-medium">
+          Unlock the Full Potential of Your Calls with{" "}
+          <span className="font-extrabold">Agent</span>
+          <span className="text-blue-500 font-extrabold">Insights</span>
+          <div className="flex justify-center pt-2">
+            <Image
+              className="h-12 w-12 p-2"
+              height={150}
+              width={150}
+              alt="Logo"
+              src="/CallIcon.svg"
+            />
+            <Image
+              className="w-12 sm:w-24"
+              height={150}
+              width={150}
+              alt="Logo"
+              src="/LineIcon.svg"
+            />
+            <Image
+              className="h-12 w-12 p-2"
+              height={150}
+              width={150}
+              alt="Logo"
+              src="/ChartIcon.svg"
+            />
+            <Image
+              className="w-12 sm:w-24"
+              height={150}
+              width={150}
+              alt="Logo"
+              src="/LineIcon.svg"
+            />
+            <Image
+              className="h-12 w-12 p-2"
+              height={150}
+              width={150}
+              alt="Logo"
+              src="/DataIcon.svg"
+            />
+          </div>
         </ModalHeader>
-        <ModalBody pb={2}>
+        <ModalBody pb={2} px={5}>
           <FormControl isInvalid={errors.name}>
-            <FormLabel fontSize={isSmallerThan768 ? "sm" : "md"}>
+            <FormLabel fontSize="sm" className="font-semibold text-gray-600">
               Name
             </FormLabel>
             <Input
@@ -168,15 +204,16 @@ function PopUpForm({ onClose }: any) {
               value={formData.name}
               onChange={handleChange}
               required
-              placeholder="Elon Musk"
+              placeholder="Enter name"
               fontSize={isSmallerThan768 ? "sm" : "md"}
+              paddingY={5}
             />
             {errors.name && (
               <FormErrorMessage>Name is required.</FormErrorMessage>
             )}
           </FormControl>
           <FormControl mt={4} isInvalid={errors.phoneNumber}>
-            <FormLabel fontSize={isSmallerThan768 ? "sm" : "md"}>
+            <FormLabel fontSize="sm" className="font-semibold text-gray-600">
               Phone Number
             </FormLabel>
             <Input
@@ -185,7 +222,7 @@ function PopUpForm({ onClose }: any) {
               value={formData.phoneNumber}
               onChange={handleChange}
               required
-              placeholder="1234567890"
+              placeholder="9876543210"
               fontSize={isSmallerThan768 ? "sm" : "md"}
             />
             {errors.phoneNumber && (
@@ -195,7 +232,7 @@ function PopUpForm({ onClose }: any) {
             )}
           </FormControl>
           <FormControl mt={4} isInvalid={errors.companyName}>
-            <FormLabel fontSize={isSmallerThan768 ? "sm" : "md"}>
+            <FormLabel fontSize="sm" className="font-semibold text-gray-600">
               Company Name
             </FormLabel>
             <Input
@@ -204,7 +241,7 @@ function PopUpForm({ onClose }: any) {
               value={formData.companyName}
               onChange={handleChange}
               required
-              placeholder="Tesla"
+              placeholder="Your company name"
               fontSize={isSmallerThan768 ? "sm" : "md"}
             />
             {errors.companyName && (
@@ -212,17 +249,17 @@ function PopUpForm({ onClose }: any) {
             )}
           </FormControl>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter px={5}>
           <button
-            className={`text-white font-bold p-2 rounded-md ${
+            className={`text-white font-semibold p-2 rounded-sm ${
               isSmallerThan768 ? "text-sm" : "text-md"
             } ${isSubmitting ? "bg-blue-400" : "bg-blue-500"} ${
               isSubmitting ? "cursor-not-allowed" : "cursor-pointer"
-            }`}
+            } w-full`}
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Submitting..." : "Submit"}
+            {isSubmitting ? "See It In Action..." : "See It In Action"}
           </button>
         </ModalFooter>
       </ModalContent>
