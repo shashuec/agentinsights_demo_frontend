@@ -8,6 +8,32 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.responsive-iframe {
+  width: 560px;
+  height: 315px;
+}
+
+@media (max-width: 700px) {
+  .responsive-iframe {
+    width: 480px;
+    height: 270px;
+  }
+}
+
+@media (max-width: 530px) {
+  .responsive-iframe {
+    width: 420px;
+    height: 236.25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-iframe {
+    width: 340px;
+    height: 200px;
+  }
+}
+
 /* Width of the entire scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

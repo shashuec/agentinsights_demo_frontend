@@ -55,58 +55,87 @@ const LandingPage = () => {
       <LandingPageHeader />
       <div className="">
         <div className="relative isolate bg-hero-gradient px-6 pt-14 lg:px-8 overflow-x-hidden">
-          <div className="relative mx-auto max-w-2xl">
-            <div className="bg-gradient-to-r border max-w-xs mx-auto mb-8 border-purple-500 text-purple-800 py-2 flex items-center justify-center gap-x-4 rounded-lg">
-              <FaRegCreditCard className="h-4 w-4 text-purple-600" />
-              <span className="font-medium text-xs">
-                No Credit Card required
-              </span>
-              {/* <div className="h-5 w-px bg-purple-500"></div> Divider */}
-              <FaCog className="h-4 w-4 text-purple-600" />
-              <span className="font-medium text-xs">Quick Setup</span>
-            </div>
-            <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Elevate Call Operations with{" "}
-                <span className="text-blue-500">AI Excellence</span>
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
-                AI-Powered Call Operations: Data-Driven, Customer-Centric
-                Excellence
-              </p>
-              <div className="mb-3 mx-3 rounded-md shadow-lg shadow-zinc-400 md:mx-0 md:mb-0 md:shadow-none bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
-                <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
-                  <button
-                    type="button"
-                    className="rounded-md bg-blue-500 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                  >
-                    Upload Your Audio and Witness the Transformation
-                  </button>
-                </Link>
+          <div className="relative mx-auto">
+            <div className="space-y-24">
+              <div className="flex flex-col xl:flex-row justify-between items-center gap-x-10">
+                <div className="">
+                  <div className="flex flex-col items-center xl:items-start">
+                    <div className="px-5 bg-gradient-to-r border max-w-sm mb-8 border-purple-500 text-purple-800 py-2 flex items-center justify-center gap-x-4 rounded-lg">
+                      <FaRegCreditCard className="h-4 w-4 text-purple-600" />
+                      <span className="font-medium text-xs inline-block -ml-2">
+                        No Credit Card required
+                      </span>
+                      {/* <div className="h-5 w-px bg-purple-500"></div> Divider */}
+                      <FaCog className="h-4 w-4 text-purple-600" />
+                      <span className="font-medium text-xs inline-block -ml-2">
+                        Quick Setup
+                      </span>
+                    </div>
+                    <h1 className="text-4xl max-w-3xl text-center xl:text-left font-bold tracking-tight text-gray-900 sm:text-6xl">
+                      Elevate Call Operations with{" "}
+                      <span className="text-blue-500">AI Excellence</span>
+                    </h1>
+                    <p className="mt-6 text-lg text-center xl:text-left leading-8 font-medium text-gray-600">
+                      AI-Powered Call Operations: Data-Driven, Customer-Centric
+                      Excellence
+                    </p>
+                    <div className="mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 md:mx-0 md:mb-0 md:shadow-none bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
+                      <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
+                        <button
+                          type="button"
+                          className="rounded-md bg-blue-500 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                        >
+                          Upload Your Audio and Witness the Transformation
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="relative mt-8 xl:mt-0 px-4 md:px-20 xl:px-20 flex justify-center items-end">
+                  <Image
+                    id="bg"
+                    className="absolute -z-50 w-full"
+                    src="/VideoBg.svg"
+                    width={100}
+                    height={100}
+                    // layout="fill"
+                    objectFit="cover"
+                    quality={100}
+                    alt="Bg Image"
+                  />
+                  <iframe
+                    src="https://www.youtube.com/embed/vEnXpKIKbTM?controls=0&rel=0&showinfo=0&modestbranding=1"
+                    title="YouTube video player"
+                    className="responsive-iframe border-2 rounded-t-xl border-purple-300"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
               </div>
-
-              <div className="relative mt-8">
-                <Image
-                  className="absolute z-[-10] -left-20 -top-44 w-28 h-28 md:-left-36 md:-top-36 md:w-40 md:h-40"
-                  src={Object1}
-                  // layout="fill"
-                  objectFit="cover"
-                  quality={100}
-                  alt="Bg Image"
-                />
-                <Image
-                  className="absolute z-[-10] right-[-5rem]  md:right-[-8rem] -top-44 w-28 h-28  md:-top-36 md:w-40 md:h-40"
-                  src={Object2}
-                  // layout="fill"
-                  objectFit="cover"
-                  quality={100}
-                  alt="Bg Image"
-                />
-                <Image
-                  className="w-full md:w-[80rem] object-contain"
-                  src={Hero}
-                  alt="Landing Agent"
-                />
+              <div className="relative mx-auto max-w-2xl">
+                <div className="-mt-10">
+                  <Image
+                    className="absolute z-[-10] -left-20 -top-96 xl:-top-8 w-28 h-28 md:-left-40 md:w-40 md:h-40"
+                    src={Object1}
+                    // layout="fill"
+                    objectFit="cover"
+                    quality={100}
+                    alt="Bg Image"
+                  />
+                  <Image
+                    className="absolute z-[-10] right-[-5rem] md:-right-36 -top-96 xl:-top-10 w-28 h-28 md:w-40 md:h-40"
+                    src={Object2}
+                    // layout="fill"
+                    objectFit="cover"
+                    quality={100}
+                    alt="Bg Image"
+                  />
+                  <Image
+                    className="w-full md:w-[80rem] object-contain"
+                    src={Hero}
+                    alt="Landing Agent"
+                  />
+                </div>
               </div>
             </div>
           </div>

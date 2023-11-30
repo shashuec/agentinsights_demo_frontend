@@ -22,9 +22,18 @@ const config: Config = {
       boxShadow: {
         'even': '0 0 15px rgba(0, 0, 0, 0.1)',
       },
+      lineHeight: {
+        '48': '48px',  // Custom line-height class
+      },
+      
     },
   },
-  plugins: [],
+  corePlugins: {
+    aspectRatio: false,
+  },
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }
 export default config
 
