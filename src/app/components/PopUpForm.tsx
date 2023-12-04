@@ -259,7 +259,7 @@ function PopUpForm({ onClose }: any) {
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Experiance the Demo..." : "Experiance the Demo"}
+            {isSubmitting ? "Experience the Demo..." : "Experience the Demo"}
           </button>
         </ModalFooter>
       </ModalContent>
