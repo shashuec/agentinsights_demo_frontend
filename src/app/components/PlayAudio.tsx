@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import WaveSurfer from "wavesurfer.js";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
-export const PlayAudio = ({ audio }: any) => {
-  console.log(audio);
+export const PlayAudio = ({ audio, setCurrentTime }: any) => {
   const containerRef = useRef<any>();
   const waveSurferRef = useRef<any>({
     isPlaying: () => false,
@@ -23,6 +22,12 @@ export const PlayAudio = ({ audio }: any) => {
     waveSurfer.load(audio);
     waveSurfer.on("ready", () => {
       waveSurferRef.current = waveSurfer;
+    });
+
+    waveSurfer.on("audioprocess", (currentTime) => {
+      if (setCurrentTime) {
+        setCurrentTime(currentTime);
+      }
     });
 
     return () => {

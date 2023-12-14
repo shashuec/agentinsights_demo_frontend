@@ -55,6 +55,8 @@ export default function Home() {
 
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  const [currentTime, setCurrentTime] = useState(0);
+
   useEffect(() => {
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
@@ -289,7 +291,9 @@ export default function Home() {
         <div className="px-4 grid grid-cols-1 md:grid-cols-7 space-y-2 md:space-y-0  md:gap-2  pb-4 w-full">
           <div className="p-4 pt-2 relative bg-white rounded-sm col-span-3 ">
             {/* <div className="flex items-center text-2xl">Input</div> */}
-            {audioFileUrl && <PlayAudio audio={audioFileUrl} />}
+            {audioFileUrl && (
+              <PlayAudio audio={audioFileUrl} setCurrentTime={setCurrentTime} />
+            )}
             <div className="mt-4">
               <div className=" w-fit p-2 text-white bg-black rounded-md font-bold  font-mono mb-3">
                 Audio
@@ -415,7 +419,10 @@ export default function Home() {
             </div> */}
               </div>
             ) : (
-              <TranscriptBox transcript={output.source_transcript} />
+              <TranscriptBox
+                currentTime={currentTime}
+                transcript={output.source_transcript}
+              />
             )}
             {/* Submit Div */}
             {!startLogging && (
