@@ -2,18 +2,28 @@
 import { useState, useEffect, useRef } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import { PlayAudio } from "../components/PlayAudio";
-import { FaCheckCircle } from "react-icons/fa";
-import { Icon, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Icon,
+  Spinner,
+  useToast,
+  CircularProgress,
+  CircularProgressLabel,
+  Box,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import PopUpForm from "../components/PopUpForm";
+import axios from "axios";
 import { FcUpload } from "react-icons/fc";
+import { FaCheckCircle, FaLightbulb } from "react-icons/fa";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { MdSupportAgent, MdInsights } from "react-icons/md";
-import { FaLightbulb } from "react-icons/fa";
 import { BsFillFileTextFill } from "react-icons/bs";
-import axios from "axios";
 import {
   useForm,
   Controller,
@@ -23,7 +33,6 @@ import {
 import { PLACEHOLDER_RESPONSES, EXAMPLES } from "../constants/constants";
 // import SampleResponse from "./constants/sample.json";
 import { ThreeDots } from "react-loader-spinner";
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import TranscriptBox from "../components/TranscriptBox";
 import AppFooter from "../components/AppFooter";
 import LandingPageHeader from "../components/LandingPageHeader";
@@ -207,10 +216,6 @@ export default function Home() {
         },
       });
 
-      //For testing
-      // const response: any = SampleResponse;
-
-      console.log(response.data);
       setShowQuestions(false);
       setStartLogging(false);
       setCurrentLog(-1);
@@ -288,16 +293,12 @@ export default function Home() {
         <div className="p-4 text-2xl italic font-bold text-center">
           Upload Your Audio and Experience the Magic
         </div>
-        <div className="px-4 grid grid-cols-1 md:grid-cols-7 space-y-2 md:space-y-0  md:gap-2  pb-4 w-full">
-          <div className="p-4 pt-2 relative bg-white rounded-sm col-span-3 ">
-            {/* <div className="flex items-center text-2xl">Input</div> */}
+        <div className="px-4 grid grid-cols-1 md:grid-cols-7 space-y-2 md:space-y-0 md:gap-2 pb-4 w-full">
+          <div className="px-4 pt-2 relative bg-white rounded-sm col-span-3 ">
             {audioFileUrl && (
               <PlayAudio audio={audioFileUrl} setCurrentTime={setCurrentTime} />
             )}
-            <div className="mt-4">
-              <div className=" w-fit p-2 text-white bg-black rounded-md font-bold  font-mono mb-3">
-                Audio
-              </div>
+            <div className="">
               <div className="">
                 <FileUploader
                   multiple={true}
@@ -307,14 +308,10 @@ export default function Home() {
                 />
               </div>
 
-              {audioFileError ? (
+              {audioFileError && (
                 <div className="text-sm pt-1 text-red-500">
                   Please upload an audio file!
                 </div>
-              ) : (
-                <span className="text-gray-500 flex pt-2 text-xs overflow-hidden">
-                  {audioFileName}
-                </span>
               )}
             </div>
             {showQuestions ? (
@@ -368,13 +365,7 @@ export default function Home() {
                                   >
                                     {field.value}
                                   </div>
-                                  {/* <input
-                            {...field}
-                            placeholder="Question"
-                            className="text-black p-2 border-[1px] border-gray-400 w-full outline-none"
-                            type="text"
-                            disabled
-                          ></input> */}
+
                                   {(errors?.questions as any)?.at?.(index)
                                     ?.question_template?.message && (
                                     <div className="text-sm pt-1 text-red-500">
@@ -388,35 +379,11 @@ export default function Home() {
                               )}
                             />
                           </div>
-                          {/* <div className="w-full h-full flex items-start mt-2 justify-center cursor-pointer">
-                    <Image
-                      src={crossImage}
-                      width={25}
-                      height={25}
-                      alt="Remove item"
-                      onClick={() => {
-                        console.log(index);
-                        remove(index);
-                      }}
-                    />
-                  </div> */}
                         </div>
                       );
                     })}
                   </>
                 )}
-
-                {/* <div
-              className="p-2 mt-2 mb-3 border-2 rounded-sm font-semibold border-black w-fit cursor-pointer text-sm"
-              onClick={() =>
-                append({
-                  category: "Counsellor",
-                  question: "What is the language?",
-                })
-              }
-            >
-              + Add Question
-            </div> */}
               </div>
             ) : (
               <TranscriptBox
@@ -441,7 +408,6 @@ export default function Home() {
           </div>
           {startLogging ? (
             <div className="col-span-4 p-4 bg-white rounded-sm">
-              {/* <div className="flex items-center text-2xl">Output</div> */}
               <div className="">
                 <div className="flex gap-2 items-center py-2 text-xl">
                   <Icon as={FcUpload} />
@@ -590,22 +556,6 @@ export default function Home() {
                     <TabPanel>
                       {output ? (
                         <div className="w-full space-y-4">
-                          {/* <Box className="w-full p-2 border rounded-md shadow-sm">
-                            <Button
-                              className="w-full flex justify-between"
-                              variant="ghost"
-                              onClick={() => setIsOpen(!isOpen)}
-                            >
-                              <Text>Areas of Improvement</Text>
-                              {isOpen ? (
-                                <ChevronUpIcon boxSize="6" />
-                              ) : (
-                                <ChevronDownIcon boxSize="6" />
-                              )}
-                            </Button>
-
-                            {isOpen && (
-                              <Box className="mt-2"> */}
                           <ul className="list-disc text-sm shadow-md text-black  p-4 px-6 bg-gray-100 space-y-3">
                             {output.areas.map((area: any, index: number) => (
                               <li className="" key={index}>
@@ -613,9 +563,6 @@ export default function Home() {
                               </li>
                             ))}
                           </ul>
-                          {/* </Box>
-                            )}
-                          </Box> */}
                         </div>
                       ) : (
                         <div className="p-2 text-center text-gray-600">
@@ -693,27 +640,6 @@ export default function Home() {
             </div>
           )}
         </div>
-        {/* <div className="p-4 space-y-4">
-        <div className="text-2xl pt-2 border-b-[1px] border-gray-400 ">
-          Example
-        </div>
-        <div className="flex gap-4 overflow-x-auto">
-          {EXAMPLES.map((example) => (
-            <div
-              key={example.exampleUUID}
-              onClick={() => preComputedOutputHandler(example.exampleUUID)}
-              className="p-2 min-w-[7rem] shadow-md rounded-md flex justify-center  bg-gray-300 hover:scale-105 hover:bg-gray-400"
-            >
-              <Image
-                src={example.exampleIcon}
-                alt=""
-                className="p-2"
-                width="100"
-              />
-            </div>
-          ))}
-        </div>
-      </div> */}
       </div>
       <AppFooter />
       {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />}

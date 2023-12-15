@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoTimerOutline } from "react-icons/io5";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
-
+import Image from "next/image";
 import moment from "moment";
 
 interface TranscriptBoxProps {
@@ -15,9 +15,6 @@ interface TranscriptBoxProps {
 }
 
 const TranscriptBox = ({ transcript, currentTime }: any) => {
-  const [showMore, setShowMore] = useState(false);
-  // const words = transcript.split(" ");
-
   function formatDuration(seconds: number) {
     const duration = moment.duration(seconds, "seconds");
 
@@ -37,31 +34,49 @@ const TranscriptBox = ({ transcript, currentTime }: any) => {
   }
 
   return (
-    <div className="mt-2 text-sm py-2">
+    <div className="mt-1 text-sm py-2">
       <div className="text-lg pb-2 font-bold">Transcript</div>
-      <div className="text-gray-700 max-h-96 overflow-y-scroll pr-4">
+      <div className="text-gray-700 max-h-96 overflow-y-scroll pr-3">
         {typeof transcript == "string"
           ? JSON.stringify(transcript)
           : transcript.map((item: any) => {
               return (
                 <div
                   key={item.id}
-                  className={`px-3 py-1 mb-1 ${highlightTranscript(
-                    item
-                  )} rounded-md`}
+                  className={`p-1 ${highlightTranscript(item)} rounded-md`}
                 >
-                  <p className="">
+                  <p>
                     <span className="bg-gray-100 px-1 rounded-sm text-gray-700">
                       <span className="text-base">
-                        <IoTimerOutline className="inline-block mb-[2px]" />
+                        <Image
+                          className="inline-block mb-[2px]"
+                          alt="alarm-icon"
+                          width={15}
+                          height={15}
+                          src="/alarm.svg"
+                        />
+                        {/* <IoTimerOutline className="inline-block mb-[2px]" /> */}
                       </span>{" "}
                       {formatDuration(item.start)}
                     </span>
-                    <span className="ml-1 bg-gray-100 px-1 rounded-sm font-bold text-gray-700">
-                      <span className="text-base">
-                        <HiOutlineSpeakerWave className="inline-block mb-[2px]" />
-                      </span>{" "}
-                      Speaker {item.speaker}
+                    <span className="ml-1 bg-gray-50 rounded-sm">
+                      {item.speaker == 1 ? (
+                        <Image
+                          className="inline-block mb-[2px] "
+                          alt="speaker-one-icon"
+                          width={20}
+                          height={20}
+                          src="/one.svg"
+                        />
+                      ) : (
+                        <Image
+                          className="inline-block mb-[2px]"
+                          alt="speaker-two-icon"
+                          width={20}
+                          height={20}
+                          src="/two.svg"
+                        />
+                      )}
                     </span>
                     <span className="ml-2">{item.text}</span>
                   </p>
@@ -69,19 +84,6 @@ const TranscriptBox = ({ transcript, currentTime }: any) => {
               );
             })}
       </div>
-      {/* <div>
-        {words.length > 50 && !showMore
-          ? `${words.slice(0, 50).join(" ")}...`
-          : transcript}
-      </div>
-      {words.length > 50 && (
-        <button
-          onClick={() => setShowMore(!showMore)}
-          className="text-blue-500 mt-2"
-        >
-          {showMore ? "Read Less" : "Read More"}
-        </button>
-      )} */}
     </div>
   );
 };
