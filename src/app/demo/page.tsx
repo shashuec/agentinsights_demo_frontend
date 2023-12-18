@@ -69,7 +69,7 @@ export default function Home() {
   useEffect(() => {
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      setIsFormOpen(false);
+      setIsFormOpen(true);
     }
   }, []);
 
@@ -703,7 +703,6 @@ export default function Home() {
                                       height={15}
                                       src="/alarm.svg"
                                     />
-                                    {/* <IoTimerOutline className="inline-block mb-[2px]" /> */}
                                   </span>{" "}
                                   {formatDuration(item.start)}
                                 </span>
