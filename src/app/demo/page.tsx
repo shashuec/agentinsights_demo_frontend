@@ -693,7 +693,7 @@ export default function Home() {
                         <div className="w-full space-y-4 text-sm bg-gray-100 p-4">
                           {output.bad_words && output.bad_words.length > 0 ? (
                             output.bad_words.map((item: any, index: number) => (
-                              <p>
+                              <p key={index}>
                                 <span className="bg-gray-200 p-1 rounded-sm text-gray-700">
                                   <span className="text-base">
                                     <Image
