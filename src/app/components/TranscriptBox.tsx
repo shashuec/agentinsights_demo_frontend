@@ -46,7 +46,7 @@ const TranscriptBox = ({ transcript, currentTime }: any) => {
                   className={`p-1 ${highlightTranscript(item)} rounded-md`}
                 >
                   <p>
-                    <span className="bg-gray-100 px-1 rounded-sm text-gray-700">
+                    <span className="bg-gray-100 px-1 rounded-sm text-gray-700 inline-block w-[4.5rem] text-center">
                       <span className="text-base">
                         <Image
                           className="inline-block mb-[2px]"
