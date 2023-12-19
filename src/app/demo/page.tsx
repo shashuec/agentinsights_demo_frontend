@@ -21,7 +21,7 @@ import PopUpForm from "../components/PopUpForm";
 import axios from "axios";
 import { FcUpload } from "react-icons/fc";
 import { FaCheckCircle, FaLightbulb } from "react-icons/fa";
-import { FaWandMagicSparkles } from "react-icons/fa6";
+import { FaWandMagicSparkles, FaRegFaceGrimace } from "react-icons/fa6";
 import { MdSupportAgent, MdInsights } from "react-icons/md";
 import { BsFillFileTextFill } from "react-icons/bs";
 import {
@@ -31,12 +31,12 @@ import {
   SubmitHandler,
 } from "react-hook-form";
 import { PLACEHOLDER_RESPONSES, EXAMPLES } from "../constants/constants";
-// import SampleResponse from "./constants/sample.json";
 import { ThreeDots } from "react-loader-spinner";
 import TranscriptBox from "../components/TranscriptBox";
 import AppFooter from "../components/AppFooter";
 import LandingPageHeader from "../components/LandingPageHeader";
-import React from "react";
+import Image from "next/image";
+import moment from "moment";
 
 export default function Home() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function Home() {
   const searchParams = useSearchParams();
 
   const fileTypes = ["MP3", "WAV", "MP4", "AAC", "AMR", "M4A"];
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
   const [audioFileUrl, setAudioFileUrl] = useState<any>(null);
   const [audioFile, setAudioFile] = useState<any>(null);
   const [audioFileError, setAudioFileError] = useState<boolean>(false);
@@ -73,9 +73,9 @@ export default function Home() {
     }
   }, []);
 
-  const closeForm = () => {
-    setIsFormOpen(false);
-  };
+  // const closeForm = () => {
+  //   setIsFormOpen(false);
+  // };
 
   const setUUIDQueryParam = (uuidValue: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -191,6 +191,18 @@ export default function Home() {
     }
   }, [currentLog, startLogging]);
 
+  function formatDuration(seconds: number) {
+    const duration = moment.duration(seconds, "seconds");
+
+    // If the duration is less than an hour, format as MM:SS
+    if (duration.asHours() < 1) {
+      return moment.utc(duration.asMilliseconds()).format("mm:ss");
+    }
+
+    // If the duration is an hour or more, format as HH:MM:SS
+    return moment.utc(duration.asMilliseconds()).format("HH:mm:ss");
+  }
+
   const onSubmit: SubmitHandler<any> = async (values) => {
     if (!audioFile) {
       setAudioFileError(true);
@@ -285,6 +297,27 @@ export default function Home() {
   useEffect(() => {
     scrollToBottom();
   }, [output, logs]);
+
+  function calculateNormalizedScore(
+    totalScore: number,
+    numQuestionsAnswered: number,
+    totalQuestions: number
+  ) {
+    if (numQuestionsAnswered === undefined || numQuestionsAnswered === null) {
+      return totalScore;
+    }
+
+    if (numQuestionsAnswered === 0) {
+      // Avoid division by zero
+      return totalScore;
+    }
+
+    const averageScore = totalScore / numQuestionsAnswered;
+    const normalizedScore =
+      averageScore * (totalQuestions / numQuestionsAnswered);
+
+    return Math.round(normalizedScore * 10);
+  }
 
   return (
     <div className="relative bg-blue-100">
@@ -503,6 +536,10 @@ export default function Home() {
                       <Icon as={BsFillFileTextFill} className="text-base" />
                       Detailed Summary
                     </Tab>
+                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                      <Icon as={FaRegFaceGrimace} className="text-base" />
+                      Bad Words
+                    </Tab>
                   </TabList>
                   <TabPanels>
                     <TabPanel>
@@ -579,12 +616,25 @@ export default function Home() {
                             </div>
                             <div>
                               <CircularProgress
-                                value={output.score * 10}
+                                value={
+                                  calculateNormalizedScore(
+                                    output.score,
+                                    output.total_answered_questions,
+                                    10
+                                  ) * 10
+                                }
                                 size="70px"
-                                color={getProgressColor(output.score)}
+                                color={getProgressColor(
+                                  calculateNormalizedScore(
+                                    output.score,
+                                    output.total_answered_questions,
+                                    10
+                                  )
+                                )}
                               >
                                 <CircularProgressLabel>
-                                  {output.score}/10
+                                  {output.score} /{" "}
+                                  {output.total_answered_questions}
                                 </CircularProgressLabel>
                               </CircularProgress>
                             </div>
@@ -630,6 +680,39 @@ export default function Home() {
                         </>
                       ) : (
                         <div className="p-2 text-center text-gray-600 ">
+                          Upload Audio File to see the results
+                        </div>
+                      )}
+                    </TabPanel>
+                    <TabPanel>
+                      {output ? (
+                        <div className="w-full space-y-4 text-sm bg-gray-100 p-4">
+                          {output.bad_words && output.bad_words.length > 0 ? (
+                            output.bad_words.map((item: any, index: number) => (
+                              <p key={index}>
+                                <span className="bg-gray-200 p-1 rounded-sm text-gray-700">
+                                  <span className="text-base">
+                                    <Image
+                                      className="inline-block mb-[2px]"
+                                      alt="alarm-icon"
+                                      width={15}
+                                      height={15}
+                                      src="/alarm.svg"
+                                    />
+                                  </span>{" "}
+                                  {formatDuration(item.start)}
+                                </span>
+                                <span className="ml-2 text-red-600">
+                                  {item.bad_word}
+                                </span>
+                              </p>
+                            ))
+                          ) : (
+                            <p>No bad words found</p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="p-2 text-center text-gray-600">
                           Upload Audio File to see the results
                         </div>
                       )}
