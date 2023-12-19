@@ -316,10 +316,6 @@ export default function Home() {
     const normalizedScore =
       averageScore * (totalQuestions / numQuestionsAnswered);
 
-    console.log(averageScore);
-    console.log(numQuestionsAnswered);
-    console.log(normalizedScore);
-
     return Math.round(normalizedScore * 10);
   }
 
