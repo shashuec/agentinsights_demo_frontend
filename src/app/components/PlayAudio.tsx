@@ -16,8 +16,8 @@ export const PlayAudio = ({ audio, setCurrentTime }: any) => {
       barWidth: 0,
       barHeight: 0.7,
       cursorWidth: 0,
-      waveColor: "#900090",
-      progressColor: "#450476",
+      waveColor: "#BFDBFE",
+      progressColor: "#2563EB",
     });
     waveSurfer.load(audio);
     waveSurfer.on("ready", () => {
@@ -43,7 +43,7 @@ export const PlayAudio = ({ audio, setCurrentTime }: any) => {
             return !play;
           });
         }}
-        className="w-[30px] h-[10px]"
+        className="w-[30px] h-[10px] mb-1 text-blue-600"
         type="button"
       >
         {isPlaying ? (

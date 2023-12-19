@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import { IoTimerOutline } from "react-icons/io5";
-import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import Image from "next/image";
-import moment from "moment";
+import { formatDuration } from "../../utils/util";
 
 interface TranscriptBoxProps {
   transcript: Array<{
@@ -15,18 +12,6 @@ interface TranscriptBoxProps {
 }
 
 const TranscriptBox = ({ transcript, currentTime }: any) => {
-  function formatDuration(seconds: number) {
-    const duration = moment.duration(seconds, "seconds");
-
-    // If the duration is less than an hour, format as MM:SS
-    if (duration.asHours() < 1) {
-      return moment.utc(duration.asMilliseconds()).format("mm:ss");
-    }
-
-    // If the duration is an hour or more, format as HH:MM:SS
-    return moment.utc(duration.asMilliseconds()).format("HH:mm:ss");
-  }
-
   function highlightTranscript(item: any) {
     if (item.start < currentTime && currentTime < item.end) {
       return "bg-blue-500 text-white";
@@ -55,7 +40,6 @@ const TranscriptBox = ({ transcript, currentTime }: any) => {
                           height={15}
                           src="/alarm.svg"
                         />
-                        {/* <IoTimerOutline className="inline-block mb-[2px]" /> */}
                       </span>{" "}
                       {formatDuration(item.start)}
                     </span>
@@ -66,7 +50,7 @@ const TranscriptBox = ({ transcript, currentTime }: any) => {
                           alt="speaker-one-icon"
                           width={20}
                           height={20}
-                          src="/one.svg"
+                          src="/onev2.svg"
                         />
                       ) : (
                         <Image
@@ -74,7 +58,7 @@ const TranscriptBox = ({ transcript, currentTime }: any) => {
                           alt="speaker-two-icon"
                           width={20}
                           height={20}
-                          src="/two.svg"
+                          src="/twov2.svg"
                         />
                       )}
                     </span>

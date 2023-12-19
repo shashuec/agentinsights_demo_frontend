@@ -14,6 +14,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Divider,
 } from "@chakra-ui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
@@ -21,9 +22,10 @@ import PopUpForm from "../components/PopUpForm";
 import axios from "axios";
 import { FcUpload } from "react-icons/fc";
 import { FaCheckCircle, FaLightbulb } from "react-icons/fa";
-import { FaWandMagicSparkles, FaRegFaceGrimace } from "react-icons/fa6";
+import { FaRegFaceGrimace } from "react-icons/fa6";
 import { MdSupportAgent, MdInsights } from "react-icons/md";
 import { BsFillFileTextFill } from "react-icons/bs";
+import { TbReportAnalytics } from "react-icons/tb";
 import {
   useForm,
   Controller,
@@ -36,7 +38,7 @@ import TranscriptBox from "../components/TranscriptBox";
 import AppFooter from "../components/AppFooter";
 import LandingPageHeader from "../components/LandingPageHeader";
 import Image from "next/image";
-import moment from "moment";
+import { formatDuration } from "../../utils/util";
 
 export default function Home() {
   const router = useRouter();
@@ -69,7 +71,11 @@ export default function Home() {
   useEffect(() => {
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      setIsFormOpen(true);
+      if (process.env.NEXT_PUBLIC_ENV === "developement") {
+        setIsFormOpen(false);
+      } else {
+        setIsFormOpen(true);
+      }
     }
   }, []);
 
@@ -191,18 +197,6 @@ export default function Home() {
     }
   }, [currentLog, startLogging]);
 
-  function formatDuration(seconds: number) {
-    const duration = moment.duration(seconds, "seconds");
-
-    // If the duration is less than an hour, format as MM:SS
-    if (duration.asHours() < 1) {
-      return moment.utc(duration.asMilliseconds()).format("mm:ss");
-    }
-
-    // If the duration is an hour or more, format as HH:MM:SS
-    return moment.utc(duration.asMilliseconds()).format("HH:mm:ss");
-  }
-
   const onSubmit: SubmitHandler<any> = async (values) => {
     if (!audioFile) {
       setAudioFileError(true);
@@ -278,15 +272,30 @@ export default function Home() {
     }
   };
 
-  const categorizeResults = (combinedOutput: any) => {
-    return combinedOutput.reduce((acc: any, answer: any) => {
-      if (!acc[answer.category]) {
-        acc[answer.category] = [];
-      }
-      acc[answer.category].push(answer);
-      return acc;
-    }, {});
-  };
+  // const categorizeResults = (combinedOutput: any) => {
+  //   return combinedOutput.reduce((acc: any, answer: any) => {
+  //     if (!acc[answer.category]) {
+  //       acc[answer.category] = [];
+  //     }
+  //     acc[answer.category].push(answer);
+  //     return acc;
+  //   }, {});
+  // };
+
+  function getTailwindBackgroundColor(answer: any) {
+    switch (answer.toLowerCase()) {
+      case "yes":
+        return "bg-green-200"; // Green for 'Yes'
+      case "no":
+        return "bg-red-300"; // Red for 'No'
+      case "partial":
+        return "bg-yellow-200"; // Yellow for 'Partially'
+      case "not applicable":
+        return "bg-gray-200"; // Gray for 'Not Applicable'
+      default:
+        return "bg-white"; // Default color, if the answer doesn't match any case
+    }
+  }
 
   const getProgressColor = (score: number) => {
     if (score >= 7 && score <= 10) return "green.500";
@@ -320,7 +329,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative bg-blue-100">
+    <div className="relative bg-blue-50">
       <LandingPageHeader />
       <div>
         <div className="p-4 text-2xl italic font-bold text-center">
@@ -349,7 +358,7 @@ export default function Home() {
             </div>
             {showQuestions ? (
               <div className="mt-4">
-                <div className="w-fit p-2 text-white bg-black rounded-md font-bold shadow-md  font-mono">
+                <div className="w-fit p-2 text-white bg-blue-600 rounded-md font-bold shadow-md  font-mono">
                   Questions
                 </div>
                 {loadingQuestions ? (
@@ -426,9 +435,9 @@ export default function Home() {
             )}
             {/* Submit Div */}
             {!startLogging && (
-              <div className="sticky bottom-0 bg-white p-2 pl-1 mt-4 w-full max-md:flex max-md:justify-center">
+              <div className="sticky bottom-0 bg-white py-2 mb-2 mt-4 w-full max-md:flex max-md:justify-center">
                 <button
-                  className="bg-black text-white p-2 shadow-md rounded-md"
+                  className="bg-blue-600 text-white p-2 shadow-md rounded-md"
                   onClick={handleSubmit(onSubmit)}
                 >
                   Submit
@@ -481,41 +490,81 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="p-2 w-full col-span-4  bg-white space-y-2">
-              <Box borderRadius="sm">
-                <div className=" flex gap-2 py-2 items-center text-2xl  border-b mb-2">
-                  <Icon as={FaWandMagicSparkles} color="blue.400" />{" "}
-                  <span>Report</span>
+            <div className="col-span-4 bg-white">
+              <Box p={2} className="w-full flex-1 mb-4">
+                <div className="text-2xl text-center mb-1 flex items-center">
+                  <div className="flex w-full  items-center  justify-between gap-4">
+                    <div>
+                      <span className="text-2xl mr-2">
+                        <TbReportAnalytics className="inline text-green-500 mb-1" />
+                      </span>
+                      <span className="font-medium">Report</span>
+                    </div>
+                    {output && (
+                      <div className="flex gap-2 justify-between align-middle">
+                        <div className="font-bold text-xl flex  my-auto">
+                          AI Score: &nbsp;
+                        </div>
+                        <div>
+                          <CircularProgress
+                            value={
+                              calculateNormalizedScore(
+                                output.score,
+                                output.total_answered_questions,
+                                10
+                              ) * 10
+                            }
+                            size="70px"
+                            color={getProgressColor(
+                              calculateNormalizedScore(
+                                output.score,
+                                output.total_answered_questions,
+                                10
+                              )
+                            )}
+                          >
+                            <CircularProgressLabel>
+                              {output.score} /{" "}
+                              {output.total_answered_questions == 0
+                                ? 10
+                                : output.total_answered_questions}
+                            </CircularProgressLabel>
+                          </CircularProgress>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                {output ? (
-                  <div className="w-full space-y-4">
-                    <ul className="list-disc text-sm  p-4 px-6  space-y-3">
-                      {output?.purpose_of_call &&
-                      output.purpose_of_call.length > 0 ? (
-                        output.purpose_of_call.map(
-                          (purpose: any, index: number) => (
-                            <li className="" key={index}>
-                              {purpose}
-                            </li>
-                          )
-                        )
-                      ) : (
-                        <li>Purpose of the call not available.</li>
-                      )}
-                    </ul>
-                  </div>
-                ) : (
-                  <div className="p-2  text-gray-600">
-                    Upload Audio File to see the results
-                  </div>
-                )}
-                <Tabs variant="line" colorScheme="linkedin">
+                <Divider />
+                <div className="my-4">
+                  <ul className="list-disc text-sm shadow-even p-4 px-6 border-l-4 mx-2 border-l-blue-500 space-y-3">
+                    {output?.purpose_of_call &&
+                    output?.purpose_of_call?.length > 0 ? (
+                      output.purpose_of_call.map(
+                        (purpose: any, index: number) => {
+                          if (purpose.length > 3) {
+                            return (
+                              <li className="" key={index}>
+                                {purpose}
+                              </li>
+                            );
+                          }
+                        }
+                      )
+                    ) : (
+                      <p>Upload Audio File to see the results</p>
+                    )}
+                  </ul>
+                </div>
+                <Tabs className="">
                   <TabList
-                    mb={["1em", "1em", "0"]}
-                    flexDir={["column", "column", "row"]}
-                    className="flex-wrap font-semibold flex justify-between"
+                    id="transrcipt-tablist"
+                    className="flex justify-between overflow-x-auto scrollbar-hide overflow-y-hidden"
                   >
-                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                    <Tab
+                      fontSize={["xs", "xs", "xs"]}
+                      className="flex align-start justify-center gap-1"
+                    >
                       <Icon as={MdInsights} className="text-xl" />
                       Customer Insight{" "}
                       {output && (
@@ -544,8 +593,11 @@ export default function Home() {
                   <TabPanels>
                     <TabPanel>
                       {output ? (
-                        <div className="w-full space-y-4">
-                          <ul className="list-disc text-sm shadow-md text-black  p-4 px-6 bg-gray-100 space-y-3">
+                        <div className="w-full">
+                          <ul className="list-disc text-base shadow-md rounded-sm px-6 py-4 bg-gray-50 space-y-3">
+                            {/* <div className="font-bold text-lg">
+                          Customer Insights
+                        </div> */}
                             {output.customer_insights &&
                             output.customer_insights.length > 0 ? (
                               output.customer_insights.map(
@@ -568,8 +620,9 @@ export default function Home() {
                     </TabPanel>
                     <TabPanel>
                       {output ? (
-                        <div className="w-full space-y-4">
-                          <ul className="list-disc text-sm shadow-md text-black  p-4 px-6 bg-gray-100 space-y-3">
+                        <div className="w-full">
+                          <ul className="list-disc text-base shadow-even rounded-sm p-4 px-6 bg-gray-50 space-y-3">
+                            {/* <div className="font-bold text-lg">Agent Actions</div> */}
                             {output.call_to_actions &&
                             output.call_to_actions.length > 0 ? (
                               output.call_to_actions.map(
@@ -592,14 +645,20 @@ export default function Home() {
                     </TabPanel>
                     <TabPanel>
                       {output ? (
-                        <div className="w-full space-y-4">
-                          <ul className="list-disc text-sm shadow-md text-black  p-4 px-6 bg-gray-100 space-y-3">
-                            {output.areas.map((area: any, index: number) => (
-                              <li className="" key={index}>
-                                {area}
-                              </li>
-                            ))}
-                          </ul>
+                        <div>
+                          <Box className="mt-2">
+                            <ul className="list-disc text-base shadow-even rounded-sm p-4 px-6 bg-gray-50 space-y-3">
+                              {output.areas && output.areas.length > 0 ? (
+                                output.areas.map((area: any, index: number) => (
+                                  <li className="" key={index}>
+                                    {area}
+                                  </li>
+                                ))
+                              ) : (
+                                <p>No areas of improvement available.</p>
+                              )}
+                            </ul>
+                          </Box>
                         </div>
                       ) : (
                         <div className="p-2 text-center text-gray-600">
@@ -607,76 +666,35 @@ export default function Home() {
                         </div>
                       )}
                     </TabPanel>
+
                     <TabPanel>
                       {output ? (
                         <>
-                          <div className="flex  gap-4 align-middle pb-2">
-                            <div className="font-bold text-2xl flex  my-auto">
-                              AI Score :
-                            </div>
-                            <div>
-                              <CircularProgress
-                                value={
-                                  calculateNormalizedScore(
-                                    output.score,
-                                    output.total_answered_questions,
-                                    10
-                                  ) * 10
-                                }
-                                size="70px"
-                                color={getProgressColor(
-                                  calculateNormalizedScore(
-                                    output.score,
-                                    output.total_answered_questions,
-                                    10
-                                  )
-                                )}
-                              >
-                                <CircularProgressLabel>
-                                  {output.score} /{" "}
-                                  {output.total_answered_questions}
-                                </CircularProgressLabel>
-                              </CircularProgress>
-                            </div>
-                          </div>
-                          {output &&
-                            Object.entries(
-                              categorizeResults(output.combined_output)
-                            ).map(([category, answers]: any) => (
-                              <div
-                                key={category}
-                                className="mb-6 bg-white border rounded-lg shadow-sm p-2"
-                              >
-                                <h2 className="text-base font-bold  border-b pb-2 text-blue-600">
-                                  {category}
-                                </h2>
-                                {answers.map((answer: any) => (
-                                  <div
-                                    className="shadow-md  text-xs p-2 mt-2 bg-gray-100 border "
-                                    key={answer.question}
-                                  >
-                                    <div className="mb-2 ">
-                                      <span className="font-bold ">
-                                        Question:{" "}
-                                      </span>
-                                      {answer.question}
-                                    </div>
-                                    <div className="mb-2 ">
-                                      <span className="font-bold ">
-                                        Answer:
-                                      </span>{" "}
-                                      {answer.answer}
-                                    </div>
-                                    <div className="">
-                                      <span className="font-bold ">
-                                        Reason:
-                                      </span>{" "}
-                                      {answer.reason}
-                                    </div>
-                                  </div>
-                                ))}
+                          {output.combined_output.map((answer: any) => (
+                            <div
+                              className=" shadow-md rounded-md text-sm p-4 mt-2 bg-gray-50  max-md:w-full"
+                              key={answer.question}
+                            >
+                              <div>
+                                <span className="font-bold">Question: </span>
+                                {answer.question}
                               </div>
-                            ))}
+                              <div>
+                                <span className="font-bold">Answer: </span>
+                                <span
+                                  className={`${getTailwindBackgroundColor(
+                                    answer.answer
+                                  )} px-2 py-[0.1rem] rounded-md `}
+                                >
+                                  {answer.answer}
+                                </span>
+                              </div>
+                              <div>
+                                <span className="font-bold">Reason: </span>
+                                {answer.reason}
+                              </div>
+                            </div>
+                          ))}
                         </>
                       ) : (
                         <div className="p-2 text-center text-gray-600 ">
@@ -686,30 +704,34 @@ export default function Home() {
                     </TabPanel>
                     <TabPanel>
                       {output ? (
-                        <div className="w-full space-y-4 text-sm bg-gray-100 p-4">
-                          {output.bad_words && output.bad_words.length > 0 ? (
-                            output.bad_words.map((item: any, index: number) => (
-                              <p key={index}>
-                                <span className="bg-gray-200 p-1 rounded-sm text-gray-700">
-                                  <span className="text-base">
-                                    <Image
-                                      className="inline-block mb-[2px]"
-                                      alt="alarm-icon"
-                                      width={15}
-                                      height={15}
-                                      src="/alarm.svg"
-                                    />
-                                  </span>{" "}
-                                  {formatDuration(item.start)}
-                                </span>
-                                <span className="ml-2 text-red-600">
-                                  {item.bad_word}
-                                </span>
-                              </p>
-                            ))
-                          ) : (
-                            <p>No bad words found</p>
-                          )}
+                        <div className="w-full">
+                          <ul className="list-disc text-base shadow-md rounded-sm px-6 py-4 bg-gray-50 space-y-3">
+                            {output.bad_words && output.bad_words.length > 0 ? (
+                              output.bad_words.map(
+                                (item: any, index: number) => (
+                                  <p key={index}>
+                                    <span className="bg-gray-100 p-1 rounded-sm text-gray-700">
+                                      <span className="text-base">
+                                        <Image
+                                          className="inline-block mb-[2px]"
+                                          alt="alarm-icon"
+                                          width={15}
+                                          height={15}
+                                          src="/alarm.svg"
+                                        />
+                                      </span>{" "}
+                                      {formatDuration(item.start)}
+                                    </span>
+                                    <span className="ml-2 text-red-600">
+                                      {item.bad_word}
+                                    </span>
+                                  </p>
+                                )
+                              )
+                            ) : (
+                              <p>No bad words found</p>
+                            )}
+                          </ul>
                         </div>
                       ) : (
                         <div className="p-2 text-center text-gray-600">
