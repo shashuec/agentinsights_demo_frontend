@@ -303,9 +303,13 @@ export default function Home() {
     numQuestionsAnswered: number,
     totalQuestions: number
   ) {
+    if (numQuestionsAnswered === undefined || numQuestionsAnswered === null) {
+      return totalScore;
+    }
+
     if (numQuestionsAnswered === 0) {
       // Avoid division by zero
-      return 0;
+      return totalScore;
     }
 
     const averageScore = totalScore / numQuestionsAnswered;
@@ -316,7 +320,7 @@ export default function Home() {
     console.log(numQuestionsAnswered);
     console.log(normalizedScore);
 
-    return normalizedScore;
+    return Math.round(normalizedScore * 10);
   }
 
   return (
@@ -633,12 +637,8 @@ export default function Home() {
                                 )}
                               >
                                 <CircularProgressLabel>
-                                  {calculateNormalizedScore(
-                                    output.score,
-                                    output.total_answered_questions,
-                                    10
-                                  )}
-                                  /10
+                                  {output.score} /{" "}
+                                  {output.total_answered_questions}
                                 </CircularProgressLabel>
                               </CircularProgress>
                             </div>
