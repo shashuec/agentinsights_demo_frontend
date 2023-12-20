@@ -84,7 +84,7 @@ const LandingPageHeader = () => {
                       Discover Our Product
                     </MenuItem>
                   </a>
-                  <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
+                  <Link href="/demo?uuid=8abeed24-4f5e-424d-8be1-ad43341f22dd">
                     <MenuItem
                       color="blue.700"
                       // _hover={{ color: "blue.500" }}

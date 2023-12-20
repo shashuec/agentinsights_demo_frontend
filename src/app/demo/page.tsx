@@ -74,7 +74,7 @@ export default function Home() {
       if (process.env.NEXT_PUBLIC_ENV === "developement") {
         setIsFormOpen(false);
       } else {
-        setIsFormOpen(true);
+        setIsFormOpen(false);
       }
     }
   }, []);
@@ -307,25 +307,8 @@ export default function Home() {
     scrollToBottom();
   }, [output, logs]);
 
-  function calculateNormalizedScore(
-    totalScore: number,
-    numQuestionsAnswered: number,
-    totalQuestions: number
-  ) {
-    if (numQuestionsAnswered === undefined || numQuestionsAnswered === null) {
-      return totalScore;
-    }
-
-    if (numQuestionsAnswered === 0) {
-      // Avoid division by zero
-      return totalScore;
-    }
-
-    const averageScore = totalScore / numQuestionsAnswered;
-    const normalizedScore =
-      averageScore * (totalQuestions / numQuestionsAnswered);
-
-    return Math.round(normalizedScore * 10);
+  function calculateNormalizedScore(totalScore: number, maxScore: number) {
+    return (totalScore / maxScore) * 10;
   }
 
   return (
@@ -510,24 +493,20 @@ export default function Home() {
                             value={
                               calculateNormalizedScore(
                                 output.score,
-                                output.total_answered_questions,
-                                10
+                                output.max_score
                               ) * 10
                             }
                             size="70px"
                             color={getProgressColor(
                               calculateNormalizedScore(
                                 output.score,
-                                output.total_answered_questions,
-                                10
+                                output.max_score
                               )
                             )}
                           >
                             <CircularProgressLabel>
-                              {output.score} /{" "}
-                              {output.total_answered_questions == 0
-                                ? 10
-                                : output.total_answered_questions}
+                              {output.score}/
+                              {output.max_score == 0 ? 10 : output.max_score}
                             </CircularProgressLabel>
                           </CircularProgress>
                         </div>
