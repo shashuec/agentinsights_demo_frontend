@@ -71,11 +71,12 @@ export default function Home() {
   useEffect(() => {
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      if (process.env.NEXT_PUBLIC_ENV === "developement") {
-        setIsFormOpen(false);
-      } else {
-        setIsFormOpen(false);
-      }
+      setIsFormOpen(true);
+      // if (process.env.NEXT_PUBLIC_ENV === "developement") {
+      //   setIsFormOpen(false);
+      // } else {
+      //   setIsFormOpen(true);
+      // }
     }
   }, []);
 
@@ -299,7 +300,7 @@ export default function Home() {
 
   const getProgressColor = (score: number) => {
     if (score >= 7 && score <= 10) return "green.500";
-    else if (score >= 5 && score <= 6) return "yellow.500";
+    else if (score >= 5 && score < 7) return "yellow.500";
     else return "red.500";
   };
 

@@ -1,1 +1,59 @@
-{"placeholders":{"company_name":"Our Company","representative_title":"Salesperson","solution_type":"service"},"questions":[{"category":"Initial Interaction","question_template":"Did the {representative_title} mention their name, the customer's name, and {company_name} during the call?","transcript":"representative"},{"category":"Purpose & Permission","question_template":"Did the {representative_title} convey the reason for the call and ask for the customer's consent to continue discussing the {solution_type}?","transcript":"representative"},{"category":"Conversation Personalization","question_template":"Was the customer addressed by name more than once during the conversation?","transcript":"representative"},{"category":"Professionalism","question_template":"Did the representative maintain control and professionalism throughout the conversation?","transcript":"representative"},{"category":"Sales Techniques","question_template":"Did the representative use persuasive terms like 'exclusive', 'trusted', or 'amazing' to enhance their pitch?","transcript":"representative"},{"category":"Value & Referral Presentation","question_template":"Did the representative discuss referral offers and ask the customer for potential referrals?","transcript":"representative"},{"category":"Closure Protocol","question_template":"Did the representative conclude the call by summarizing key points and offering future support?","transcript":"representative"},{"category":"Tone & Confidence","question_template":"Did the representative sound confident throughout the conversation?","transcript":"representative"},{"category":"Solution Presentation","question_template":"Did the representative recommend any specific {solution_type}, discuss its benefits, and provide essential details?","transcript":"Both"},{"category":"Customer Understanding","question_template":"Did the representative pose questions to better comprehend the customer's needs?","transcript":"Both"}]}
+{
+  "placeholders": {
+    "company_name": "Our Company",
+    "representative_title": "Salesperson",
+    "solution_type": "service"
+  },
+  "questions": [
+    {
+      "category": "Initial Interaction",
+      "question_template": "Did the {representative_title} mention their name, the customer's name, and {company_name} during the call?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Purpose & Permission",
+      "question_template": "Did the {representative_title} convey the reason for the call and ask for the customer's consent to continue discussing the {solution_type}?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Conversation Personalization",
+      "question_template": "Was the customer addressed by name more than once during the conversation?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Professionalism",
+      "question_template": "Did the representative maintain control and professionalism throughout the conversation?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Sales Techniques",
+      "question_template": "Did the representative use persuasive terms like 'exclusive', 'trusted', or 'amazing' to enhance their pitch?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Value & Referral Presentation",
+      "question_template": "Did the representative discuss referral offers and ask the customer for potential referrals?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Closure Protocol",
+      "question_template": "Did the representative conclude the call by summarizing key points and offering future support?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Tone & Confidence",
+      "question_template": "Did the representative sound confident throughout the conversation?",
+      "transcript": "representative"
+    },
+    {
+      "category": "Solution Presentation",
+      "question_template": "Did the representative recommend any specific {solution_type}, discuss its benefits, and provide essential details?",
+      "transcript": "Both"
+    },
+    {
+      "category": "Customer Understanding",
+      "question_template": "Did the representative pose questions to better comprehend the customer's needs?",
+      "transcript": "Both"
+    }
+  ]
+}
