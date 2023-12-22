@@ -90,7 +90,7 @@ const LandingPageHeader = () => {
                       Discover Our Product
                     </MenuItem>
                   </a>
-                  <Link href="/demo?uuid=604a318b-2cb1-463b-8eb4-5794a32da608">
+                  <Link href="/demo?uuid=9f04faa8-2796-4394-afa9-b2e8a714b317">
                     <MenuItem
                       color="blue.700"
                       // _hover={{ color: "blue.500" }}
@@ -136,7 +136,7 @@ const LandingPageHeader = () => {
         </Box>
         <Box display={{ base: "none", md: "flex" }}>
           <Box display="flex" className="space-x-4">
-            <Link href="/demo?uuid=604a318b-2cb1-463b-8eb4-5794a32da608">
+            <Link href="/demo?uuid=9f04faa8-2796-4394-afa9-b2e8a714b317">
               <Box className="p-2 font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
                 Try Demo
               </Box>
