@@ -21,7 +21,7 @@ const TranscriptBox = ({ transcript, currentTime }: any) => {
   return (
     <div className="mt-1 text-sm py-2">
       <div className="text-lg pb-2 font-bold">Transcript</div>
-      <div className="text-gray-700 max-h-96 overflow-y-scroll pr-3">
+      <div className="text-gray-700 max-h-[30rem] overflow-y-scroll pr-3">
         {typeof transcript == "string"
           ? JSON.stringify(transcript)
           : transcript.map((item: any) => {

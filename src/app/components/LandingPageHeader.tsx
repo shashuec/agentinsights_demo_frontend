@@ -26,6 +26,7 @@ const LandingPageHeader = () => {
   };
   return (
     <Box
+      id="nav-header"
       borderBottom="2px"
       borderColor="gray.200"
       p={4}
@@ -75,6 +76,11 @@ const LandingPageHeader = () => {
                       Pricing
                     </MenuItem>
                   </Link>
+                  <Link href="https://blog.agentinsights.live/" target="_blank">
+                    <MenuItem color="blue.700" _hover={{ color: "blue.500" }}>
+                      Blog
+                    </MenuItem>
+                  </Link>
                   <a
                     href="https://drive.google.com/file/d/1BFLvonYdLAvcv3aZ_-GkHW6MFqVlWQKP/view?usp=sharing"
                     target="_blank"
@@ -84,7 +90,7 @@ const LandingPageHeader = () => {
                       Discover Our Product
                     </MenuItem>
                   </a>
-                  <Link href="/demo?uuid=403e6bae-a6e4-47bc-a5cc-b2fad105ffab">
+                  <Link href="/demo?uuid=604a318b-2cb1-463b-8eb4-5794a32da608">
                     <MenuItem
                       color="blue.700"
                       // _hover={{ color: "blue.500" }}
@@ -112,6 +118,11 @@ const LandingPageHeader = () => {
                 Pricing
               </Box>
             </Link>
+            <Link href="https://blog.agentinsights.live/" target="_blank">
+              <Box p={2} _hover={{ color: "blue.500" }} className="font-bold">
+                Blog
+              </Box>
+            </Link>
             <a
               href="https://drive.google.com/file/d/1BFLvonYdLAvcv3aZ_-GkHW6MFqVlWQKP/view?usp=sharing"
               target="_blank"
@@ -125,7 +136,7 @@ const LandingPageHeader = () => {
         </Box>
         <Box display={{ base: "none", md: "flex" }}>
           <Box display="flex" className="space-x-4">
-            <Link href="/demo?uuid=403e6bae-a6e4-47bc-a5cc-b2fad105ffab">
+            <Link href="/demo?uuid=604a318b-2cb1-463b-8eb4-5794a32da608">
               <Box className="p-2 font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
                 Try Demo
               </Box>

@@ -8,6 +8,10 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+#nav-header {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
 .responsive-iframe {
   width: 560px;
   height: 315px;

@@ -149,7 +149,7 @@ function PopUpForm({ onClose }: any) {
       motionPreset="slideInBottom"
       isCentered
     >
-      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(1px)" />
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(0.6px)" />
       <ModalContent mx={2} maxW={isSmallerThan768 ? "80vw" : "md"}>
         <ModalHeader className="text-center text-2xl font-medium">
           Unlock the Full Potential of Your Calls with{" "}

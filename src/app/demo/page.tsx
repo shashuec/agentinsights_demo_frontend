@@ -15,6 +15,7 @@ import {
   TabPanels,
   Tabs,
   Divider,
+  Progress,
 } from "@chakra-ui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
@@ -25,7 +26,10 @@ import { FaCheckCircle, FaLightbulb } from "react-icons/fa";
 import { FaRegFaceGrimace } from "react-icons/fa6";
 import { MdSupportAgent, MdInsights } from "react-icons/md";
 import { BsFillFileTextFill } from "react-icons/bs";
-import { TbReportAnalytics } from "react-icons/tb";
+import { TbReportAnalytics, TbBulb } from "react-icons/tb";
+import { PiHandshakeLight } from "react-icons/pi";
+import { LuTrendingUp } from "react-icons/lu";
+
 import {
   useForm,
   Controller,
@@ -71,7 +75,7 @@ export default function Home() {
   useEffect(() => {
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      setIsFormOpen(true);
+      setIsFormOpen(false);
       // if (process.env.NEXT_PUBLIC_ENV === "developement") {
       //   setIsFormOpen(false);
       // } else {
@@ -273,15 +277,15 @@ export default function Home() {
     }
   };
 
-  // const categorizeResults = (combinedOutput: any) => {
-  //   return combinedOutput.reduce((acc: any, answer: any) => {
-  //     if (!acc[answer.category]) {
-  //       acc[answer.category] = [];
-  //     }
-  //     acc[answer.category].push(answer);
-  //     return acc;
-  //   }, {});
-  // };
+  const categorizeResults = (combinedOutput: any) => {
+    return combinedOutput.reduce((acc: any, answer: any) => {
+      if (!acc[answer.category]) {
+        acc[answer.category] = [];
+      }
+      acc[answer.category].push(answer);
+      return acc;
+    }, {});
+  };
 
   function getTailwindBackgroundColor(answer: any) {
     switch (answer.toLowerCase()) {
@@ -300,8 +304,20 @@ export default function Home() {
 
   const getProgressColor = (score: number) => {
     if (score >= 7 && score <= 10) return "green.500";
-    else if (score >= 5 && score < 7) return "yellow.500";
+    else if (score >= 5 && score < 7) return "yellow.300";
     else return "red.500";
+  };
+
+  const getProgressColorScheme = (score: number) => {
+    if (score >= 7 && score <= 10) return "green";
+    else if (score >= 5 && score < 7) return "yellow";
+    else return "red";
+  };
+
+  const getTextColor = (score: number) => {
+    if (score >= 7 && score <= 10) return "text-green-500";
+    else if (score >= 5 && score < 7) return "text-yellow-300";
+    else return "text-red-500";
   };
 
   useEffect(() => {
@@ -309,7 +325,10 @@ export default function Home() {
   }, [output, logs]);
 
   function calculateNormalizedScore(totalScore: number, maxScore: number) {
-    return (totalScore / maxScore) * 10;
+    if (maxScore == 0) maxScore = 10;
+
+    let normalizedScore = (totalScore / maxScore) * 10;
+    return parseFloat(normalizedScore.toFixed(1));
   }
 
   return (
@@ -319,13 +338,13 @@ export default function Home() {
         <div className="p-4 text-2xl italic font-bold text-center">
           Upload Your Audio and Experience the Magic
         </div>
-        <div className="px-4 grid grid-cols-1 md:grid-cols-7 space-y-2 md:space-y-0 md:gap-2 pb-4 w-full">
+        <div className="px-4 grid grid-cols-1 lg:grid-cols-7 space-y-2 lg:space-y-0 lg:gap-2 pb-4 w-full">
           <div className="px-4 pt-2 relative bg-white rounded-sm col-span-3 ">
             {audioFileUrl && (
               <PlayAudio audio={audioFileUrl} setCurrentTime={setCurrentTime} />
             )}
-            <div className="">
-              <div className="">
+            <div>
+              <div>
                 <FileUploader
                   multiple={true}
                   handleChange={handleChange}
@@ -476,48 +495,189 @@ export default function Home() {
           ) : (
             <div className="col-span-4 bg-white">
               <Box p={2} className="w-full flex-1 mb-4">
-                <div className="text-2xl text-center mb-1 flex items-center">
-                  <div className="flex w-full  items-center  justify-between gap-4">
-                    <div>
+                <div className="text-2xl mb-1 flex items-center">
+                  <div className="flex py-2 flex-col md:flex-row w-full justify-between md:items-center gap-4">
+                    <div className="md:w-1/3">
                       <span className="text-2xl mr-2">
                         <TbReportAnalytics className="inline text-green-500 mb-1" />
                       </span>
                       <span className="font-medium">Report</span>
                     </div>
                     {output && (
-                      <div className="flex gap-2 justify-between align-middle">
-                        <div className="font-bold text-xl flex  my-auto">
-                          AI Score: &nbsp;
-                        </div>
-                        <div>
-                          <CircularProgress
-                            value={
+                      <>
+                        <div className="flex md:justify-center items-center md:w-1/3 md:border-l-[1px] md:border-r-[1px]">
+                          <div
+                            className={`font-bold text-xl flex items-center ${getTextColor(
                               calculateNormalizedScore(
                                 output.score,
-                                output.max_score
-                              ) * 10
-                            }
-                            size="70px"
-                            color={getProgressColor(
-                              calculateNormalizedScore(
-                                output.score,
-                                output.max_score
+                                output.total_max_score
                               )
-                            )}
+                            )}`}
                           >
-                            <CircularProgressLabel>
-                              {output.score}/
-                              {output.max_score == 0 ? 10 : output.max_score}
-                            </CircularProgressLabel>
-                          </CircularProgress>
+                            <svg
+                              className="w-8 h-8"
+                              viewBox="0 0 32 32"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M28 14.6667V12H25.3333V9.33333C25.3312 8.62674 25.0496 7.94969 24.55 7.45005C24.0503 6.95041 23.3733 6.66878 22.6667 6.66667H20V4H17.3333V6.66667H14.6667V4H12V6.66667H9.33333C8.62674 6.66878 7.94969 6.95041 7.45005 7.45005C6.95041 7.94969 6.66878 8.62674 6.66667 9.33333V12H4V14.6667H6.66667V17.3333H4V20H6.66667V22.6667C6.66878 23.3733 6.95041 24.0503 7.45005 24.55C7.94969 25.0496 8.62674 25.3312 9.33333 25.3333H12V28H14.6667V25.3333H17.3333V28H20V25.3333H22.6667C23.3733 25.3312 24.0503 25.0496 24.55 24.55C25.0496 24.0503 25.3312 23.3733 25.3333 22.6667V20H28V17.3333H25.3333V14.6667H28ZM22.6667 22.6667H9.33333V9.33333H22.6667V22.6667Z"
+                                fill="currentColor"
+                              />
+                              <path
+                                d="M15.148 10.6667H13.3547L10.6747 21.3334H12.044L12.6627 18.8334H15.7507L16.3534 21.3334H17.7693L15.148 10.6667ZM12.8427 17.7654L14.2 11.9334H14.2614L15.572 17.7654H12.8427ZM18.992 10.6667H20.3254V21.3334H18.992V10.6667Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            QA Score: &nbsp;
+                          </div>
+                          <div>
+                            <CircularProgress
+                              value={
+                                calculateNormalizedScore(
+                                  output.score,
+                                  output.total_max_score
+                                ) * 10
+                              }
+                              size="70px"
+                              color={getProgressColor(
+                                calculateNormalizedScore(
+                                  output.score,
+                                  output.total_max_score
+                                )
+                              )}
+                            >
+                              <CircularProgressLabel>
+                                <span className="font-bold text-xs">
+                                  {calculateNormalizedScore(
+                                    output.score,
+                                    output.total_max_score
+                                  )}
+                                  /10
+                                </span>
+
+                                {/* {output.max_score == 0 ? 10 : output.max_score} */}
+                              </CircularProgressLabel>
+                            </CircularProgress>
+                          </div>
                         </div>
-                      </div>
+                        <div className="md:w-1/3 max-w-md space-y-2">
+                          <div className="flex items-center relative text-sm font-medium text-gray-500">
+                            <span className="text-lg">
+                              <PiHandshakeLight />
+                            </span>
+                            <span className="mr-2 ml-1">Call Introduction</span>
+                            <span className="absolute right-0 -top-3 z-20 text-xs">
+                              {
+                                output.scores_by_category["Call Introduction"]
+                                  .score
+                              }
+                              /
+                              {
+                                output.scores_by_category["Call Introduction"]
+                                  .max_score
+                              }
+                            </span>
+                            <Progress
+                              colorScheme={getProgressColorScheme(
+                                calculateNormalizedScore(
+                                  output.scores_by_category["Call Introduction"]
+                                    .score,
+                                  output.scores_by_category["Call Introduction"]
+                                    .max_score
+                                )
+                              )}
+                              value={
+                                calculateNormalizedScore(
+                                  output.scores_by_category["Call Introduction"]
+                                    .score,
+                                  output.scores_by_category["Call Introduction"]
+                                    .max_score
+                                ) * 10
+                              }
+                              className="flex-grow"
+                            />
+                          </div>
+                          <div className="flex items-center relative text-sm font-medium text-gray-500">
+                            <span className="text-lg">
+                              <LuTrendingUp />
+                            </span>
+                            <span className="mr-2 ml-1">Call Progression</span>
+                            <span className="absolute right-0 -top-3 z-20 text-xs">
+                              {
+                                output.scores_by_category["Call Progression"]
+                                  .score
+                              }
+                              /
+                              {
+                                output.scores_by_category["Call Progression"]
+                                  .max_score
+                              }
+                            </span>
+                            <Progress
+                              colorScheme={getProgressColorScheme(
+                                calculateNormalizedScore(
+                                  output.scores_by_category["Call Progression"]
+                                    .score,
+                                  output.scores_by_category["Call Progression"]
+                                    .max_score
+                                )
+                              )}
+                              value={
+                                calculateNormalizedScore(
+                                  output.scores_by_category["Call Progression"]
+                                    .score,
+                                  output.scores_by_category["Call Progression"]
+                                    .max_score
+                                ) * 10
+                              }
+                              className="flex-grow"
+                            />
+                          </div>
+                          <div className="flex relative items-center text-sm font-medium text-gray-500">
+                            <span className="text-lg mb-1">
+                              <TbBulb />
+                            </span>
+                            <span className="mr-2 ml-1">Call Conclusion</span>
+                            <span className="absolute right-0 -top-3 z-20 text-xs">
+                              {
+                                output.scores_by_category["Call Conclusion"]
+                                  .score
+                              }
+                              /
+                              {
+                                output.scores_by_category["Call Conclusion"]
+                                  .max_score
+                              }
+                            </span>
+                            <Progress
+                              colorScheme={getProgressColorScheme(
+                                calculateNormalizedScore(
+                                  output.scores_by_category["Call Conclusion"]
+                                    .score,
+                                  output.scores_by_category["Call Conclusion"]
+                                    .max_score
+                                )
+                              )}
+                              value={
+                                calculateNormalizedScore(
+                                  output.scores_by_category["Call Conclusion"]
+                                    .score,
+                                  output.scores_by_category["Call Conclusion"]
+                                    .max_score
+                                ) * 10
+                              }
+                              className="flex-grow"
+                            />
+                          </div>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
                 <Divider />
-                <div className="my-4">
-                  <ul className="list-disc text-sm shadow-even p-4 px-6 border-l-4 mx-2 border-l-blue-500 space-y-3">
+                <div className="my-4 mx-2 space-y-1">
+                  <p className="font-medium">Purpose of call</p>
+                  <ul className="list-disc text-sm shadow-even p-4 px-6 border-l-4 border-l-blue-500 space-y-3">
                     {output?.purpose_of_call &&
                     output?.purpose_of_call?.length > 0 ? (
                       output.purpose_of_call.map(
@@ -536,38 +696,45 @@ export default function Home() {
                     )}
                   </ul>
                 </div>
-                <Tabs className="">
+                <Tabs>
                   <TabList
                     id="transrcipt-tablist"
                     className="flex justify-between overflow-x-auto scrollbar-hide overflow-y-hidden"
                   >
-                    <Tab
-                      fontSize={["xs", "xs", "xs"]}
-                      className="flex align-start justify-center gap-1"
-                    >
+                    <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={MdInsights} className="text-xl" />
-                      Customer Insight{" "}
+                      <span>&nbsp;</span>
+                      <span className="">Customer Insight</span>
+                      <span>&nbsp;</span>
                       {output && (
                         <span>({output.customer_insights.length})</span>
                       )}
                     </Tab>
-                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={MdSupportAgent} className="text-xl" />
-                      Agent Actions{" "}
+                      <span>&nbsp;</span>
+                      Agent Actions
+                      <span>&nbsp;</span>
                       {output && <span>({output.call_to_actions.length})</span>}
                     </Tab>
-                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={FaLightbulb} className="text-base" />
-                      Areas of Improvement{" "}
+                      <span>&nbsp;</span>
+                      Areas of Improvement
+                      <span>&nbsp;</span>
                       {output && <span>({output.areas.length})</span>}
                     </Tab>
-                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={BsFillFileTextFill} className="text-base" />
+                      <span>&nbsp;</span>
                       Detailed Summary
                     </Tab>
-                    <Tab fontSize={["xs", "xs", "xs"]} className="flex gap-1">
+                    <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={FaRegFaceGrimace} className="text-base" />
+                      <span>&nbsp;</span>
                       Bad Words
+                      <span>&nbsp;</span>
+                      {output && <span>({output.bad_words.length})</span>}
                     </Tab>
                   </TabList>
                   <TabPanels>
@@ -588,7 +755,7 @@ export default function Home() {
                                 )
                               )
                             ) : (
-                              <li>No customer insights available.</li>
+                              <p>No customer insights available.</p>
                             )}
                           </ul>
                         </div>
@@ -613,7 +780,7 @@ export default function Home() {
                                 )
                               )
                             ) : (
-                              <li>No call to actions available.</li>
+                              <p>No call to actions available.</p>
                             )}
                           </ul>
                         </div>
@@ -648,39 +815,44 @@ export default function Home() {
                     </TabPanel>
 
                     <TabPanel>
-                      {output ? (
-                        <>
-                          {output.combined_output.map((answer: any) => (
-                            <div
-                              className=" shadow-md rounded-md text-sm p-4 mt-2 bg-gray-50  max-md:w-full"
-                              key={answer.question}
-                            >
-                              <div>
-                                <span className="font-bold">Question: </span>
-                                {answer.question}
+                      {output &&
+                        Object.entries(
+                          categorizeResults(output.combined_output)
+                        ).map(([category, answers]: any) => (
+                          <div
+                            key={category}
+                            className="mb-6 bg-white border rounded-lg shadow-sm p-2"
+                          >
+                            <h2 className="text-base font-bold border-b pb-2 text-gray-600">
+                              {category}
+                            </h2>
+                            {answers.map((answer: any) => (
+                              <div
+                                className="shadow-md rounded-md text-sm p-4 mt-1 bg-gray-50  max-md:w-full"
+                                key={answer.question}
+                              >
+                                <div>
+                                  <span className="font-bold">Question: </span>
+                                  {answer.question}
+                                </div>
+                                <div>
+                                  <span className="font-bold">Answer: </span>
+                                  <span
+                                    className={`${getTailwindBackgroundColor(
+                                      answer.answer
+                                    )} px-2 py-[0.1rem] rounded-md `}
+                                  >
+                                    {answer.answer}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="font-bold">Reason: </span>
+                                  {answer.reason}
+                                </div>
                               </div>
-                              <div>
-                                <span className="font-bold">Answer: </span>
-                                <span
-                                  className={`${getTailwindBackgroundColor(
-                                    answer.answer
-                                  )} px-2 py-[0.1rem] rounded-md `}
-                                >
-                                  {answer.answer}
-                                </span>
-                              </div>
-                              <div>
-                                <span className="font-bold">Reason: </span>
-                                {answer.reason}
-                              </div>
-                            </div>
-                          ))}
-                        </>
-                      ) : (
-                        <div className="p-2 text-center text-gray-600 ">
-                          Upload Audio File to see the results
-                        </div>
-                      )}
+                            ))}
+                          </div>
+                        ))}
                     </TabPanel>
                     <TabPanel>
                       {output ? (
