@@ -696,15 +696,14 @@ export default function Home() {
                     )}
                   </ul>
                 </div>
-                <Tabs>
-                  <TabList
-                    id="transrcipt-tablist"
-                    className="flex justify-between overflow-x-auto scrollbar-hide overflow-y-hidden"
-                  >
-                    <Tab fontSize={["xs", "xs", "xs"]}>
+                <Tabs isFitted>
+                  <TabList id="transrcipt-tablist" className="" flexWrap="wrap">
+                    <Tab fontSize={["xs", "xs", "xs"]} className="">
                       <Icon as={MdInsights} className="text-xl" />
                       <span>&nbsp;</span>
-                      <span className="">Customer Insight</span>
+                      <span className="whitespace-nowrap">
+                        Customer Insight
+                      </span>
                       <span>&nbsp;</span>
                       {output && (
                         <span>({output.customer_insights.length})</span>
@@ -713,26 +712,30 @@ export default function Home() {
                     <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={MdSupportAgent} className="text-xl" />
                       <span>&nbsp;</span>
-                      Agent Actions
+                      <span className="whitespace-nowrap">Agent Actions</span>
                       <span>&nbsp;</span>
                       {output && <span>({output.call_to_actions.length})</span>}
                     </Tab>
                     <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={FaLightbulb} className="text-base" />
                       <span>&nbsp;</span>
-                      Areas of Improvement
+                      <span className="whitespace-nowrap">
+                        Areas of Improvement
+                      </span>
                       <span>&nbsp;</span>
                       {output && <span>({output.areas.length})</span>}
                     </Tab>
                     <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={BsFillFileTextFill} className="text-base" />
                       <span>&nbsp;</span>
-                      Detailed Summary
+                      <span className="whitespace-nowrap">
+                        Detailed Summary
+                      </span>
                     </Tab>
                     <Tab fontSize={["xs", "xs", "xs"]}>
                       <Icon as={FaRegFaceGrimace} className="text-base" />
                       <span>&nbsp;</span>
-                      Bad Words
+                      <span className="whitespace-nowrap">Bad Words</span>
                       <span>&nbsp;</span>
                       {output && <span>({output.bad_words.length})</span>}
                     </Tab>
