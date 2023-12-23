@@ -30,7 +30,7 @@ const LandingPageHeader = () => {
       borderBottom="2px"
       borderColor="gray.200"
       p={4}
-      className="sticky top-0 left-0 bg-white shadow-md z-10 sm:px-10"
+      className="sticky top-0 left-0 bg-white shadow-md z-50 sm:px-10"
     >
       <Box
         display="flex"

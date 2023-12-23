@@ -826,7 +826,7 @@ export default function Home() {
                             key={category}
                             className="mb-6 bg-white border rounded-lg shadow-sm p-2"
                           >
-                            <h2 className="text-base font-bold border-b pb-2 text-gray-600">
+                            <h2 className="text-base font-bold border-b pb-2 text-blue-600">
                               {category}
                             </h2>
                             {answers.map((answer: any) => (
