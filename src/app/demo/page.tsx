@@ -26,7 +26,7 @@ import { FaCheckCircle, FaLightbulb } from "react-icons/fa";
 import { FaRegFaceGrimace } from "react-icons/fa6";
 import { MdSupportAgent, MdInsights } from "react-icons/md";
 import { BsFillFileTextFill } from "react-icons/bs";
-import { TbReportAnalytics, TbBulb } from "react-icons/tb";
+import { TbReportAnalytics, TbBulb, TbScript } from "react-icons/tb";
 import { PiHandshakeLight } from "react-icons/pi";
 import { LuTrendingUp } from "react-icons/lu";
 
@@ -343,7 +343,7 @@ export default function Home() {
             {audioFileUrl && (
               <PlayAudio audio={audioFileUrl} setCurrentTime={setCurrentTime} />
             )}
-            <div>
+            <div className="overflow-hidden">
               <div>
                 <FileUploader
                   multiple={true}
@@ -431,10 +431,58 @@ export default function Home() {
                 )}
               </div>
             ) : (
-              <TranscriptBox
-                currentTime={currentTime}
-                transcript={output.source_transcript}
-              />
+              <Tabs marginTop={4}>
+                <TabList>
+                  <Tab fontSize={["xs", "xs", "xs"]}>
+                    <Icon as={TbScript} className="text-base" />
+                    <span>Transcript</span>
+                  </Tab>
+                  <Tab fontSize={["xs", "xs", "xs"]}>
+                    <Icon as={FaRegFaceGrimace} className="text-base" />
+                    <span>&nbsp;</span>
+                    <span className="whitespace-nowrap">Bad Words</span>
+                    <span>&nbsp;</span>
+                    <span>({output?.bad_words.length})</span>
+                  </Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel>
+                    <TranscriptBox
+                      currentTime={currentTime}
+                      transcript={output.source_transcript}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <div className="w-full">
+                      <ul className="list-disc text-base shadow-md rounded-sm px-6 py-4 bg-gray-50 space-y-3">
+                        {output.bad_words && output.bad_words.length > 0 ? (
+                          output.bad_words.map((item: any, index: number) => (
+                            <p key={index}>
+                              <span className="bg-gray-100 p-1 rounded-sm text-gray-700">
+                                <span className="text-base">
+                                  <Image
+                                    className="inline-block mb-[2px]"
+                                    alt="alarm-icon"
+                                    width={15}
+                                    height={15}
+                                    src="/alarm.svg"
+                                  />
+                                </span>{" "}
+                                {formatDuration(item.start)}
+                              </span>
+                              <span className="ml-2 text-red-600">
+                                {item.bad_word}
+                              </span>
+                            </p>
+                          ))
+                        ) : (
+                          <p>No bad words found</p>
+                        )}
+                      </ul>
+                    </div>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             )}
             {/* Submit Div */}
             {!startLogging && (
@@ -496,16 +544,17 @@ export default function Home() {
             <div className="col-span-4 bg-white">
               <Box p={2} className="w-full flex-1 mb-4">
                 <div className="text-2xl mb-1 flex items-center">
-                  <div className="flex py-2 flex-col md:flex-row w-full justify-between md:items-center gap-4">
-                    <div className="md:w-1/3">
+                  <div className="flex flex-wrap py-2 flex-row w-full justify-between items-center gap-4">
+                    <div>
                       <span className="text-2xl mr-2">
                         <TbReportAnalytics className="inline text-green-500 mb-1" />
                       </span>
-                      <span className="font-medium">Report</span>
+                      <span className="font-medium text-lg">Report</span>
                     </div>
                     {output && (
                       <>
-                        <div className="flex md:justify-center items-center md:w-1/3 md:border-l-[1px] md:border-r-[1px]">
+                        {/* <div className="border-l-[1px] h-16">&nbsp;</div> */}
+                        <div className="flex md:justify-center items-center">
                           <div
                             className={`font-bold text-xl flex items-center ${getTextColor(
                               calculateNormalizedScore(
@@ -514,21 +563,23 @@ export default function Home() {
                               )
                             )}`}
                           >
-                            <svg
-                              className="w-8 h-8"
-                              viewBox="0 0 32 32"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M28 14.6667V12H25.3333V9.33333C25.3312 8.62674 25.0496 7.94969 24.55 7.45005C24.0503 6.95041 23.3733 6.66878 22.6667 6.66667H20V4H17.3333V6.66667H14.6667V4H12V6.66667H9.33333C8.62674 6.66878 7.94969 6.95041 7.45005 7.45005C6.95041 7.94969 6.66878 8.62674 6.66667 9.33333V12H4V14.6667H6.66667V17.3333H4V20H6.66667V22.6667C6.66878 23.3733 6.95041 24.0503 7.45005 24.55C7.94969 25.0496 8.62674 25.3312 9.33333 25.3333H12V28H14.6667V25.3333H17.3333V28H20V25.3333H22.6667C23.3733 25.3312 24.0503 25.0496 24.55 24.55C25.0496 24.0503 25.3312 23.3733 25.3333 22.6667V20H28V17.3333H25.3333V14.6667H28ZM22.6667 22.6667H9.33333V9.33333H22.6667V22.6667Z"
-                                fill="currentColor"
-                              />
-                              <path
-                                d="M15.148 10.6667H13.3547L10.6747 21.3334H12.044L12.6627 18.8334H15.7507L16.3534 21.3334H17.7693L15.148 10.6667ZM12.8427 17.7654L14.2 11.9334H14.2614L15.572 17.7654H12.8427ZM18.992 10.6667H20.3254V21.3334H18.992V10.6667Z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                            QA Score: &nbsp;
+                            <span className="whitespace-nowrap">
+                              <svg
+                                className="w-8 h-8 inline"
+                                viewBox="0 0 32 32"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M28 14.6667V12H25.3333V9.33333C25.3312 8.62674 25.0496 7.94969 24.55 7.45005C24.0503 6.95041 23.3733 6.66878 22.6667 6.66667H20V4H17.3333V6.66667H14.6667V4H12V6.66667H9.33333C8.62674 6.66878 7.94969 6.95041 7.45005 7.45005C6.95041 7.94969 6.66878 8.62674 6.66667 9.33333V12H4V14.6667H6.66667V17.3333H4V20H6.66667V22.6667C6.66878 23.3733 6.95041 24.0503 7.45005 24.55C7.94969 25.0496 8.62674 25.3312 9.33333 25.3333H12V28H14.6667V25.3333H17.3333V28H20V25.3333H22.6667C23.3733 25.3312 24.0503 25.0496 24.55 24.55C25.0496 24.0503 25.3312 23.3733 25.3333 22.6667V20H28V17.3333H25.3333V14.6667H28ZM22.6667 22.6667H9.33333V9.33333H22.6667V22.6667Z"
+                                  fill="currentColor"
+                                />
+                                <path
+                                  d="M15.148 10.6667H13.3547L10.6747 21.3334H12.044L12.6627 18.8334H15.7507L16.3534 21.3334H17.7693L15.148 10.6667ZM12.8427 17.7654L14.2 11.9334H14.2614L15.572 17.7654H12.8427ZM18.992 10.6667H20.3254V21.3334H18.992V10.6667Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                              <span className="text-lg">QA Score: &nbsp;</span>
+                            </span>
                           </div>
                           <div>
                             <CircularProgress
@@ -560,114 +611,136 @@ export default function Home() {
                             </CircularProgress>
                           </div>
                         </div>
-                        <div className="md:w-1/3 max-w-md space-y-2">
-                          <div className="flex items-center relative text-sm font-medium text-gray-500">
-                            <span className="text-lg">
-                              <PiHandshakeLight />
-                            </span>
-                            <span className="mr-2 ml-1">Call Introduction</span>
-                            <span className="absolute right-0 -top-3 z-20 text-xs">
-                              {
-                                output.scores_by_category["Call Introduction"]
-                                  .score
-                              }
-                              /
-                              {
-                                output.scores_by_category["Call Introduction"]
-                                  .max_score
-                              }
-                            </span>
-                            <Progress
-                              colorScheme={getProgressColorScheme(
-                                calculateNormalizedScore(
+                        {/* <div className="border-l-[1px] h-16">&nbsp;</div> */}
+                        <div className="space-y-2">
+                          <div className="grid grid-cols-2 gap-2 relative text-sm font-medium text-gray-500">
+                            <div className="flex items-center">
+                              <span className="flex items-center">
+                                <PiHandshakeLight className="inline-block text-lg mr-1" />
+                                Call Introduction
+                              </span>
+                            </div>
+                            <div className="flex justify-end items-center">
+                              <span className="absolute right-0 -top-3 z-20 text-xs">
+                                {calculateNormalizedScore(
                                   output.scores_by_category["Call Introduction"]
                                     .score,
                                   output.scores_by_category["Call Introduction"]
                                     .max_score
-                                )
-                              )}
-                              value={
-                                calculateNormalizedScore(
-                                  output.scores_by_category["Call Introduction"]
-                                    .score,
-                                  output.scores_by_category["Call Introduction"]
-                                    .max_score
-                                ) * 10
-                              }
-                              className="flex-grow"
-                            />
+                                )}
+                                /10
+                              </span>
+
+                              <Progress
+                                colorScheme={getProgressColorScheme(
+                                  calculateNormalizedScore(
+                                    output.scores_by_category[
+                                      "Call Introduction"
+                                    ].score,
+                                    output.scores_by_category[
+                                      "Call Introduction"
+                                    ].max_score
+                                  )
+                                )}
+                                value={
+                                  calculateNormalizedScore(
+                                    output.scores_by_category[
+                                      "Call Introduction"
+                                    ].score,
+                                    output.scores_by_category[
+                                      "Call Introduction"
+                                    ].max_score
+                                  ) * 10
+                                }
+                                className="flex-grow"
+                              />
+                            </div>
                           </div>
-                          <div className="flex items-center relative text-sm font-medium text-gray-500">
-                            <span className="text-lg">
-                              <LuTrendingUp />
-                            </span>
-                            <span className="mr-2 ml-1">Call Progression</span>
-                            <span className="absolute right-0 -top-3 z-20 text-xs">
-                              {
-                                output.scores_by_category["Call Progression"]
-                                  .score
-                              }
-                              /
-                              {
-                                output.scores_by_category["Call Progression"]
-                                  .max_score
-                              }
-                            </span>
-                            <Progress
-                              colorScheme={getProgressColorScheme(
-                                calculateNormalizedScore(
+
+                          <div className="grid grid-cols-2 gap-2 items-center relative text-sm font-medium text-gray-500">
+                            <div className="flex items-center">
+                              <span className="flex items-center">
+                                <LuTrendingUp className="inline-block text-lg mr-1" />
+                                Call Progression
+                              </span>
+                            </div>
+
+                            <div className="flex justify-end items-center">
+                              <span className="absolute right-0 -top-3 z-20 text-xs">
+                                {calculateNormalizedScore(
                                   output.scores_by_category["Call Progression"]
                                     .score,
                                   output.scores_by_category["Call Progression"]
                                     .max_score
-                                )
-                              )}
-                              value={
-                                calculateNormalizedScore(
-                                  output.scores_by_category["Call Progression"]
-                                    .score,
-                                  output.scores_by_category["Call Progression"]
-                                    .max_score
-                                ) * 10
-                              }
-                              className="flex-grow"
-                            />
+                                )}
+                                /10
+                              </span>
+
+                              <Progress
+                                colorScheme={getProgressColorScheme(
+                                  calculateNormalizedScore(
+                                    output.scores_by_category[
+                                      "Call Progression"
+                                    ].score,
+                                    output.scores_by_category[
+                                      "Call Progression"
+                                    ].max_score
+                                  )
+                                )}
+                                value={
+                                  calculateNormalizedScore(
+                                    output.scores_by_category[
+                                      "Call Progression"
+                                    ].score,
+                                    output.scores_by_category[
+                                      "Call Progression"
+                                    ].max_score
+                                  ) * 10
+                                }
+                                className="flex-grow"
+                              />
+                            </div>
                           </div>
-                          <div className="flex relative items-center text-sm font-medium text-gray-500">
-                            <span className="text-lg mb-1">
-                              <TbBulb />
-                            </span>
-                            <span className="mr-2 ml-1">Call Conclusion</span>
-                            <span className="absolute right-0 -top-3 z-20 text-xs">
-                              {
-                                output.scores_by_category["Call Conclusion"]
-                                  .score
-                              }
-                              /
-                              {
-                                output.scores_by_category["Call Conclusion"]
-                                  .max_score
-                              }
-                            </span>
-                            <Progress
-                              colorScheme={getProgressColorScheme(
-                                calculateNormalizedScore(
+
+                          <div className="grid grid-cols-2 gap-2 items-center relative text-sm font-medium text-gray-500">
+                            <div className="flex items-center">
+                              <span className="flex items-center">
+                                <TbBulb className="inline-block text-lg mr-1" />
+                                Call Conclusion
+                              </span>
+                            </div>
+
+                            <div className="flex justify-end items-center">
+                              <span className="absolute right-0 -top-3 z-20 text-xs">
+                                {calculateNormalizedScore(
                                   output.scores_by_category["Call Conclusion"]
                                     .score,
                                   output.scores_by_category["Call Conclusion"]
                                     .max_score
-                                )
-                              )}
-                              value={
-                                calculateNormalizedScore(
-                                  output.scores_by_category["Call Conclusion"]
-                                    .score,
-                                  output.scores_by_category["Call Conclusion"]
-                                    .max_score
-                                ) * 10
-                              }
-                              className="flex-grow"
-                            />
+                                )}
+                                /10
+                              </span>
+
+                              <Progress
+                                colorScheme={getProgressColorScheme(
+                                  calculateNormalizedScore(
+                                    output.scores_by_category["Call Conclusion"]
+                                      .score,
+                                    output.scores_by_category["Call Conclusion"]
+                                      .max_score
+                                  )
+                                )}
+                                value={
+                                  calculateNormalizedScore(
+                                    output.scores_by_category["Call Conclusion"]
+                                      .score,
+                                    output.scores_by_category["Call Conclusion"]
+                                      .max_score
+                                  ) * 10
+                                }
+                                className="flex-grow"
+                              />
+                            </div>
                           </div>
                         </div>
                       </>
@@ -731,13 +804,6 @@ export default function Home() {
                       <span className="whitespace-nowrap">
                         Detailed Summary
                       </span>
-                    </Tab>
-                    <Tab fontSize={["xs", "xs", "xs"]}>
-                      <Icon as={FaRegFaceGrimace} className="text-base" />
-                      <span>&nbsp;</span>
-                      <span className="whitespace-nowrap">Bad Words</span>
-                      <span>&nbsp;</span>
-                      {output && <span>({output.bad_words.length})</span>}
                     </Tab>
                   </TabList>
                   <TabPanels>
@@ -856,43 +922,6 @@ export default function Home() {
                             ))}
                           </div>
                         ))}
-                    </TabPanel>
-                    <TabPanel>
-                      {output ? (
-                        <div className="w-full">
-                          <ul className="list-disc text-base shadow-md rounded-sm px-6 py-4 bg-gray-50 space-y-3">
-                            {output.bad_words && output.bad_words.length > 0 ? (
-                              output.bad_words.map(
-                                (item: any, index: number) => (
-                                  <p key={index}>
-                                    <span className="bg-gray-100 p-1 rounded-sm text-gray-700">
-                                      <span className="text-base">
-                                        <Image
-                                          className="inline-block mb-[2px]"
-                                          alt="alarm-icon"
-                                          width={15}
-                                          height={15}
-                                          src="/alarm.svg"
-                                        />
-                                      </span>{" "}
-                                      {formatDuration(item.start)}
-                                    </span>
-                                    <span className="ml-2 text-red-600">
-                                      {item.bad_word}
-                                    </span>
-                                  </p>
-                                )
-                              )
-                            ) : (
-                              <p>No bad words found</p>
-                            )}
-                          </ul>
-                        </div>
-                      ) : (
-                        <div className="p-2 text-center text-gray-600">
-                          Upload Audio File to see the results
-                        </div>
-                      )}
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
