@@ -141,7 +141,7 @@ const LandingPageHeader = () => {
                 SignIn / Login
               </Box>
             </Link>
-            <Link href="/demo?uuid=mH1kAN4rNDciWTYBWWh5">
+            <Link href="/demo?uuid=9f04faa8-2796-4394-afa9-b2e8a714b317">
               <Box className="p-2 font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
                 Try Demo
               </Box>
