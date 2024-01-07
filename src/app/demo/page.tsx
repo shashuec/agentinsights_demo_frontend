@@ -75,7 +75,7 @@ export default function Home() {
   useEffect(() => {
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      setIsFormOpen(false);
+      setIsFormOpen(true);
       // if (process.env.NEXT_PUBLIC_ENV === "developement") {
       //   setIsFormOpen(false);
       // } else {
