@@ -325,6 +325,7 @@ export default function Home() {
   }, [output, logs]);
 
   function calculateNormalizedScore(totalScore: number, maxScore: number) {
+    if (maxScore == 0 && totalScore == 0) totalScore = 10;
     if (maxScore == 0) maxScore = 10;
 
     let normalizedScore = (totalScore / maxScore) * 10;
