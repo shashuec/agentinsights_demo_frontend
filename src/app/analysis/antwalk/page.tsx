@@ -75,7 +75,7 @@ export default function AntwalkAnalysis() {
     const fetchTranscriptData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/audio/get_compile_transcript_and_processed_data?uuid=942016d7-e8b4-4031-82ca-7f9ed5b84851`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/audio/get_compile_transcript_and_processed_data?uuid=07998c43-6216-4620-bf69-55cdd32a9841`
         );
         setOutput(response.data);
         setAudioFileUrl(response.data.audio_url);
@@ -96,27 +96,6 @@ export default function AntwalkAnalysis() {
 
     fetchTranscriptData();
   }, [toast]);
-
-  //   const preComputedOutputHandler = async (uuidVal: any) => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${process.env.NEXT_PUBLIC_BASE_URL}/api/audio/get_compile_transcript_and_processed_data?uuid=${uuidVal}`
-  //       );
-
-  //       setUUIDQueryParam(response.data.uuid);
-  //       setOutput(response.data);
-  //       setAudioFileUrl(response.data.audio_url);
-  //     } catch (err: any) {
-  //       console.log(err);
-  //       toast({
-  //         title: "UUID not correct",
-  //         status: "warning",
-  //         duration: 5000,
-  //         isClosable: true,
-  //         position: "bottom",
-  //       });
-  //     }
-  //   };
 
   const categorizeResults = (combinedOutput: any) => {
     return combinedOutput.reduce((acc: any, answer: any) => {
