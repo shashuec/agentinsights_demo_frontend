@@ -25,6 +25,7 @@ import Agents from "./assets/Agents.png";
 import HowItWorksBg from "./assets/HowItWorksBack.jpg";
 import Object1 from "./assets/Object1.png";
 import Object2 from "./assets/Object2.png";
+import { DEMO_UUID } from "@/utils/constants";
 
 const LandingPage = () => {
   const searchParams = useSearchParams();
@@ -80,7 +81,7 @@ const LandingPage = () => {
                       Excellence
                     </p>
                     <div className="mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 md:mx-0 md:mb-0 md:shadow-none bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
-                      <Link href="/demo?uuid=9f04faa8-2796-4394-afa9-b2e8a714b317">
+                      <Link href={`/demo?uuid=${DEMO_UUID}`}>
                         <button
                           type="button"
                           className="rounded-md bg-blue-500 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
