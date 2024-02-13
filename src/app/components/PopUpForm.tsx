@@ -17,6 +17,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
+import key_lock from "../assets/key_lock.png";
+import crm from "../assets/crm.png";
 
 function PopUpForm({ onClose }: any) {
   const searchParams = useSearchParams();
@@ -150,12 +152,31 @@ function PopUpForm({ onClose }: any) {
       isCentered
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(0.6px)" />
-      <ModalContent mx={2} maxW={isSmallerThan768 ? "80vw" : "md"}>
-        <ModalHeader className="text-center text-2xl font-medium">
-          Unlock the Full Potential of Your Calls with{" "}
+      <ModalContent mx={2} maxW={isSmallerThan768 ? "80vw" : "xl"}>
+        <ModalHeader px={2} className="text-center text-2xl font-medium">
+          {/* Unlock the Full Potential of Your Calls with{" "}
           <span className="font-extrabold">Agent</span>
-          <span className="text-blue-500 font-extrabold">Insights</span>
-          <div className="flex justify-center pt-2">
+          <span className="text-blue-500 font-extrabold">Insights</span> */}
+          <div className="grid grid-cols-5 gap-2">
+            <div className="md:flex items-end hidden">
+              <Image className="h-full" alt="Logo" src={key_lock} />
+            </div>
+            <div className="col-span-5 md:col-span-3  space-y-2">
+              <div className="font-bold text-xl">
+                Unlock the Future of{" "}
+                <span className="text-blue-500">Customer Relations</span> with{" "}
+                <span className="text-blue-500">AI</span>
+              </div>
+              <div className="text-xs text-gray-500">
+                Elevate Your Business with AI-Powered Analysis & Intelligent CRM
+                Solutions
+              </div>
+            </div>
+            <div className="hidden md:flex items-start pb-4">
+              <Image className="h-full" alt="Logo" src={crm} />
+            </div>
+          </div>
+          {/* <div className="flex justify-center pt-2">
             <Image
               className="h-12 w-12 p-2"
               height={150}
@@ -191,9 +212,9 @@ function PopUpForm({ onClose }: any) {
               alt="Logo"
               src="/DataIcon.svg"
             />
-          </div>
+          </div> */}
         </ModalHeader>
-        <ModalBody pb={2} px={5}>
+        <ModalBody pb={2} px={isSmallerThan768 ? 5 : 10}>
           <FormControl isInvalid={errors.name}>
             <FormLabel fontSize="sm" className="font-semibold text-gray-600">
               Name
@@ -249,7 +270,7 @@ function PopUpForm({ onClose }: any) {
             )}
           </FormControl>
         </ModalBody>
-        <ModalFooter px={5}>
+        <ModalFooter px={isSmallerThan768 ? 5 : 10}>
           <button
             className={`text-white font-semibold p-2 rounded-sm ${
               isSmallerThan768 ? "text-sm" : "text-md"

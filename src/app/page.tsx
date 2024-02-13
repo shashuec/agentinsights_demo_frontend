@@ -9,7 +9,8 @@ import { useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 
 import { FaRegCreditCard } from "react-icons/fa6";
-import { FaCog } from "react-icons/fa";
+import { FaCog, FaStar } from "react-icons/fa";
+import { WiStars } from "react-icons/wi";
 import { PiStarFourFill } from "react-icons/pi";
 import { GoDotFill } from "react-icons/go";
 
@@ -25,6 +26,13 @@ import Agents from "./assets/Agents.png";
 import HowItWorksBg from "./assets/HowItWorksBack.jpg";
 import Object1 from "./assets/Object1.png";
 import Object2 from "./assets/Object2.png";
+import manager_dashboard from "./assets/manager_dashboard.png";
+import efficient_task_management from "./assets/efficient_task_management.png";
+import ai_call_analysis from "./assets/ai_call_analysis.png";
+import lead_management from "./assets/lead_management.png";
+import agent_performance from "./assets/agent_performance.png";
+import customer_insights from "./assets/customer_insights.png";
+import insightful_analytics from "./assets/insightful_analytics.png";
 import { DEMO_UUID } from "@/utils/constants";
 
 const LandingPage = () => {
@@ -55,65 +63,75 @@ const LandingPage = () => {
     <>
       <LandingPageHeader />
       <div className="">
-        <div className="relative isolate bg-hero-gradient px-6 pt-14 lg:px-8 overflow-x-hidden">
+        <div className="relative isolate  px-6 pt-14 lg:px-8 overflow-x-hidden">
           <div className="relative mx-auto">
             <div className="space-y-24">
-              <div className="flex flex-col xl:flex-row justify-between items-center gap-x-10">
+              <div className="flex flex-col xl:flex-row justify-between items-center pb- gap-x-10">
                 <div className="">
                   <div className="flex flex-col items-center xl:items-start">
-                    <div className="px-5 bg-gradient-to-r border max-w-sm mb-8 border-purple-500 text-purple-800 py-2 flex items-center justify-center gap-x-4 rounded-lg">
+                    {/* <div className="px-5 bg-gradient-to-r border max-w-sm mb-8 border-purple-500 text-purple-800 py-2 flex items-center justify-center gap-x-4 rounded-lg">
                       <FaRegCreditCard className="h-4 w-4 text-purple-600" />
                       <span className="font-medium text-xs inline-block -ml-2">
                         No Credit Card required
                       </span>
-                      {/* <div className="h-5 w-px bg-purple-500"></div> Divider */}
+                      <div className="h-5 w-px bg-purple-500"></div> Divider
                       <FaCog className="h-4 w-4 text-purple-600" />
                       <span className="font-medium text-xs inline-block -ml-2">
                         Quick Setup
                       </span>
-                    </div>
-                    <h1 className="text-4xl max-w-3xl text-center xl:text-left font-bold tracking-tight text-gray-900 sm:text-6xl">
-                      Elevate Call Operations with{" "}
-                      <span className="text-blue-500">AI Excellence</span>
+                    </div> */}
+                    <h1 className="text-4xl  max-w-3xl text-center xl:text-left font-bold tracking-tight text-gray-900 sm:text-4xl">
+                      Transform Your{" "}
+                      <span className="text-blue-500">Customer Relations</span>{" "}
+                      with{" "}
+                      <span className="text-blue-500 ">
+                        AI-Powered Call Analysis & CRM{" "}
+                        <span className="relative">
+                          Intelligence
+                          <div className="flex -top-2 -right-7 absolute">
+                            <WiStars className="text-blue-600" />
+                          </div>
+                        </span>
+                      </span>
                     </h1>
-                    <p className="mt-6 text-lg text-center xl:text-left leading-8 font-medium text-gray-600">
-                      AI-Powered Call Operations: Data-Driven, Customer-Centric
-                      Excellence
+                    <p className="mt-6  text-sm text-center xl:text-left font-medium text-gray-500">
+                      Unlock the full potential of your customer interactions
+                      and team performance with our cutting-edge solution.
+                      Designed to empower businesses with deep insights and
+                      streamlined processes, our platform ensures you&apos;re
+                      always a step ahead. Discover how our features redefine
+                      the way you connect with customers and manage your team.
                     </p>
                     <div className="mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 md:mx-0 md:mb-0 md:shadow-none bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
                       <Link href={`/demo?uuid=${DEMO_UUID}`}>
                         <button
                           type="button"
-                          className="rounded-md bg-blue-500 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                          className="rounded-md bg-blue-500 px-6 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                         >
-                          Upload Your Audio and Witness the Transformation
+                          Get Started
                         </button>
                       </Link>
                     </div>
                   </div>
                 </div>
-                <div className="relative mt-8 xl:mt-0 px-4 md:px-20 xl:px-20 flex justify-center items-end">
+                <div className="mt-8 xl:mt-0 px-4 md:px-20 xl:px-20 flex justify-center items-end">
                   <Image
                     id="bg"
-                    className="absolute -z-50 w-full"
-                    src="/VideoBg.svg"
-                    width={100}
-                    height={100}
-                    // layout="fill"
-                    objectFit="cover"
+                    className="w-full"
+                    src={manager_dashboard}
                     quality={100}
                     alt="Bg Image"
                   />
-                  <iframe
+                  {/* <iframe
                     src="https://www.youtube.com/embed/vEnXpKIKbTM?controls=0&rel=0&showinfo=0&modestbranding=1"
                     title="YouTube video player"
                     className="responsive-iframe border-2 rounded-t-xl border-purple-300"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
-                  ></iframe>
+                  ></iframe> */}
                 </div>
               </div>
-              <div className="relative mx-auto max-w-2xl">
+              {/* <div className="relative mx-auto max-w-2xl">
                 <div className="-mt-10">
                   <Image
                     className="absolute z-[-10] -left-20 -top-96 xl:-top-8 w-28 h-28 md:-left-40 md:w-40 md:h-40"
@@ -137,14 +155,14 @@ const LandingPage = () => {
                     alt="Landing Agent"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="z-[-10] relative h-fit" id="what-we-offer">
-        <Image
+      <div className=" z-[-10] relative h-fit" id="what-we-offer">
+        {/* <Image
           id="bg"
           className="absolute z-[-500] w-full h-full"
           src={HowItWorksBg}
@@ -152,42 +170,39 @@ const LandingPage = () => {
           objectFit="cover"
           quality={100}
           alt="Bg Image"
-        />
-        <section className="isolate relative px-6 pt-14 lg:px-8 pb-20">
-          <div className="font-bold text-3xl mb-16">
+        /> */}
+        <section className="isolate px-6 pt-14 lg:px-8 pb-20">
+          {/* <div className="font-bold text-3xl mb-16">
             What we <span className="text-blue-500">Offer</span>
-          </div>
+          </div> */}
           <div className="">
-            <div className="flex flex-col gap-y-20">
+            <div className="flex flex-col gap-y-7">
               {/* AI Score */}
               <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
-                <div className="w-full max-w-lg md:max-w-md flex-shrink">
-                  <Image
-                    className="rounded-lg object-contain"
-                    src={AiScore}
-                    alt="AI Score Image"
-                  />
-                </div>
                 <div className="flex-grow">
                   <div className="">
                     <div className="flex mb-4 max-w-3xl">
                       <div>
-                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
-                          <span>
-                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
+                        <h2 className="flex items-start w-fit gap-1 font-semibold mb-3 mt-5 md:mt-0 text-2xl md:text-2xl lg:text-3xl relative">
+                          <div className="flex -top-6 -left-4 absolute">
+                            <FaStar className="text-yellow-400 rotate-45" />
+                          </div>
+                          <span>Efficient</span>
+                          <span className="text-yellow-400">
+                            Task Management
                           </span>
-                          <span className="text-2xl md:text-2xl lg:text-3xl">
-                            AI Score
-                          </span>
+                          <div className="flex -top-5 -right-5 absolute">
+                            <WiStars className="text-yellow-400" />
+                          </div>
                         </h2>
-                        <p className="text-gray-600 text-lg md:text-xl">
-                          Explore rich customer insights through advanced
-                          analytics, guiding strategic decisions and fostering
-                          continuous improvement.
+                        <p className="text-gray-700 text-lg md:text-xl">
+                          Organize, prioritize, and track every task. Our
+                          intuitive dashboard ensures that your team stays
+                          productive and on track.
                         </p>
                       </div>
                     </div>
-                    <ul className="text-lg md:text-xl md:space-y-3">
+                    {/* <ul className="text-lg md:text-xl md:space-y-3">
                       <li>
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Precision Assessment with AI
@@ -200,40 +215,43 @@ const LandingPage = () => {
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Enhance Decision-Making
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
-              </div>
-              {/* Call anaylsis */}
-              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse">
-                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                <div className="w-full max-w-xl">
                   <Image
                     className="rounded-lg object-contain"
-                    src={CallAnalysis}
+                    src={efficient_task_management}
                     alt="AI Score Image"
                   />
                 </div>
+              </div>
+              {/* Call anaylsis */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse ">
                 <div className="flex-grow">
                   <div className="">
                     <div className="flex mb-4 max-w-3xl">
                       <div>
-                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
-                          <span>
-                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
-                          </span>
-                          <span className="text-2xl md:text-2xl lg:text-3xl">
-                            Call Analysis
-                          </span>
+                        <h2 className="flex gap-1 w-fit font-semibold  mb-3 mt-5 md:mt-0 text-2xl  md:text-2xl lg:text-3xl relative">
+                          <div className="flex -top-6 -left-4 absolute">
+                            <FaStar className="text-blue-600 rotate-45" />
+                          </div>
+                          <span>AI</span>
+                          <span className="text-blue-600">Call Analysis</span>
+                          <div className="flex -top-5 -right-5 absolute">
+                            <WiStars className="text-blue-600" />
+                          </div>
                         </h2>
                         <p className="text-gray-600 text-lg md:text-xl">
-                          Using call analysis, you&apos;ll obtain automated
-                          feedback, AI scoring, and call transcriptions,
-                          resulting in performance assessment and actionable
-                          insights
+                          Leverage advanced AI to analyze every call, extracting
+                          key sentiments, trends, and customer feedback.
+                          Transform conversations into valuable insights to
+                          enhance decision-making and personalize customer
+                          interactions.
                         </p>
                       </div>
                     </div>
-                    <ul className="text-lg md:text-xl md:space-y-3">
+                    {/* <ul className="text-lg md:text-xl md:space-y-3">
                       <li>
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Call Transcriptions
@@ -246,39 +264,41 @@ const LandingPage = () => {
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Actionable Insights
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
-              </div>
-              {/* Customer insights */}
-              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
-                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                <div className="w-full max-w-xl">
                   <Image
                     className="rounded-lg object-contain"
-                    src={CustomerInsights}
+                    src={ai_call_analysis}
                     alt="AI Score Image"
                   />
                 </div>
+              </div>
+              {/* Lead Management */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
                 <div className="flex-grow">
                   <div className="">
                     <div className="flex mb-4 max-w-3xl">
                       <div>
-                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
-                          <span>
-                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
-                          </span>
-                          <span className="text-2xl md:text-2xl lg:text-3xl">
-                            Customer Insights
-                          </span>
+                        <h2 className="flex gap-1 w-fit font-semibold  mb-3 mt-5 md:mt-0 text-2xl  md:text-2xl lg:text-3xl relative">
+                          <div className="flex -top-6 -left-4 absolute">
+                            <FaStar className="text-indigo-600 rotate-45" />
+                          </div>
+                          <span>Lead</span>
+                          <span className="text-indigo-600"> Management</span>
+                          <div className="flex -top-5 -right-5 absolute">
+                            <WiStars className="text-indigo-600" />
+                          </div>
                         </h2>
                         <p className="text-gray-600 text-lg md:text-xl">
-                          Explore rich customer insights through advanced
-                          analytics, guiding strategic decisions and fostering
-                          continuous improvement.
+                          Automatically capture leads from various channels and
+                          store them in a centralized database for easy access
+                          and management.
                         </p>
                       </div>
                     </div>
-                    <ul className="text-lg md:text-xl md:space-y-3">
+                    {/* <ul className="text-lg md:text-xl md:space-y-3">
                       <li>
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Customer-Centric Analytics
@@ -291,39 +311,40 @@ const LandingPage = () => {
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Continuous Improvement Pathway
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
-              </div>
-              {/* Call To Action */}
-              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse">
-                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                <div className="w-full max-w-xl">
                   <Image
                     className="rounded-lg object-contain"
-                    src={CallToAction}
-                    alt="AI Score Image"
+                    src={lead_management}
+                    alt="Lead Management"
                   />
                 </div>
+              </div>
+              {/* Agent Performance */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse">
                 <div className="flex-grow">
                   <div className="">
                     <div className="flex mb-4 max-w-3xl">
                       <div>
-                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
-                          <span>
-                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
-                          </span>
-                          <span className="text-2xl md:text-2xl lg:text-3xl">
-                            Call To Action
-                          </span>
+                        <h2 className="flex gap-1 w-fit font-semibold  mb-3 mt-5 md:mt-0 text-2xl  md:text-2xl lg:text-3xl relative">
+                          <div className="flex -top-6 -left-4 absolute">
+                            <FaStar className="text-purple-600 rotate-45" />
+                          </div>
+                          <span>Agent</span>
+                          <span className="text-purple-600">Performance</span>
+                          <div className="flex -top-5 -right-5 absolute">
+                            <WiStars className="text-purple-600" />
+                          </div>
                         </h2>
                         <p className="text-gray-600 text-lg md:text-xl">
-                          Seize control of your customer experience! Click here
-                          to gain valuable insights, enhance performance, and
-                          elevate satisfaction.
+                          Elevate your team with real-time analytics on call
+                          quality and customer satisfaction.
                         </p>
                       </div>
                     </div>
-                    <ul className="text-lg md:text-xl md:space-y-3">
+                    {/* <ul className="text-lg md:text-xl md:space-y-3">
                       <li>
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Elevate Your Experience
@@ -336,39 +357,40 @@ const LandingPage = () => {
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Transform Insights into Action
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
-              </div>
-              {/* Call Recording App */}
-              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
-                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                <div className="w-full max-w-xl">
                   <Image
                     className="rounded-lg object-contain"
-                    src={CallRecording}
-                    alt="AI Score Image"
+                    src={agent_performance}
+                    alt="Agent Performance"
                   />
                 </div>
+              </div>
+              {/* Customer Insights */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row">
                 <div className="flex-grow">
                   <div className="">
                     <div className="flex mb-4 max-w-3xl">
                       <div>
-                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
-                          <span>
-                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
-                          </span>
-                          <span className="text-2xl md:text-2xl lg:text-3xl">
-                            Call Recording App
-                          </span>
+                        <h2 className="flex gap-1 w-fit font-semibold  mb-3 mt-5 md:mt-0 text-2xl  md:text-2xl lg:text-3xl relative">
+                          <div className="flex -top-6 -left-4 absolute">
+                            <FaStar className="text-teal-600 rotate-45" />
+                          </div>
+                          <span>Customer</span>
+                          <span className="text-teal-600">Insights</span>
+                          <div className="flex -top-5 -right-5 absolute">
+                            <WiStars className="text-teal-600" />
+                          </div>
                         </h2>
                         <p className="text-gray-600 text-lg md:text-xl">
-                          With our app, capture 100% of call details, ensuring
-                          zero missed interactions and boosting audit & analysis
-                          accuracy by up to 95%
+                          Unlock actionable insights from every call to deeply
+                          understand and serve your customers better.
                         </p>
                       </div>
                     </div>
-                    <ul className="text-lg md:text-xl md:space-y-3">
+                    {/* <ul className="text-lg md:text-xl md:space-y-3">
                       <li>
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Comprehensive Call Capture
@@ -381,15 +403,69 @@ const LandingPage = () => {
                         <GoDotFill className="inline text-yellow-500 mr-2" />
                         Seamless Integration
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
+                </div>
+                <div className="w-full max-w-xl">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={customer_insights}
+                    alt="AI Score Image"
+                  />
+                </div>
+              </div>
+              {/* Insightful Analytics */}
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse">
+                <div className="flex-grow">
+                  <div className="">
+                    <div className="flex mb-4 max-w-3xl">
+                      <div>
+                        <h2 className="flex gap-1 w-fit font-semibold  mb-3 mt-5 md:mt-0 text-2xl  md:text-2xl lg:text-3xl relative">
+                          <div className="flex -top-6 -left-4 absolute">
+                            <FaStar className="text-lime-400 rotate-45" />
+                          </div>
+                          <span>Insightful</span>
+                          <span className="text-lime-400">Analytics</span>
+                          <div className="flex -top-5 -right-5 absolute">
+                            <WiStars className="text-lime-400" />
+                          </div>
+                        </h2>
+                        <p className="text-gray-600 text-lg md:text-xl">
+                          Gain deep insights into your sales processes, customer
+                          behavior, and team performance with comprehensive
+                          reporting tools.
+                        </p>
+                      </div>
+                    </div>
+                    {/* <ul className="text-lg md:text-xl md:space-y-3">
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Comprehensive Call Capture
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Enhanced Audit Accuracy
+                      </li>
+                      <li>
+                        <GoDotFill className="inline text-yellow-500 mr-2" />
+                        Seamless Integration
+                      </li>
+                    </ul> */}
+                  </div>
+                </div>
+                <div className="w-full max-w-xl">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={insightful_analytics}
+                    alt="AI Score Image"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </section>
       </div>
-      <div>
+      {/* <div>
         <section className="-z-10 flex flex-col bg-blue-50 items-center relative pt-14 lg:px-8 pb-8">
           <div className="font-bold text-3xl mb-10 px-4">
             Custom Solutions for{" "}
@@ -449,7 +525,7 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-      </div>
+      </div> */}
 
       <AppFooter />
     </>

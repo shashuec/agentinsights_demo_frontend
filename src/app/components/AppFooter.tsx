@@ -8,7 +8,7 @@ import AILogo from "../assets/AgentInsightSLogo.png";
 
 const AppFooter = () => {
   return (
-    <footer className="px-6 sm:px-10 bg-gray-950">
+    <footer className="px-6 pb-2 sm:px-10 bg-gray-950">
       <div className="pt-16">
         <div className="flex flex-row justify-between gap-10 md:flex-row flex-wrap md:mt-0">
           <div className="pr-16">
@@ -70,7 +70,7 @@ const AppFooter = () => {
                     href="#"
                     className="text-gray-200"
                   >
-                    Call recording app
+                    Efficient Task Management
                   </a>
                 </li>
                 <li>
@@ -79,7 +79,7 @@ const AppFooter = () => {
                     href="#"
                     className="text-gray-200"
                   >
-                    AI Coaching
+                    AI Call Analysis
                   </a>
                 </li>
                 <li>
@@ -88,7 +88,7 @@ const AppFooter = () => {
                     href="#"
                     className="text-gray-200"
                   >
-                    Call analysis
+                    Lead Management
                   </a>
                 </li>
                 <li>
@@ -97,7 +97,7 @@ const AppFooter = () => {
                     href="#"
                     className="text-gray-200"
                   >
-                    Language support
+                    Customer Insights
                   </a>
                 </li>
                 <li>
@@ -106,14 +106,14 @@ const AppFooter = () => {
                     href="#"
                     className="text-gray-200"
                   >
-                    Omnichannel contact center
+                    Insightful Analytics
                   </a>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="">
+          <div className="flex flex-col gap-2 justify-center border-l border-white px-2">
             <div className="font-medium text-base text-white block">Social</div>
             <div className="flex justify-start flex-wrap gap-2 ml-[-4px]">
               <a
@@ -123,7 +123,7 @@ const AppFooter = () => {
                 target="_blank"
                 className="flex items-center p-1"
               >
-                <ImFacebook className="text-white bg-gray-800 rounded-sm text-2xl p-1" />
+                <ImFacebook className="text-white bg-gray-800 rounded-sm text-3xl p-2" />
               </a>
               <a
                 rel="noopener noreferrer"
@@ -132,7 +132,7 @@ const AppFooter = () => {
                 target="_blank"
                 className="flex items-center p-1"
               >
-                <FaTwitter className="text-white bg-gray-800 rounded-sm text-2xl p-1" />
+                <FaTwitter className="text-white bg-gray-800 rounded-sm text-3xl p-2" />
               </a>
               <a
                 rel="noopener noreferrer"
@@ -141,7 +141,7 @@ const AppFooter = () => {
                 target="_blank"
                 className="flex items-center p-1"
               >
-                <FaLinkedinIn className="text-white bg-gray-800 rounded-sm text-2xl p-1" />
+                <FaLinkedinIn className="text-white bg-gray-800 rounded-sm text-3xl p-2" />
               </a>
               <a
                 rel="noopener noreferrer"
@@ -150,7 +150,7 @@ const AppFooter = () => {
                 target="_blank"
                 className="flex items-center p-1"
               >
-                <FaInstagram className="text-white bg-gray-800 rounded-sm text-2xl p-1" />
+                <FaInstagram className="text-white bg-gray-800 rounded-sm text-3xl p-2" />
               </a>
             </div>
           </div>
