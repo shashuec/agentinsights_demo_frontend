@@ -21,30 +21,40 @@ import agent_performance from "../assets/agent_performance.png";
 import customer_insights from "../assets/customer_insights.png";
 import insightful_analytics from "../assets/insightful_analytics.png";
 import { DEMO_UUID } from "@/utils/constants";
+import LandingPagePopUpForm from "../components/LandingPagePopUpForm";
 
 const LandingPage = () => {
-  //   const searchParams = useSearchParams();
-  //   useEffect(() => {
-  //     // If no UTM parameters are present, set a cookie to indicate this
-  //     const utmKeys = [
-  //       "utm_source",
-  //       "utm_medium",
-  //       "utm_campaign",
-  //       "utm_term",
-  //       "utm_content",
-  //     ];
-  //     utmKeys.forEach((key) => {
-  //       if (searchParams.has(key)) {
-  //         Cookies.set(key, searchParams.get(key) || "", { expires: 7 });
-  //       }
-  //     });
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    // If no UTM parameters are present, set a cookie to indicate this
+    const utmParams: any = {};
+    let shouldUpdateCookies = false;
 
-  //     // if (!hasUtmParams) {
-  //     //   console.log("Not present utm");
-  //     // } else {
-  //     //   console.log("present");
-  //     // }
-  //   }, [searchParams]);
+    // Check for UTM parameters in the URL
+    [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+    ].forEach((key) => {
+      const value = searchParams.get(key);
+      if (value) {
+        utmParams[key] = value;
+        shouldUpdateCookies = true;
+      } else {
+        // If not present in URL, try getting from cookies
+        utmParams[key] = Cookies.get(key) || "";
+      }
+    });
+
+    // Update cookies if UTM params are present in the URL
+    if (shouldUpdateCookies) {
+      for (const [key, value] of Object.entries(utmParams)) {
+        Cookies.set(key, value as any, { expires: 2 });
+      }
+    }
+  }, [searchParams]);
 
   return (
     <>
@@ -147,7 +157,6 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-
       <div className=" z-[-10] relative h-fit" id="what-we-offer">
         {/* <Image
           id="bg"
@@ -452,69 +461,9 @@ const LandingPage = () => {
           </div>
         </section>
       </div>
-      {/* <div>
-        <section className="-z-10 flex flex-col bg-blue-50 items-center relative pt-14 lg:px-8 pb-8">
-          <div className="font-bold text-3xl mb-10 px-4">
-            Custom Solutions for{" "}
-            <span className="text-blue-500">Each Team Member</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 text-center text-black">
-            <div className="shadow-even rounded-md px-6 pt-6 pb-14 bg-blue-100 flex flex-col">
-              <div className="mb-16">
-                <Image
-                  className="rounded-lg object-contain max-h-72"
-                  src={DecisionMaker}
-                  alt="AI Score Image"
-                />
-              </div>
-              <div className="text-2xl pb-4 font-semibold text-left">
-                Decision-Makers
-              </div>
-              <div className="text-left">
-                Dive into a world of easy agent reviews. Use our AI Analytics
-                Dashboard to quickly access call data, highlighting areas for
-                praise and growth.
-              </div>
-            </div>
-            <div className="shadow-even rounded-md px-6 pt-6 pb-14 bg-blue-100 flex flex-col">
-              <div className="mb-16">
-                <Image
-                  className="rounded-lg object-contain max-h-72"
-                  src={Managers}
-                  alt="AI Score Image"
-                />
-              </div>
-              <div className="text-2xl pb-4 font-semibold text-left">
-                Managers
-              </div>
-              <div className="text-left">
-                Enhance team results with a glance! Navigate through smart
-                analytics and employ AI-driven strategies to uplift and guide
-                your team to excellence in every customer interaction.
-              </div>
-            </div>
-            <div className="shadow-even rounded-md px-6 pt-6 pb-14 bg-blue-100 flex flex-col">
-              <div className="mb-16">
-                <Image
-                  className="rounded-lg object-contain max-h-72"
-                  src={Agents}
-                  alt="AI Score Image"
-                />
-              </div>
-              <div className="text-2xl pb-4 font-semibold text-left">
-                Agents
-              </div>
-              <div className="text-left">
-                Amplify your customer service with real-time AI coaching,
-                ensuring you deliver consistently exemplary interactions,
-                nurturing customer satisfaction and loyalty with every call
-              </div>
-            </div>
-          </div>
-        </section>
-      </div> */}
 
       <AppFooter />
+      <LandingPagePopUpForm />
     </>
   );
 };

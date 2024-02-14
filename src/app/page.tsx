@@ -40,7 +40,7 @@ const LandingPage = () => {
     ];
     utmKeys.forEach((key) => {
       if (searchParams.has(key)) {
-        Cookies.set(key, searchParams.get(key) || "", { expires: 7 });
+        Cookies.set(key, searchParams.get(key) || "", { expires: 2 });
       }
     });
 

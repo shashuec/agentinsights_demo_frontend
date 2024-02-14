@@ -15,12 +15,15 @@ import {
   FormErrorMessage,
   useMediaQuery,
   useToast,
+  useDisclosure,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import key_lock from "../assets/key_lock.png";
 import crm from "../assets/crm.png";
 
-function PopUpForm({ onClose }: any) {
+function LandingPagePopUpForm() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     name: "",
@@ -66,6 +69,20 @@ function PopUpForm({ onClose }: any) {
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // Automatically open the dialog when the component mounts if the user hasn't seen it yet
+    setTimeout(() => {
+      if (!Cookies.get("formSubmitted")) {
+        onOpen();
+      }
+    }, 5000);
+  }, [onOpen]);
+
+  const handleClose = () => {
+    Cookies.set("formSubmitted", "true", { expires: 2 }); // Set a cookie for 2 days
+    onClose();
+  };
 
   const handleSubmit = async () => {
     if (validateForm()) {
@@ -149,8 +166,8 @@ function PopUpForm({ onClose }: any) {
 
   return (
     <Modal
-      isOpen={true}
-      onClose={() => {}}
+      isOpen={isOpen}
+      onClose={onClose}
       size="md"
       motionPreset="slideInBottom"
       isCentered
@@ -181,6 +198,7 @@ function PopUpForm({ onClose }: any) {
             </div>
           </div>
         </ModalHeader>
+        <ModalCloseButton onClick={handleClose} />
         <ModalBody pb={2} px={isSmallerThan768 ? 5 : 10}>
           <FormControl isInvalid={errors.name}>
             <FormLabel fontSize="sm" className="font-semibold text-gray-600">
@@ -256,7 +274,7 @@ function PopUpForm({ onClose }: any) {
             )}
           </FormControl>
         </ModalBody>
-        <ModalFooter px={5}>
+        <ModalFooter px={isSmallerThan768 ? 5 : 10}>
           <button
             className={`text-white font-semibold p-2 rounded-sm ${
               isSmallerThan768 ? "text-sm" : "text-md"
@@ -274,4 +292,4 @@ function PopUpForm({ onClose }: any) {
   );
 }
 
-export default PopUpForm;
+export default LandingPagePopUpForm;

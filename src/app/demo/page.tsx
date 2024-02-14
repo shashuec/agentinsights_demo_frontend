@@ -132,7 +132,7 @@ export default function Home() {
     // Update cookies if UTM params are present in the URL
     if (shouldUpdateCookies) {
       for (const [key, value] of Object.entries(utmParams)) {
-        Cookies.set(key, value as any, { expires: 7 }); // Expires in 30 days
+        Cookies.set(key, value as any, { expires: 2 });
       }
     }
   }, []);
