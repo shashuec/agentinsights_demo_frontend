@@ -173,8 +173,12 @@ function LandingPagePopUpForm() {
       isCentered
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(0.6px)" />
-      <ModalContent mx={2} maxW={isSmallerThan768 ? "80vw" : "lg"}>
-        <ModalHeader px={2} className="text-center text-2xl font-medium">
+      <ModalContent
+        mx={2}
+        maxW={isSmallerThan768 ? "80vw" : "lg"}
+        position="relative"
+      >
+        <ModalHeader px={2} pt={5} className="text-center text-2xl font-medium">
           {/* Unlock the Full Potential of Your Calls with{" "}
           <span className="font-extrabold">Agent</span>
           <span className="text-blue-500 font-extrabold">Insights</span> */}
@@ -198,7 +202,17 @@ function LandingPagePopUpForm() {
             </div>
           </div>
         </ModalHeader>
-        <ModalCloseButton onClick={handleClose} />
+        <ModalCloseButton
+          onClick={handleClose}
+          position="absolute"
+          right="0px"
+          top="-2px"
+          zIndex="2"
+          _focus={{
+            outline: "none",
+            boxShadow: "none",
+          }}
+        />
         <ModalBody pb={2} px={isSmallerThan768 ? 5 : 10}>
           <FormControl isInvalid={errors.name}>
             <FormLabel fontSize="sm" className="font-semibold text-gray-600">
