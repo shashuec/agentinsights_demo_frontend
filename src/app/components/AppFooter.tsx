@@ -8,7 +8,7 @@ import AILogo from "../assets/AgentInsightSLogo.png";
 
 const AppFooter = () => {
   return (
-    <footer className="px-6 pb-2 sm:px-10 bg-gray-950">
+    <footer className="px-6 pb-32 md:pb-2 sm:px-10 bg-gray-950">
       <div className="pt-16">
         <div className="flex flex-row justify-between gap-10 md:flex-row flex-wrap md:mt-0">
           <div className="pr-16">

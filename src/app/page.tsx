@@ -5,7 +5,7 @@ import LandingPageHeader from "./components/LandingPageHeader";
 import Image from "next/image";
 import AppFooter from "./components/AppFooter";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 
 import { FaRegCreditCard } from "react-icons/fa6";
@@ -29,6 +29,8 @@ import { DEMO_UUID } from "@/utils/constants";
 
 const LandingPage = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   useEffect(() => {
     // If no UTM parameters are present, set a cookie to indicate this
     const utmKeys = [
@@ -50,6 +52,10 @@ const LandingPage = () => {
     //   console.log("present");
     // }
   }, [searchParams]);
+
+  const handleNavigation = (path: any) => {
+    router.push(path);
+  };
 
   return (
     <>
@@ -80,7 +86,7 @@ const LandingPage = () => {
                       AI-Powered Call Operations: Data-Driven, Customer-Centric
                       Excellence
                     </p>
-                    <div className="mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 md:mx-0 md:mb-0 md:shadow-none bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
+                    <div className="hidden md:flex md:mb-0 md:mx-0 md:shadow-none bg-transparent items-center justify-center gap-x-2 mt-8 relative">
                       <Link href={`/demo?uuid=${DEMO_UUID}`}>
                         <button
                           type="button"
@@ -143,7 +149,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="z-[-10] relative h-fit" id="what-we-offer">
+      <div className="relative h-fit" id="what-we-offer">
         <Image
           id="bg"
           className="absolute z-[-500] w-full h-full"
@@ -382,6 +388,15 @@ const LandingPage = () => {
                         Seamless Integration
                       </li>
                     </ul>
+                    <div className="flex w-full flex-col justify-center pt-4">
+                      <button
+                        onClick={() => handleNavigation("/download-app")}
+                        className=" w-fit cursor-pointer text-center rounded-md px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 font-semibold"
+                        style={{ zIndex: 100 }}
+                      >
+                        Download Now
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -452,6 +467,16 @@ const LandingPage = () => {
       </div>
 
       <AppFooter />
+      <div className=" mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 bg-blue-500 flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:hidden">
+        <Link href={`/demo?uuid=${DEMO_UUID}`}>
+          <button
+            type="button"
+            className="rounded-md bg-blue-500 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+          >
+            Upload Your Audio and Witness the Transformation
+          </button>
+        </Link>
+      </div>
     </>
   );
 };

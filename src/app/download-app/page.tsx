@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import app_in_mobile from "../assets/app_in_mobile.png";
 import ai_full_logo from "../assets/ai_full_logo.png";
@@ -6,7 +7,46 @@ import ai_logo_short from "../assets/ai_logo_short.png";
 import app_frame from "../assets/app_frame.png";
 import AppFooter from "../components/AppFooter";
 import LandingPageHeader from "../components/LandingPageHeader";
+import { BsDot } from "react-icons/bs";
+import { GoDotFill } from "react-icons/go";
+
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+  useMediaQuery,
+} from "@chakra-ui/react";
+
 const AppDownload = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [downloadLink, setDownloadLink] = useState("");
+  const [isSmallerThan768] = useMediaQuery("(max-width: 768px)");
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        // Programmatically click the hidden link to start download
+        const downloadLinkElement = document.getElementById("downloadLink");
+        if (downloadLinkElement) {
+          downloadLinkElement.click();
+        }
+        onClose(); // Close the modal after starting the download
+      }, 5000); // 5000 ms = 5 seconds
+
+      return () => clearTimeout(timer); // Cleanup timer
+    }
+  }, [isOpen, onClose]);
+
+  const handleDownloadClick = () => {
+    onOpen(); // Open the modal
+    setDownloadLink("/AI Call Recording.apk"); // Set the link to download
+  };
+
   return (
     <div>
       <LandingPageHeader />
@@ -54,18 +94,29 @@ const AppDownload = () => {
             </div>
           </div>
         </div>
-        {/* <div className="flex flex-col justify-center">
-          <a href="/app-debug.apk" download className="w-full block">
-            <button className="w-full md:w-auto rounded-md px-4 py-2 text-white bg-blue-600 font-semibold">
-              Download Now
-            </button>
-          </a>
-        </div> */}
         <div className="flex flex-col justify-center">
-          <button className="rounded-md px-4 py-2 text-white bg-blue-600 font-semibold">
+          <a
+            href={downloadLink}
+            download
+            id="downloadLink"
+            style={{ display: "none" }}
+          >
+            Download
+          </a>
+
+          {/* Button to open modal and start download process */}
+          <button
+            onClick={handleDownloadClick}
+            className="w-full md:w-auto rounded-md px-4 py-2 text-white bg-blue-600 font-semibold"
+          >
             Download Now
           </button>
         </div>
+        {/* <div className="flex flex-col justify-center">
+          <button className="rounded-md px-4 py-2 text-white bg-blue-600 font-semibold">
+            Download Now
+          </button>
+        </div> */}
       </div>
       <div className="flex flex-col gap-2 p-4 md:px-32">
         <div className="font-bold text-xl">Description : </div>
@@ -98,7 +149,7 @@ const AppDownload = () => {
         <div className="flex gap-2 flex-col">
           <div className="font-bold text-xl">Key Features:</div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold px-1">
               Automatic Call Recording:
             </span>
@@ -106,7 +157,7 @@ const AppDownload = () => {
             high-quality audio for detailed analysis.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               Manual and Auto Upload Options:
             </span>
@@ -114,7 +165,7 @@ const AppDownload = () => {
             securely send recordings to your server.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               Call Logs and Metadata:
             </span>
@@ -122,7 +173,7 @@ const AppDownload = () => {
             enhancing data analysis capabilities.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               Customizable Recording Settings:
             </span>
@@ -130,7 +181,7 @@ const AppDownload = () => {
             to specific business requirements.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               Secure Data Transmission:
             </span>
@@ -138,7 +189,7 @@ const AppDownload = () => {
             standards of confidentiality and compliance.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               User-Friendly Interface:
             </span>
@@ -146,7 +197,7 @@ const AppDownload = () => {
             settings and upload preferences.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               One-Way Call Recording:
             </span>
@@ -154,7 +205,7 @@ const AppDownload = () => {
             capturing only the required side of the conversation.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               WhatsApp Call Recording:
             </span>
@@ -162,7 +213,7 @@ const AppDownload = () => {
             wider range of communication channels.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">
               Auto-Uploading Feature:
             </span>
@@ -170,7 +221,7 @@ const AppDownload = () => {
             of recordings, ensuring timely and efficient data storage.
           </div>
           <div className="text-gray-400">
-            -
+            <GoDotFill className="inline text-blue-500 mb-1" />
             <span className="text-black font-bold  px-1">CRM Integration:</span>
             Enhances customer relationship management by providing valuable
             insights and data for better decision-making and customer service.
@@ -206,26 +257,132 @@ const AppDownload = () => {
           support your business&apos;s growth and customer relationship
           management goals.
         </div>
-        <div className="text-gray-400">---</div>
-        <div className="text-gray-400">
-          This version integrates the additional features you mentioned,
-          highlighting the app&apos;s comprehensive capabilities in call
-          recording and management tailored for modern business needs.
+
+        <div className="font-bold text-red-500 pt-4">Disclaimer:</div>
+        <div className="text-gray-400 space-y-2">
+          <div>
+            If you encounter the error message{" "}
+            <span className="text-red-500">
+              &quot;App not installed as package conflict with an existing
+              package&quot;
+            </span>{" "}
+            while attempting to install our app, please follow these steps:
+          </div>
+          <ol className="space-y-2 list-decimal pl-4">
+            <li>
+              <span className="text-red-500">Uninstall Previous Version:</span>{" "}
+              Firstly, uninstall any existing versions of the app from your
+              device.
+            </li>
+            <li>
+              <span className="text-red-500">
+                Download or Install Latest Version:
+              </span>{" "}
+              If you haven&apos;t already, visit our website and download the
+              latest version of the app. If you have already downloaded it,
+              simply install the newly downloaded version of the app on your
+              device.
+            </li>
+            <li>
+              <span className="text-red-500">Reinstall:</span> Install the newly
+              downloaded version of the app on your device.
+            </li>
+          </ol>
+          <div>
+            If you continue to experience issues or need further assistance,
+            please feel free to{" "}
+            <a
+              className="text-blue-500 underline cursor-pointer"
+              href="mailto:connect@agentinsights.live"
+            >
+              contact us
+            </a>{" "}
+            for support.
+          </div>
         </div>
       </div>
-      {/* <div className="flex w-full flex-col justify-center p-4 pb-8">
-        <a href="/app-debug.apk" download className="w-fit mx-auto text-center">
+      <div className="flex w-full flex-col justify-center p-4 pb-8">
+        <a
+          href="/AI Call Recording.apk"
+          download
+          className="w-fit mx-auto text-center"
+        >
           <button className="rounded-md px-4 py-2 text-white bg-blue-600 font-semibold">
             Download Now
           </button>
         </a>
-      </div> */}
-      <div className="flex w-full flex-col justify-center p-4 pb-8">
+      </div>
+      {/* <div className="flex w-full flex-col justify-center p-4 pb-8">
         <button className=" w-fit mx-auto text-center rounded-md px-4 py-2 text-white bg-blue-600 font-semibold">
           Download Now
         </button>
-      </div>
+      </div> */}
       <AppFooter />
+      <Modal
+        size="md"
+        motionPreset="slideInBottom"
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent mx={2} maxW={isSmallerThan768 ? "80vw" : "lg"}>
+          <ModalHeader>Disclaimer</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <div className="text-gray-400 space-y-2">
+              <div>
+                If you encounter the error message{" "}
+                <span className="text-red-500">
+                  &quot;App not installed as package conflict with an existing
+                  package&quot;
+                </span>{" "}
+                while attempting to install our app, please follow these steps:
+              </div>
+              <ol className="space-y-2 list-decimal pl-4">
+                <li>
+                  <span className="text-red-500">
+                    Uninstall Previous Version:
+                  </span>{" "}
+                  Firstly, uninstall any existing versions of the app from your
+                  device.
+                </li>
+                <li>
+                  <span className="text-red-500">
+                    Download or Install Latest Version:
+                  </span>{" "}
+                  If you haven&apos;t already, visit our website and download
+                  the latest version of the app. If you have already downloaded
+                  it, simply install the newly downloaded version of the app on
+                  your device.
+                </li>
+                <li>
+                  <span className="text-red-500">Reinstall:</span> Install the
+                  newly downloaded version of the app on your device.
+                </li>
+              </ol>
+              <div>
+                If you continue to experience issues or need further assistance,
+                please feel free to{" "}
+                <a
+                  href="mailto:connect@agentinsights.live"
+                  className="text-blue-500 underline cursor-pointer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  contact us
+                </a>{" "}
+                for support.
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
