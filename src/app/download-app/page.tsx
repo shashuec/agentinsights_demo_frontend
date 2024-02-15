@@ -35,7 +35,6 @@ const AppDownload = () => {
         if (downloadLinkElement) {
           downloadLinkElement.click();
         }
-        onClose(); // Close the modal after starting the download
       }, 5000); // 5000 ms = 5 seconds
 
       return () => clearTimeout(timer); // Cleanup timer
@@ -44,7 +43,9 @@ const AppDownload = () => {
 
   const handleDownloadClick = () => {
     onOpen(); // Open the modal
-    setDownloadLink("/AI Call Recording.apk"); // Set the link to download
+    setDownloadLink(
+      "https://storage.googleapis.com/agentinsights.appspot.com/downloads/AICallRecording.apk"
+    ); // Set the link to download
   };
 
   return (
@@ -294,6 +295,8 @@ const AppDownload = () => {
             <a
               className="text-blue-500 underline cursor-pointer"
               href="mailto:connect@agentinsights.live"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               contact us
             </a>{" "}
@@ -303,7 +306,7 @@ const AppDownload = () => {
       </div>
       <div className="flex w-full flex-col justify-center p-4 pb-8">
         <a
-          href="/AI Call Recording.apk"
+          href="https://storage.googleapis.com/agentinsights.appspot.com/downloads/AICallRecording.apk"
           download
           className="w-fit mx-auto text-center"
         >
