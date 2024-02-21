@@ -18,6 +18,7 @@ const config: Config = {
           "linear-gradient(96.41deg, rgba(204, 209, 255, 0.08) 5.15%, rgba(197, 151, 255, 0.08) 16%, rgba(255, 238, 196, 0.11) 57.92%, rgba(251, 98, 217, 0.04) 78.63%, rgba(255, 255, 255, 0) 99.83%)",
         "offer-gradient":
           "linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 1))",
+        "get-started-gradient": "linear-gradient(129.59deg, #0C51C1 57.11%, rgba(59, 130, 246, 0.59) 127.25%)",
       },
       colors: {
         gold: "#ffd700",

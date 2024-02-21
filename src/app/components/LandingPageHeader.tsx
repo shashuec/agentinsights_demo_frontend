@@ -139,10 +139,10 @@ const LandingPageHeader = () => {
           <Box display="flex" className="space-x-4">
             <Link href={`${process.env.NEXT_PUBLIC_GOOGLE_LOGIN_REDIRECT_URL}`}>
               <Box className="p-2 font-semibold bg-green-500 text-white text-center rounded transition duration-300 ease-in-out">
-                SignIn / Login
+                Sign In
               </Box>
             </Link>
-            <Link href={`/demo?uuid=${DEMO_UUID}`}>
+            <Link href={`/get-started`}>
               <Box className="p-2 font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
                 Try Demo
               </Box>
