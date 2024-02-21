@@ -144,7 +144,7 @@ const LandingPageHeader = () => {
             </Link>
             <Link href={`/get-started`}>
               <Box className="p-2 font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
-                Get Started
+                Try Demo
               </Box>
             </Link>
           </Box>

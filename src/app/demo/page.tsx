@@ -29,7 +29,13 @@ import { BsFillFileTextFill } from "react-icons/bs";
 import { TbReportAnalytics, TbBulb, TbScript } from "react-icons/tb";
 import { PiHandshakeLight } from "react-icons/pi";
 import { LuTrendingUp } from "react-icons/lu";
-
+import Joyride, {
+  Step,
+  CallBackProps,
+  ACTIONS,
+  EVENTS,
+  STATUS,
+} from "react-joyride";
 import {
   useForm,
   Controller,
@@ -68,21 +74,60 @@ export default function Home() {
 
   const toast = useToast();
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
   const [currentTime, setCurrentTime] = useState(0);
 
+  const [run, setRun] = useState(false);
+  const steps: Step[] = [
+    {
+      target: "#upload-button",
+      content: "Upload your audio file here",
+      placement: "bottom",
+      disableBeacon: true,
+    },
+  ];
+
+  // const [isFormOpen, setIsFormOpen] = useState(false);
   useEffect(() => {
+    const tourCompleted = Cookies.get("tourCompleted");
+    if (!tourCompleted) {
+      // If the tour hasn't been completed, run it
+      setTimeout(() => {
+        setRun(true);
+      }, 3000);
+    }
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      setIsFormOpen(true);
+      // setIsFormOpen(false);
       // if (process.env.NEXT_PUBLIC_ENV === "developement") {
       //   setIsFormOpen(false);
       // } else {
       //   setIsFormOpen(true);
       // }
     }
+
+    // const timer = setTimeout(() => {
+    // const beacon = document.querySelector(
+    //   ".react-joyride__beacon"
+    // ) as HTMLElement;
+    // if (beacon) {
+    //   beacon.click();
+    // }
+    // }, 5000);
+
+    // return () => clearTimeout(timer);
   }, []);
+
+  // Callback function to handle Joyride events
+  const handleJoyrideCallback = (data: any) => {
+    const { status } = data;
+    const finishedStatuses = ["finished", "skipped"];
+
+    if (finishedStatuses.includes(status)) {
+      // Set a cookie to remember that the tour has been completed
+      Cookies.set("tourCompleted", "true", { expires: 7 }); // Expires in 365 days
+      setRun(false); // Stop the tour
+    }
+  };
 
   // const closeForm = () => {
   //   setIsFormOpen(false);
@@ -332,9 +377,13 @@ export default function Home() {
     return parseFloat(normalizedScore.toFixed(1));
   }
 
+  useEffect(() => {
+    // Delay the start of the tour to ensure elements are loaded
+  }, []);
   return (
     <div className="relative bg-blue-50">
       <LandingPageHeader />
+
       <div>
         <div className="p-4 text-2xl italic font-bold text-center">
           Upload Your Audio and Experience the Magic
@@ -345,12 +394,27 @@ export default function Home() {
               <PlayAudio audio={audioFileUrl} setCurrentTime={setCurrentTime} />
             )}
             <div className="overflow-hidden">
-              <div>
+              <div id="upload-button">
                 <FileUploader
                   multiple={true}
                   handleChange={handleChange}
                   name="audioFileUrl"
                   types={fileTypes}
+                />
+                <Joyride
+                  steps={steps}
+                  run={run}
+                  continuous={true}
+                  disableScrolling={true}
+                  showSkipButton={true}
+                  locale={{ last: "Close" }}
+                  callback={handleJoyrideCallback}
+                  styles={{
+                    options: {
+                      zIndex: 10000,
+                      primaryColor: "#3B82F6",
+                    },
+                  }}
                 />
               </div>
 
@@ -932,7 +996,7 @@ export default function Home() {
         </div>
       </div>
       <AppFooter />
-      {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />}
+      {/* {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />} */}
     </div>
   );
 }
