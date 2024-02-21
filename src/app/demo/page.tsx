@@ -370,6 +370,7 @@ export default function Home() {
   }, [output, logs]);
 
   function calculateNormalizedScore(totalScore: number, maxScore: number) {
+    if (totalScore == undefined || maxScore == undefined) return 0;
     if (maxScore == 0 && totalScore == 0) totalScore = 10;
     if (maxScore == 0) maxScore = 10;
 
@@ -650,23 +651,23 @@ export default function Home() {
                             <CircularProgress
                               value={
                                 calculateNormalizedScore(
-                                  output.score,
-                                  output.total_max_score
+                                  output?.score,
+                                  output?.total_max_score
                                 ) * 10
                               }
                               size="70px"
                               color={getProgressColor(
                                 calculateNormalizedScore(
-                                  output.score,
-                                  output.total_max_score
+                                  output?.score,
+                                  output?.total_max_score
                                 )
                               )}
                             >
                               <CircularProgressLabel>
                                 <span className="font-bold text-xs">
                                   {calculateNormalizedScore(
-                                    output.score,
-                                    output.total_max_score
+                                    output?.score,
+                                    output?.total_max_score
                                   )}
                                   /10
                                 </span>
@@ -688,34 +689,38 @@ export default function Home() {
                             <div className="flex justify-end items-center">
                               <span className="absolute right-0 -top-3 z-20 text-xs">
                                 {calculateNormalizedScore(
-                                  output.scores_by_category["Call Introduction"]
-                                    .score,
-                                  output.scores_by_category["Call Introduction"]
-                                    .max_score
-                                )}
+                                  output?.scores_by_category[
+                                    "Call Introduction"
+                                  ]?.score,
+                                  output?.scores_by_category[
+                                    "Call Introduction"
+                                  ]?.max_score
+                                ) ?? 0}
                                 /10
                               </span>
 
                               <Progress
-                                colorScheme={getProgressColorScheme(
-                                  calculateNormalizedScore(
-                                    output.scores_by_category[
-                                      "Call Introduction"
-                                    ].score,
-                                    output.scores_by_category[
-                                      "Call Introduction"
-                                    ].max_score
-                                  )
-                                )}
+                                colorScheme={
+                                  getProgressColorScheme(
+                                    calculateNormalizedScore(
+                                      output?.scores_by_category[
+                                        "Call Introduction"
+                                      ]?.score,
+                                      output.scores_by_category[
+                                        "Call Introduction"
+                                      ]?.max_score
+                                    )
+                                  ) ?? "red"
+                                }
                                 value={
                                   calculateNormalizedScore(
-                                    output.scores_by_category[
+                                    output?.scores_by_category[
                                       "Call Introduction"
-                                    ].score,
-                                    output.scores_by_category[
+                                    ]?.score,
+                                    output?.scores_by_category[
                                       "Call Introduction"
-                                    ].max_score
-                                  ) * 10
+                                    ]?.max_score
+                                  ) * 10 ?? 0
                                 }
                                 className="flex-grow"
                               />
@@ -733,10 +738,10 @@ export default function Home() {
                             <div className="flex justify-end items-center">
                               <span className="absolute right-0 -top-3 z-20 text-xs">
                                 {calculateNormalizedScore(
-                                  output.scores_by_category["Call Progression"]
-                                    .score,
-                                  output.scores_by_category["Call Progression"]
-                                    .max_score
+                                  output?.scores_by_category["Call Progression"]
+                                    ?.score,
+                                  output?.scores_by_category["Call Progression"]
+                                    ?.max_score
                                 )}
                                 /10
                               </span>
@@ -744,23 +749,23 @@ export default function Home() {
                               <Progress
                                 colorScheme={getProgressColorScheme(
                                   calculateNormalizedScore(
-                                    output.scores_by_category[
+                                    output?.scores_by_category[
                                       "Call Progression"
-                                    ].score,
-                                    output.scores_by_category[
+                                    ]?.score,
+                                    output?.scores_by_category[
                                       "Call Progression"
-                                    ].max_score
-                                  )
+                                    ]?.max_score
+                                  ) ?? "red"
                                 )}
                                 value={
                                   calculateNormalizedScore(
-                                    output.scores_by_category[
+                                    output?.scores_by_category[
                                       "Call Progression"
-                                    ].score,
-                                    output.scores_by_category[
+                                    ]?.score,
+                                    output?.scores_by_category[
                                       "Call Progression"
-                                    ].max_score
-                                  ) * 10
+                                    ]?.max_score
+                                  ) * 10 ?? 0
                                 }
                                 className="flex-grow"
                               />
@@ -778,10 +783,10 @@ export default function Home() {
                             <div className="flex justify-end items-center">
                               <span className="absolute right-0 -top-3 z-20 text-xs">
                                 {calculateNormalizedScore(
-                                  output.scores_by_category["Call Conclusion"]
-                                    .score,
-                                  output.scores_by_category["Call Conclusion"]
-                                    .max_score
+                                  output?.scores_by_category["Call Conclusion"]
+                                    ?.score,
+                                  output?.scores_by_category["Call Conclusion"]
+                                    ?.max_score
                                 )}
                                 /10
                               </span>
@@ -789,18 +794,22 @@ export default function Home() {
                               <Progress
                                 colorScheme={getProgressColorScheme(
                                   calculateNormalizedScore(
-                                    output.scores_by_category["Call Conclusion"]
-                                      .score,
-                                    output.scores_by_category["Call Conclusion"]
-                                      .max_score
+                                    output?.scores_by_category[
+                                      "Call Conclusion"
+                                    ]?.score,
+                                    output?.scores_by_category[
+                                      "Call Conclusion"
+                                    ]?.max_score
                                   )
                                 )}
                                 value={
                                   calculateNormalizedScore(
-                                    output.scores_by_category["Call Conclusion"]
-                                      .score,
-                                    output.scores_by_category["Call Conclusion"]
-                                      .max_score
+                                    output?.scores_by_category[
+                                      "Call Conclusion"
+                                    ]?.score,
+                                    output?.scores_by_category[
+                                      "Call Conclusion"
+                                    ]?.max_score
                                   ) * 10
                                 }
                                 className="flex-grow"
