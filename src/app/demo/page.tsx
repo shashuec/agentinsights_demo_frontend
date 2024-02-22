@@ -86,7 +86,7 @@ export default function Home() {
     },
   ];
 
-  // const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   useEffect(() => {
     const tourCompleted = Cookies.get("tourCompleted");
     if (!tourCompleted) {
@@ -97,7 +97,7 @@ export default function Home() {
     }
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      // setIsFormOpen(false);
+      setIsFormOpen(true);
       // if (process.env.NEXT_PUBLIC_ENV === "developement") {
       //   setIsFormOpen(false);
       // } else {
@@ -129,9 +129,9 @@ export default function Home() {
     }
   };
 
-  // const closeForm = () => {
-  //   setIsFormOpen(false);
-  // };
+  const closeForm = () => {
+    setIsFormOpen(false);
+  };
 
   const setUUIDQueryParam = (uuidValue: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -378,9 +378,6 @@ export default function Home() {
     return parseFloat(normalizedScore.toFixed(1));
   }
 
-  useEffect(() => {
-    // Delay the start of the tour to ensure elements are loaded
-  }, []);
   return (
     <div className="relative bg-blue-50">
       <LandingPageHeader />
@@ -1005,7 +1002,7 @@ export default function Home() {
         </div>
       </div>
       <AppFooter />
-      {/* {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />} */}
+      {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />}
     </div>
   );
 }
