@@ -467,7 +467,7 @@ const LandingPage = () => {
       </div>
 
       <AppFooter />
-      <div className=" mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 bg-blue-500 flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:hidden">
+      <div className="mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 bg-blue-500 flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:hidden">
         <Link href={`/demo?uuid=${DEMO_UUID}`}>
           <button
             type="button"

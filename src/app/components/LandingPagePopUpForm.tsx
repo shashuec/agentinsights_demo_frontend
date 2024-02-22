@@ -24,7 +24,7 @@ import crm from "../assets/crm.png";
 
 function LandingPagePopUpForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     name: "",
     phoneNumber: "",
@@ -114,8 +114,6 @@ function LandingPagePopUpForm() {
         if (response.status === 200) {
           if (typeof window.gtag === "function") {
             // Fire Google Ads conversion tracking
-            // console.log("Sending conversion tracking event to Google Ads");
-            // console.log(window.gtag);
 
             window.gtag("event", "conversion", {
               send_to: `AW-11394044478/VvgeCJ6fuvIYEL6kjbkq`,
@@ -167,7 +165,7 @@ function LandingPagePopUpForm() {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {}}
       size="md"
       motionPreset="slideInBottom"
       isCentered
@@ -202,7 +200,7 @@ function LandingPagePopUpForm() {
             </div>
           </div>
         </ModalHeader>
-        <ModalCloseButton
+        {/* <ModalCloseButton
           onClick={handleClose}
           position="absolute"
           right="0px"
@@ -212,7 +210,7 @@ function LandingPagePopUpForm() {
             outline: "none",
             boxShadow: "none",
           }}
-        />
+        /> */}
         <ModalBody pb={2} px={isSmallerThan768 ? 5 : 10}>
           <FormControl isInvalid={errors.name}>
             <FormLabel fontSize="sm" className="font-semibold text-gray-600">
@@ -298,7 +296,9 @@ function LandingPagePopUpForm() {
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Experience the Demo..." : "Experience the Demo"}
+            {isSubmitting
+              ? "Start your free trial now..."
+              : "Start your free trial now"}
           </button>
         </ModalFooter>
       </ModalContent>
