@@ -88,13 +88,13 @@ export default function Home() {
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   useEffect(() => {
-    const tourCompleted = Cookies.get("tourCompleted");
-    if (!tourCompleted) {
-      // If the tour hasn't been completed, run it
-      setTimeout(() => {
-        setRun(true);
-      }, 3000);
-    }
+    // const tourCompleted = Cookies.get("tourCompleted");
+    // if (!tourCompleted) {
+    //   // If the tour hasn't been completed, run it
+    //   setTimeout(() => {
+    //     setRun(true);
+    //   }, 3000);
+    // }
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
       setIsFormOpen(true);
@@ -118,16 +118,16 @@ export default function Home() {
   }, []);
 
   // Callback function to handle Joyride events
-  const handleJoyrideCallback = (data: any) => {
-    const { status } = data;
-    const finishedStatuses = ["finished", "skipped"];
+  // const handleJoyrideCallback = (data: any) => {
+  //   const { status } = data;
+  //   const finishedStatuses = ["finished", "skipped"];
 
-    if (finishedStatuses.includes(status)) {
-      // Set a cookie to remember that the tour has been completed
-      Cookies.set("tourCompleted", "true", { expires: 7 }); // Expires in 365 days
-      setRun(false); // Stop the tour
-    }
-  };
+  //   if (finishedStatuses.includes(status)) {
+  //     // Set a cookie to remember that the tour has been completed
+  //     Cookies.set("tourCompleted", "true", { expires: 7 }); // Expires in 365 days
+  //     setRun(false); // Stop the tour
+  //   }
+  // };
 
   const closeForm = () => {
     setIsFormOpen(false);
@@ -406,7 +406,7 @@ export default function Home() {
                   disableScrolling={true}
                   showSkipButton={true}
                   locale={{ last: "Close" }}
-                  callback={handleJoyrideCallback}
+                  // callback={handleJoyrideCallback}
                   styles={{
                     options: {
                       zIndex: 10000,
@@ -1002,7 +1002,9 @@ export default function Home() {
         </div>
       </div>
       <AppFooter />
-      {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />}
+      {isFormOpen && (
+        <PopUpForm startTour={setRun} onClose={() => setIsFormOpen(false)} />
+      )}
     </div>
   );
 }
