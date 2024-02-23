@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -16,12 +16,12 @@ import {
   useMediaQuery,
   useToast,
 } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import key_lock from "../assets/key_lock.png";
 import crm from "../assets/crm.png";
 
-function PopUpForm({ onClose }: any) {
-  const searchParams = useSearchParams();
+function PopUpForm({ onClose, startTour }: any) {
+  // const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     name: "",
     phoneNumber: "",
@@ -131,6 +131,7 @@ function PopUpForm({ onClose }: any) {
             duration: 5000,
             isClosable: true,
           });
+          startTour(true);
         }
       } catch (error) {
         console.error("Error submitting form", error);
