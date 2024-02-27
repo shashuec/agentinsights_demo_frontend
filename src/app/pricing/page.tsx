@@ -1,10 +1,15 @@
-import Head from "next/head";
 import LandingPageHeader from "../components/LandingPageHeader";
 import AppFooter from "../components/AppFooter";
 import React from "react";
-import { Menu, X, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { PiPackageDuotone, PiRocketLaunch } from "react-icons/pi";
 import { IoMdArrowForward } from "react-icons/io";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pricing",
+};
 
 const plans = [
   {

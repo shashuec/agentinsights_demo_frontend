@@ -7,7 +7,6 @@ import ai_logo_short from "../assets/ai_logo_short.png";
 import app_frame from "../assets/app_frame.png";
 import AppFooter from "../components/AppFooter";
 import LandingPageHeader from "../components/LandingPageHeader";
-import { BsDot } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
 
 import {
