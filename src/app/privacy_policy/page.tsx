@@ -1,7 +1,13 @@
 import React from "react";
 import LandingPageHeader from "../components/LandingPageHeader";
 import AppFooter from "../components/AppFooter";
-import { List, ListItem, OrderedList, UnorderedList } from "@chakra-ui/react";
+import { ListItem, OrderedList, UnorderedList } from "@chakra-ui/react";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+};
 
 const PrivacyPolicy = () => {
   return (

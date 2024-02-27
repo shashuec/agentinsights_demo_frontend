@@ -29,13 +29,7 @@ import { BsFillFileTextFill } from "react-icons/bs";
 import { TbReportAnalytics, TbBulb, TbScript } from "react-icons/tb";
 import { PiHandshakeLight } from "react-icons/pi";
 import { LuTrendingUp } from "react-icons/lu";
-import Joyride, {
-  Step,
-  CallBackProps,
-  ACTIONS,
-  EVENTS,
-  STATUS,
-} from "react-joyride";
+import Joyride, { Step } from "react-joyride";
 import {
   useForm,
   Controller,
