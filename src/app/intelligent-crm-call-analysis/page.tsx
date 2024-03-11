@@ -8,10 +8,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 
-import { FaRegCreditCard } from "react-icons/fa6";
-import { FaCog, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import { WiStars } from "react-icons/wi";
-import { PiStarFourFill } from "react-icons/pi";
 
 import manager_dashboard from "../assets/manager_dashboard.png";
 import efficient_task_management from "../assets/efficient_task_management.png";
@@ -99,16 +97,20 @@ const LandingPage = () => {
                       always a step ahead. Discover how our features redefine
                       the way you connect with customers and manage your team.
                     </p>
-                    <div className="mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 md:mx-0 md:mb-0 md:shadow-none bg-blue-500 md:bg-transparent flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:relative">
+                    <div className="hidden md:flex md:mb-0 md:mx-0 md:shadow-none bg-transparent items-center justify-center gap-x-2 mt-8 relative">
                       <Link href={`/demo?uuid=${DEMO_UUID}`}>
                         <button
                           type="button"
                           className="rounded-md bg-blue-500 px-6 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                         >
-                          Get Started
+                          Start your free trial
+                          <p className="text-xs text-right">
+                            * no credit card required
+                          </p>
                         </button>
                       </Link>
                     </div>
+                    <div className="text-xs text-right text-white"></div>
                   </div>
                 </div>
                 <div className="mt-8 xl:mt-0 px-4 md:px-20 xl:px-20 flex justify-center items-end">
@@ -463,6 +465,17 @@ const LandingPage = () => {
       </div>
 
       <AppFooter />
+      <div className="mb-3 mx-3 rounded-md shadow-xl shadow-slate-500 bg-blue-500 flex items-center justify-center gap-x-2 mt-8 fixed bottom-0 inset-x-0 z-[5000] md:hidden">
+        <Link href={`/demo?uuid=${DEMO_UUID}`}>
+          <button
+            type="button"
+            className="rounded-md bg-blue-500 px-3 py-2 text-base font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+          >
+            Start your free trial
+            <p className="text-xs text-right">* no credit card required</p>
+          </button>
+        </Link>
+      </div>
       <LandingPagePopUpForm />
     </>
   );

@@ -157,7 +157,7 @@ const AppFooter = () => {
         </div>
       </div>
       <div className="pb-3 pt-6 text-sm text-center text-white">
-        © 2023 - AgentInsights
+        © 2024 - AgentInsights
       </div>
     </footer>
     // <footer className="bg-gray-800 py-8 pb-24 px-4 md:px-20 text-white">

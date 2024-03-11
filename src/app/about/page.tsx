@@ -1,17 +1,18 @@
 // pages/about.js
-import Head from "next/head";
 import LandingPageHeader from "../components/LandingPageHeader";
 import AppFooter from "../components/AppFooter";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+};
 
 export default function About() {
   return (
     <div className="bg-gray-100 min-h-screen  relative">
       <LandingPageHeader />
       <div className="bg-gray-100 min-h-screen px-4 py-12">
-        <Head>
-          <title>About Us - Agentinsights</title>
-        </Head>
-
         <div className="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow-md">
           {/* Header */}
           <div className="bg-indigo-600 text-white p-8 rounded-t-lg">

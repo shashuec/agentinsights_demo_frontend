@@ -142,7 +142,7 @@ const LandingPageHeader = () => {
                 Sign In/Sign Up
               </Box>
             </Link>
-            <Link href={`/get-started`}>
+            <Link href={`/demo?uuid=${DEMO_UUID}`}>
               <Box className="p-2 font-semibold bg-blue-500 text-white text-center rounded transition duration-300 ease-in-out">
                 Try Demo
               </Box>

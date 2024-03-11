@@ -29,13 +29,7 @@ import { BsFillFileTextFill } from "react-icons/bs";
 import { TbReportAnalytics, TbBulb, TbScript } from "react-icons/tb";
 import { PiHandshakeLight } from "react-icons/pi";
 import { LuTrendingUp } from "react-icons/lu";
-import Joyride, {
-  Step,
-  CallBackProps,
-  ACTIONS,
-  EVENTS,
-  STATUS,
-} from "react-joyride";
+import Joyride, { Step } from "react-joyride";
 import {
   useForm,
   Controller,
@@ -86,18 +80,18 @@ export default function Home() {
     },
   ];
 
-  // const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   useEffect(() => {
-    const tourCompleted = Cookies.get("tourCompleted");
-    if (!tourCompleted) {
-      // If the tour hasn't been completed, run it
-      setTimeout(() => {
-        setRun(true);
-      }, 3000);
-    }
+    // const tourCompleted = Cookies.get("tourCompleted");
+    // if (!tourCompleted) {
+    //   // If the tour hasn't been completed, run it
+    //   setTimeout(() => {
+    //     setRun(true);
+    //   }, 3000);
+    // }
     // Show the form if the cookie is not set
     if (!Cookies.get("formSubmitted")) {
-      // setIsFormOpen(false);
+      setIsFormOpen(true);
       // if (process.env.NEXT_PUBLIC_ENV === "developement") {
       //   setIsFormOpen(false);
       // } else {
@@ -118,20 +112,20 @@ export default function Home() {
   }, []);
 
   // Callback function to handle Joyride events
-  const handleJoyrideCallback = (data: any) => {
-    const { status } = data;
-    const finishedStatuses = ["finished", "skipped"];
+  // const handleJoyrideCallback = (data: any) => {
+  //   const { status } = data;
+  //   const finishedStatuses = ["finished", "skipped"];
 
-    if (finishedStatuses.includes(status)) {
-      // Set a cookie to remember that the tour has been completed
-      Cookies.set("tourCompleted", "true", { expires: 7 }); // Expires in 365 days
-      setRun(false); // Stop the tour
-    }
-  };
-
-  // const closeForm = () => {
-  //   setIsFormOpen(false);
+  //   if (finishedStatuses.includes(status)) {
+  //     // Set a cookie to remember that the tour has been completed
+  //     Cookies.set("tourCompleted", "true", { expires: 7 }); // Expires in 365 days
+  //     setRun(false); // Stop the tour
+  //   }
   // };
+
+  const closeForm = () => {
+    setIsFormOpen(false);
+  };
 
   const setUUIDQueryParam = (uuidValue: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -378,9 +372,6 @@ export default function Home() {
     return parseFloat(normalizedScore.toFixed(1));
   }
 
-  useEffect(() => {
-    // Delay the start of the tour to ensure elements are loaded
-  }, []);
   return (
     <div className="relative bg-blue-50">
       <LandingPageHeader />
@@ -409,7 +400,7 @@ export default function Home() {
                   disableScrolling={true}
                   showSkipButton={true}
                   locale={{ last: "Close" }}
-                  callback={handleJoyrideCallback}
+                  // callback={handleJoyrideCallback}
                   styles={{
                     options: {
                       zIndex: 10000,
@@ -1005,7 +996,9 @@ export default function Home() {
         </div>
       </div>
       <AppFooter />
-      {/* {isFormOpen && <PopUpForm onClose={() => setIsFormOpen(false)} />} */}
+      {isFormOpen && (
+        <PopUpForm startTour={setRun} onClose={() => setIsFormOpen(false)} />
+      )}
     </div>
   );
 }
