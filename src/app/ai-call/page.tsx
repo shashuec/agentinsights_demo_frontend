@@ -9,9 +9,11 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { RetellWebClient } from "retell-client-js-sdk";
 
-const agentId = "72161b1e6512585653e9c1c17d94be53";
+const agentId =
+  process.env.NEXT_PUBLIC_CALL_AGENT_ID || "72161b1e6512585653e9c1c17d94be53";
 
 const BASE_URL = "https://agentinsights-robocall-5yfk5r5eya-uc.a.run.app";
+// const BASE_URL = "https://0cd2-2409-40d6-2-a878-4ee6-9e30-995d-f17d.ngrok-free.app";
 
 interface RegisterCallResponse {
   callId?: string;
@@ -19,6 +21,8 @@ interface RegisterCallResponse {
 }
 
 const webClient = new RetellWebClient();
+
+const INTERVAL_TIME = 15000;
 
 const FormPage = ({ setIsSubmitted }: any) => {
   const toast = useToast();
@@ -209,6 +213,25 @@ const StartCall = ({ isSubmitted }: any) => {
   const [isCalling, setIsCalling] = useState(true);
   const toast = useToast();
 
+  const trackUsage = async () => {
+    try {
+      const validateUsageResponse = await axios.post(
+        `${BASE_URL}/validate-usage`,
+        { minute: INTERVAL_TIME / (1000 * 60) },
+        {
+          headers: {
+            "X-CALL-API-KEY": process.env.NEXT_PUBLIC_X_CALL_API_KEY,
+          },
+        }
+      );
+
+      return validateUsageResponse.status === 200;
+    } catch (error: any) {
+      console.error("Error tracking usage", error);
+      throw new Error(error);
+    }
+  };
+
   const toggleConversation = async () => {
     if (!isCalling) {
       webClient.stopConversation();
@@ -230,9 +253,17 @@ const StartCall = ({ isSubmitted }: any) => {
   async function registerCall(agentId: string): Promise<RegisterCallResponse> {
     try {
       // Replace with your server url
-      const response = await axios.post(`${BASE_URL}/register-call`, {
-        agentId: agentId,
-      });
+      const response = await axios.post(
+        `${BASE_URL}/register-call`,
+        {
+          agentId: agentId,
+        },
+        {
+          headers: {
+            "X-CALL-API-KEY": process.env.NEXT_PUBLIC_X_CALL_API_KEY,
+          },
+        }
+      );
 
       const data: RegisterCallResponse = await response.data;
       return data;
@@ -279,10 +310,33 @@ const StartCall = ({ isSubmitted }: any) => {
       console.log("update", update);
     });
 
-    setTimeout(() => {
-      if (!isCalling) return;
+    const usageTrackerInterval = setInterval(async () => {
+      if (!isCalling) {
+        clearInterval(usageTrackerInterval);
+        return;
+      }
 
+      const isOkay = await trackUsage();
+      if (!isOkay) {
+        setIsCalling(false);
+        toast({
+          title: "Call Ended",
+          description: "Your free quota has been exhausted.",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+
+        clearTimeout(endCallTimeout);
+      }
+    }, INTERVAL_TIME);
+
+    const endCallTimeout = setTimeout(() => {
+      if (!isCalling) return;
+      clearInterval(usageTrackerInterval);
       setIsCalling(false);
+      trackUsage();
       toast({
         title: "Call Ended",
         description: "Call Automatically ends after 1 minute.",
@@ -292,6 +346,12 @@ const StartCall = ({ isSubmitted }: any) => {
         position: "bottom",
       });
     }, 60000);
+
+    return () => {
+      clearTimeout(endCallTimeout);
+      clearInterval(usageTrackerInterval);
+      webClient.stopConversation();
+    };
   }, [isCalling]);
 
   return (
