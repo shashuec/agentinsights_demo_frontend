@@ -1035,7 +1035,7 @@ export default function Home() {
             )}
           </div>
         </div>
-        <AICall />
+        {/* <AICall /> */}
         <AppFooter />
         {isFormOpen && (
           <PopUpForm startTour={setRun} onClose={() => setIsFormOpen(false)} />

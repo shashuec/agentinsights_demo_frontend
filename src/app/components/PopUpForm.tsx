@@ -19,6 +19,7 @@ import {
 // import { useSearchParams } from "next/navigation";
 import key_lock from "../assets/key_lock.png";
 import crm from "../assets/crm.png";
+import { validateEmail } from "../../utils/util";
 
 function PopUpForm({ onClose, startTour }: any) {
   // const searchParams = useSearchParams();
@@ -42,12 +43,6 @@ function PopUpForm({ onClose, startTour }: any) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: false });
-  };
-
-  const validateEmail = (email: any) => {
-    const re =
-      /^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
   };
 
   const isValidPhoneNumber = (phoneNumber: string) => {
