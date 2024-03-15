@@ -162,7 +162,7 @@ const FormPage = ({ setIsSubmitted }: any) => {
             <iframe
               src="https://www.youtube.com/embed/_ZyhrF1FF6M?controls=0&rel=0&showinfo=0&modestbranding=1"
               title="YouTube video player"
-              className="border-0 w-full max-w-xl h-52 sm:h-96 md:h-72 lg:h-96 rounded-xl shadow-even shadow-slate-500"
+              className="z-50 border-0 w-full max-w-xl h-52 sm:h-96 md:h-72 lg:h-96 rounded-xl shadow-even shadow-slate-500"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             ></iframe>
