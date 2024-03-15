@@ -146,7 +146,7 @@ const FormPage = ({ setIsSubmitted }: any) => {
             <p className="text-center text-3xl mb-4 text-white font-extralight">
               See an example
             </p>
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-md z-50">
               <iframe
                 src="https://www.youtube.com/embed/_ZyhrF1FF6M?controls=0&rel=0&showinfo=0&modestbranding=1"
                 title="YouTube video player"
