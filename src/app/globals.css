@@ -8,6 +8,17 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.cursive-text {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+.glow {
+  background-color: #000; /* Dark background for contrast */
+  color: #fff; /* Light text color */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8); /* White glow */
+}
+
 .react-joyride__beacon {
   display: none;
 }

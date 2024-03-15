@@ -8,6 +8,8 @@ import { validateEmail } from "../../utils/util";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { RetellWebClient } from "retell-client-js-sdk";
+import { FaPhoneAlt } from "react-icons/fa";
+import ParticlesBackground from "../components/ParticlesBackground";
 
 const agentId =
   process.env.NEXT_PUBLIC_CALL_AGENT_ID || "72161b1e6512585653e9c1c17d94be53";
@@ -28,11 +30,14 @@ const FormPage = ({ setIsSubmitted }: any) => {
   const toast = useToast();
   const [formData, setFormData] = useState({
     name: "",
+    phoneNumber: "",
+    companyName: "",
     companyEmail: "",
   });
-
   const [errors, setErrors] = useState({
     name: false,
+    phoneNumber: false,
+    companyName: false,
     companyEmail: false,
   });
 
@@ -42,13 +47,18 @@ const FormPage = ({ setIsSubmitted }: any) => {
     setErrors({ ...errors, [name]: false });
   };
 
+  const isValidPhoneNumber = (phoneNumber: string) => {
+    return phoneNumber.length >= 10;
+  };
+
   const validateForm = () => {
     const newErrors = {
       name: !formData.name,
+      phoneNumber: !isValidPhoneNumber(formData.phoneNumber),
+      companyName: !formData.companyName,
       companyEmail: !validateEmail(formData.companyEmail),
     };
     setErrors(newErrors);
-    console.log(newErrors);
     return Object.values(newErrors).every((error) => !error);
   };
 
@@ -123,39 +133,49 @@ const FormPage = ({ setIsSubmitted }: any) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      <div className="hidden md:block absolute bottom-[30rem] left-1/2 transform -translate-x-1/2">
-        <Image src={DottedSVG} alt="Dotted Line" width={800} height={500} />
-      </div>
+    <div className="flex bg-black flex-col md:flex-row min-h-[180vh] pt-20 md:pt-0 md:min-h-screen px-2">
       <div className="flex items-center flex-1 justify-center md:justify-end mx-2">
-        <div className="relative md:shadow-even h-72 text-4xl font-semibold flex items-center text-center rounded-md max-w-xl">
-          <Image
+        <ParticlesBackground id="particles" />
+        <div className="md:shadow-even h-72 text-4xl flex flex-col gap-7 justify-center rounded-md max-w-xl">
+          {/* <Image
             className="absolute top-4 -z-50 w-36"
             src="/Aeroplane.png"
             width={200}
             height={120}
             alt="Hello from AgentInsightS"
-          />
-          <p>
-            See A <span className="text-gray-500">Live Demo</span> With A Flight
+          /> */}
+          <p className="text-white font-semibold">
+            See <span className="text-blue-500">A Live Demo</span> With A Flight
             Booking <span className="text-blue-500">Front Desk</span>
           </p>
-          <Image
+          {/* <Image
             className="absolute bottom-4 right-4 -z-50"
             src="/AICallHello.png"
             width={120}
             height={120}
             alt="Hello from AgentInsightS"
-          />
+          /> */}
+          <div className="flex flex-col items-center">
+            <p className="text-center text-3xl mb-4 text-white font-extralight">
+              See an example
+            </p>
+            <iframe
+              src="https://www.youtube.com/embed/_ZyhrF1FF6M?controls=0&rel=0&showinfo=0&modestbranding=1"
+              title="YouTube video player"
+              className="border-0 w-full max-w-xl h-52 sm:h-96 md:h-72 lg:h-96 rounded-xl shadow-even shadow-slate-500"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
       </div>
-      <div className="flex-1 bg-black mx-2 mb-2 md:mb-0">
-        <div className="md:min-h-screen flex flex-col  items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+      <div className="flex-1 mx-2 mb-2 md:mb-0 md:min-h-screen flex flex-col items-center justify-center">
+        <div className="border-2 rounded-md border-black w-full shadow-even shadow-slate-300 max-w-[500px] px-4 py-10 text-center sm:px-6 sm:py-16 lg:px-8 lg:py-24">
           <h2 className="text-center inline-block text-xl font-semibold border-[1px] border-b-0 px-2 py-1 rounded-t-lg leading-tight text-white">
             Try Web Call
           </h2>
-          <Divider />
-          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
+          <Divider className="border-white" />
+          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md ">
             <form action="#" method="POST" className="mt-8">
               <div className="space-y-5">
                 <div>
@@ -170,7 +190,9 @@ const FormPage = ({ setIsSubmitted }: any) => {
                       placeholder="Name"
                     ></input>
                     {errors.name && (
-                      <p className="text-red-500 text-xs">Name is required.</p>
+                      <p className="text-red-500 text-xs text-left">
+                        Name is required.
+                      </p>
                     )}
                   </div>
                 </div>
@@ -186,8 +208,44 @@ const FormPage = ({ setIsSubmitted }: any) => {
                       placeholder="Email"
                     ></input>
                     {errors.companyEmail && (
-                      <p className="text-red-500 text-xs">
+                      <p className="text-red-500 text-xs text-left">
                         Please enter a valid email address.
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <div className="mt-1">
+                    <input
+                      name="companyName"
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      required
+                      className="flex text-white h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      type="text"
+                      placeholder="Company name"
+                    ></input>
+                    {errors.companyName && (
+                      <p className="text-red-500 text-xs text-left">
+                        Please enter a company name.
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <div className="mt-1">
+                    <input
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleChange}
+                      required
+                      className="flex text-white h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      type="tel"
+                      placeholder="Phone number"
+                    ></input>
+                    {errors.phoneNumber && (
+                      <p className="text-red-500 text-xs text-left">
+                        Please enter a valid phone number.
                       </p>
                     )}
                   </div>
@@ -198,7 +256,10 @@ const FormPage = ({ setIsSubmitted }: any) => {
                   type="button"
                   className="border-white shadow-md shadow-slate-500 border-2 inline-flex w-full items-center justify-center rounded-md  bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
-                  Start a AI Call
+                  <span className="mr-2">
+                    <FaPhoneAlt />
+                  </span>
+                  Dial Now{" "}
                 </button>
               </div>
             </form>
