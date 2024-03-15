@@ -133,49 +133,39 @@ const FormPage = ({ setIsSubmitted }: any) => {
   };
 
   return (
-    <div className="flex bg-black flex-col md:flex-row min-h-[180vh] pt-20 md:pt-0 md:min-h-screen px-2">
+    <div className="flex bg-black flex-col md:flex-row pt-8 md:pt-0 min-h-screen px-2">
       <div className="flex items-center flex-1 justify-center md:justify-end mx-2">
         <ParticlesBackground id="particles" />
-        <div className="md:shadow-even h-72 text-4xl flex flex-col gap-7 justify-center rounded-md max-w-xl">
-          {/* <Image
-            className="absolute top-4 -z-50 w-36"
-            src="/Aeroplane.png"
-            width={200}
-            height={120}
-            alt="Hello from AgentInsightS"
-          /> */}
-          <p className="text-white font-semibold">
+        <div className="md:shadow-even text-4xl flex flex-col-reverse md:flex-col gap-7 justify-center rounded-md max-w-xl">
+          {/* If Image components are needed, uncomment and adjust accordingly */}
+          <p className="text-white font-semibold max-w-[500px]">
             See <span className="text-blue-500">A Live Demo</span> With A Flight
             Booking <span className="text-blue-500">Front Desk</span>
           </p>
-          {/* <Image
-            className="absolute bottom-4 right-4 -z-50"
-            src="/AICallHello.png"
-            width={120}
-            height={120}
-            alt="Hello from AgentInsightS"
-          /> */}
           <div className="flex flex-col items-center">
             <p className="text-center text-3xl mb-4 text-white font-extralight">
               See an example
             </p>
-            <iframe
-              src="https://www.youtube.com/embed/_ZyhrF1FF6M?controls=0&rel=0&showinfo=0&modestbranding=1"
-              title="YouTube video player"
-              className="z-50 border-0 w-full max-w-xl h-52 sm:h-96 md:h-72 lg:h-96 rounded-xl shadow-even shadow-slate-500"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            ></iframe>
+            <div className="w-full max-w-md">
+              <iframe
+                src="https://www.youtube.com/embed/_ZyhrF1FF6M?controls=0&rel=0&showinfo=0&modestbranding=1"
+                title="YouTube video player"
+                className="w-full h-64 md:h-72 xl:h-80 2xl:h-96 z-50 border-0 rounded-xl shadow-even shadow-slate-500"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
+            </div>
           </div>
         </div>
       </div>
-      <div className="flex-1 mx-2 mb-2 md:mb-0 md:min-h-screen flex flex-col items-center justify-center">
+      <div className="pb-10 pt-16 flex-1 mx-4 mb-2 md:mb-0 md:min-h-screen flex flex-col items-center justify-center">
         <div className="border-2 rounded-md border-black w-full shadow-even shadow-slate-300 max-w-[500px] px-4 py-10 text-center sm:px-6 sm:py-16 lg:px-8 lg:py-24">
           <h2 className="text-center inline-block text-xl font-semibold border-[1px] border-b-0 px-2 py-1 rounded-t-lg leading-tight text-white">
             Try Web Call
           </h2>
+          {/* Assuming Divider is a component. Ensure it's defined or replaced appropriately */}
           <Divider className="border-white" />
-          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md ">
+          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
             <form action="#" method="POST" className="mt-8">
               <div className="space-y-5">
                 <div>
@@ -188,7 +178,7 @@ const FormPage = ({ setIsSubmitted }: any) => {
                       className="flex text-white h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="text"
                       placeholder="Name"
-                    ></input>
+                    />
                     {errors.name && (
                       <p className="text-red-500 text-xs text-left">
                         Name is required.
@@ -206,7 +196,7 @@ const FormPage = ({ setIsSubmitted }: any) => {
                       className="flex text-white h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="email"
                       placeholder="Email"
-                    ></input>
+                    />
                     {errors.companyEmail && (
                       <p className="text-red-500 text-xs text-left">
                         Please enter a valid email address.
@@ -224,7 +214,7 @@ const FormPage = ({ setIsSubmitted }: any) => {
                       className="flex text-white h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="text"
                       placeholder="Company name"
-                    ></input>
+                    />
                     {errors.companyName && (
                       <p className="text-red-500 text-xs text-left">
                         Please enter a company name.
@@ -242,7 +232,7 @@ const FormPage = ({ setIsSubmitted }: any) => {
                       className="flex text-white h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="tel"
                       placeholder="Phone number"
-                    ></input>
+                    />
                     {errors.phoneNumber && (
                       <p className="text-red-500 text-xs text-left">
                         Please enter a valid phone number.
@@ -251,15 +241,16 @@ const FormPage = ({ setIsSubmitted }: any) => {
                   </div>
                 </div>
                 <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
+                  onClick={handleSubmit} // Make sure to define `handleSubmit`
+                  disabled={isSubmitting} // Ensure `isSubmitting` state is managed
                   type="button"
-                  className="border-white shadow-md shadow-slate-500 border-2 inline-flex w-full items-center justify-center rounded-md  bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  className="border-white shadow-md shadow-slate-500 border-2 inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
+                  {/* Ensure icons like `FaPhoneAlt` are correctly imported */}
                   <span className="mr-2">
                     <FaPhoneAlt />
                   </span>
-                  Dial Now{" "}
+                  Dial Now
                 </button>
               </div>
             </form>
