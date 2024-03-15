@@ -15,6 +15,7 @@ import { GoDotFill } from "react-icons/go";
 
 import Hero from "./assets/hero.png";
 import AiScore from "./assets/aiScore.png";
+import AICallHome from "./assets/AICallHome.png";
 import CallAnalysis from "./assets/CallAnalysis.png";
 import CustomerInsights from "./assets/CustomerInsights.png";
 import CallToAction from "./assets/CallToAction.png";
@@ -148,7 +149,9 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
-
+      {/* <div className="relative h-fit" id="what-we-offer">
+        <section className="isolate relative lg:px-8 pb-12"></section>
+      </div> */}
       <div className="relative h-fit" id="what-we-offer">
         <Image
           id="bg"
@@ -159,7 +162,61 @@ const LandingPage = () => {
           quality={100}
           alt="Bg Image"
         />
-        <section className="isolate relative px-6 pt-14 lg:px-8 pb-20">
+
+        <section className="isolate relative px-6 lg:px-8 pb-20">
+          <div className="mb-20">
+            <div className="flex flex-col gap-y-0">
+              <div className="flex relative mx-auto flex-col gap-x-10 items-center md:items-center md:flex-row-reverse">
+                <div className="w-full max-w-lg md:max-w-md flex-shrink">
+                  <Image
+                    className="rounded-lg object-contain"
+                    src={AICallHome}
+                    alt="AI Score Image"
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="">
+                    <div className="flex mb-4 max-w-3xl">
+                      <div>
+                        <h2 className="flex font-semibold text-blue-500 mb-3 mt-5 md:mt-0">
+                          <span>
+                            <PiStarFourFill className="text-blue-500 inline text-md mr-2" />
+                          </span>
+                          <span className="text-2xl md:text-2xl lg:text-3xl">
+                            Create voice based AI agents{" "}
+                          </span>
+                        </h2>
+                        <p className="text-gray-600 text-lg md:text-xl">
+                          An end to end platform to build, deploy and monitor
+                          voice-based AI agents.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex w-full flex-col justify-center py-4">
+                      <button
+                        onClick={() => handleNavigation("/ai-call")}
+                        className=" w-fit cursor-pointer text-center rounded-md px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 font-semibold"
+                        style={{ zIndex: 100 }}
+                      >
+                        Create your first agent{" "}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <div className="w-full max-w-6xl">
+                  <iframe
+                    src="https://www.youtube.com/embed/_ZyhrF1FF6M?controls=0&rel=0&showinfo=0&modestbranding=1"
+                    title="YouTube video player"
+                    className="w-full h-72 md:h-96 xl:h-[410px] z-50 border-0 rounded-xl shadow-even shadow-slate-500"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="font-bold text-3xl mb-16">
             What we <span className="text-blue-500">Offer</span>
           </div>
